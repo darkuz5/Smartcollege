@@ -1,0 +1,59 @@
+<resources>
+    <string name="app_name">Smartcollege</string>
+    <string name="title_activity_principal">Principal</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_splash_screen">SplashScreen</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_login">ACCESO</string>
+    <string name="title_activity_seleccionAl">ALUMNOS</string>
+
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Usuario</string>
+    <string name="prompt_password">Contraseña</string>
+    <string name="action_sign_in">Entrar</string>
+    <string name="action_sign_in_short">Entrar</string>
+    <string name="error_invalid_email">El correo no es válido</string>
+    <string name="error_invalid_password">La contraseña es demasiado corta</string>
+    <string name="error_incorrect_password">La contraseña es incorrecta</string>
+    <string name="error_field_required">Este campo es requerido</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."</string>
+    <string name="lost_passwd">¿Olvidaste la contraseña?</string>
+
+
+    <!--  Servicios web   -->
+
+    <string name="autenticaUsuario">http://smartcollege.mx/servicios/autenticaUsuario.php</string>
+    <string name="getAlumnosDeTutor">http://smartcollege.mx/servicios/getAlumnosDeTutor.php</string>
+    <string name="getMateriasAlumno">http://smartcollege.mx/servicios/getMateriasAlumno.php</string>
+    <string name="getBoletasAlumno">http://smartcollege.mx/servicios/getBoletasAlumno.php</string>
+    <string name="getDocumentos">http://smartcollege.mx/servicios/getDocumentos.php</string>
+    <string name="getGaleria">http://smartcollege.mx/servicios/getGalerias.php</string>
+    <string name="getFotosGal">http://smartcollege.mx/servicios/getFotosGal.php</string>
+    <string name="getReportes">http://smartcollege.mx/servicios/getReportes.php</string>
+    <string name="getTrofeos">http://smartcollege.mx/servicios/getTrofeos.php</string>
+    <string name="getAvisos">http://smartcollege.mx/servicios/getAvisos.php</string>
+    <string name="comentaFoto">http://smartcollege.mx/servicios/comentaFoto.php</string>
+    <string name="getComentariosFoto">http://smartcollege.mx/servicios/getComentariosFoto.php</string>
+    <string name="getColegio">http://smartcollege.mx/servicios/getColegio.php</string>
+    <string name="getTareas">http://smartcollege.mx/servicios/getTareas.php</string>
+    <string name="getExamen">http://smartcollege.mx/servicios/getExamen.php</string>
+    <string name="getPagosAlumno">http://smartcollege.mx/servicios/getPagosAlumno.php</string>
+    <string name="subeComprobantePago">http://smartcollege.mx/servicios/subeComprobantePago.php</string>
+    <string name="getServicios">http://smartcollege.mx/servicios/getServicios.php</string>
+
+    <string name="subeGaceta">http://smartcollege.mx/servicios/subeGaceta.php</string>
+    <string name="getGaceta">http://smartcollege.mx/servicios/getGaceta.php</string>
+    <string name="updateTutor">http://smartcollege.mx/servicios/updateTutor.php</string>
+    <string name="recuperarPassword">http://smartcollege.mx/servicios/recuperarPassword.php</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+</resources>

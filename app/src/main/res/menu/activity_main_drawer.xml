@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_avisos"
+            android:icon="@drawable/avisos"
+            android:title="Avisos" />
+        <item
+            android:id="@+id/nav_eventos"
+            android:icon="@drawable/eventos"
+            android:title="Eventos" />
+        <item
+            android:id="@+id/nav_alumnos"
+            android:icon="@drawable/alumnos"
+            android:title="Alumnos" />
+        <item
+            android:id="@+id/nav_galeria"
+            android:icon="@drawable/galeria"
+            android:title="Galerías" />
+        <item
+            android:id="@+id/nav_gaceta"
+            android:icon="@drawable/comunidad"
+            android:title="Gaceta" />
+        <item
+            android:id="@+id/nav_documentos"
+            android:icon="@drawable/documentos"
+            android:title="Documentos" />
+        <item
+            android:id="@+id/nav_pagos"
+            android:icon="@drawable/pagos"
+            android:title="Pagos" />
+        <item
+            android:id="@+id/nav_servicios"
+            android:icon="@drawable/servicios"
+            android:title="Servicios" />
+        <item
+            android:id="@+id/nav_contaco"
+            android:icon="@drawable/contacto"
+            android:title="Contacto" />
+        <item
+            android:id="@+id/nac_alumno"
+            android:icon="@drawable/salir"
+            android:title="Cambio Alumno" />
+        <item
+            android:id="@+id/nav_salir"
+            android:icon="@drawable/salir"
+            android:title="Salir" />
+    </group>
+
+
+
+</menu>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#A01027</color>
+    <color name="colorPrimaryDark">#7f0b1c</color>
+    <color name="colorAccent">#4673AC</color>
+    <color name="colorBlanco">#ffffff</color>
+    <color name="colorAzulDarkMenu">#003466</color>
+    <color name="colorTexto">#000000</color>
+    <color name="negroTransparente">#80000000</color>
+
+
+
+    <color name="background_actionbar">#38454D</color>
+    <color name="background_actionbarTr">#22000000</color>
+    <color name="background_actionbar_azul_claro">#3FB1C9</color>
+    <color name="background_actionbar_statusbar">#38454D</color>
+    <color name="background_actionbar_statusbar_azul_claro">#3FB1C9</color>
+
+    <color name="background_utardem_azul">#3FB1C9</color>
+    <color name="background_utardem_blanco">#e3e5e6</color>
+
+    <color name="button_normal">@android:color/transparent</color>
+    <color name="button_pressed">#33000000</color>
+    <color name="gris_tab">#E0E0E0</color>
+
+
+    <color name="color_blanco">#FFFFFF</color>
+    <color name="color_negro">#000000</color>
+    <color name="color_gris">#969696</color>
+    <color name="color_gris_claro">#cccccc</color>
+    <color name="grsicalro">#EEEEEE</color>
+
+
+    <color name="color_azul">#004B97</color>
+    <color name="color_naranja">#F08A04</color>
+    <color name="color_azul_claro">#008ac9</color>
+    <color name="color_amarillo">#f3bc15</color>
+    <color name="color_verde">#c8d114</color>
+    <color name="color_rojo">#ff402e</color>
+</resources>
