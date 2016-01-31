@@ -151,7 +151,7 @@ public class Avisos extends Fragment   implements BaseSliderView.OnSliderClickLi
                                 Intent it = new Intent(getContext(), DetalleAviso.class);
                                 it.putExtra("datos", c.toString());
                                 startActivity(it);
-                                activity.overridePendingTransition(R.anim.slide_left, android.R.anim.fade_out);
+                                getActivity().overridePendingTransition(R.anim.slide_left, android.R.anim.fade_out);
                             }
                         });
                         String texto = c.getString("texto");
@@ -200,9 +200,9 @@ public class Avisos extends Fragment   implements BaseSliderView.OnSliderClickLi
                             public void onSliderClick(BaseSliderView slider) {
 
                                 Intent it = new Intent(getContext(), DetalleAviso.class);
-                                it.putExtra("datos",datax.get(xc));
+                                it.putExtra("datos", datax.get(xc));
                                 startActivity(it);
-                                activity.overridePendingTransition(R.anim.slide_left, android.R.anim.fade_out);
+                                getActivity().overridePendingTransition(R.anim.slide_left, android.R.anim.fade_out);
                             }
                         });
 
