@@ -79,7 +79,16 @@
         <activity
             android:name=".Galerias_Fotos"
             android:launchMode="singleTask" />
-        <activity android:name=".Galerias_Slider"></activity>
+        <activity
+            android:name=".Galerias_Slider"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".Galerias_Comentarios"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".Galerias_Comentar"
+            android:windowSoftInputMode="stateHidden"
+            android:launchMode="singleTask"/>
     </application>
 
 </manifest>

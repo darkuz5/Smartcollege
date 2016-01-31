@@ -1,5 +1,6 @@
 package com.firewallsol.smartcollege.FotosAdapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.firewallsol.smartcollege.Galerias_Slider;
+import com.firewallsol.smartcollege.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -67,9 +69,11 @@ public class ImageAdapter extends BaseAdapter {
             public void onClick(View v) {
                     /**/
 
+                Activity activity = (Activity) mContext;
 
                 Intent it = new Intent(mContext, Galerias_Slider.class);
-                mContext.startActivity(it);
+                activity.startActivity(it);
+                activity.overridePendingTransition(R.anim.slide_left, android.R.anim.fade_out);
 
                 /**/
             }

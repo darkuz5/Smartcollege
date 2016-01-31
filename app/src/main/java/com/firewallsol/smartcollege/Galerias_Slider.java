@@ -3,6 +3,7 @@ package com.firewallsol.smartcollege;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -23,12 +25,12 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Galerias_Slider extends AppCompatActivity  implements BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener{
@@ -45,6 +47,11 @@ public class Galerias_Slider extends AppCompatActivity  implements BaseSliderVie
     private LayoutInflater inflater;
     public static InputMethodManager inputManager;
     private ProgressDialog dialog;
+    ArrayList<String> ids;
+    ArrayList<String> urls;
+    ArrayList<String> titulos;
+    public static int posicionFoto=0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +65,9 @@ public class Galerias_Slider extends AppCompatActivity  implements BaseSliderVie
         mActionBar = getSupportActionBar();
         color = MainActivity.color;
         CustomActionBar();
+        ids = new ArrayList<>();
+        urls = new ArrayList<>();
+        titulos = new ArrayList<>();
 
         dialog = new ProgressDialog(activity);
         dialog.setMessage("Cargando...");
@@ -74,6 +84,9 @@ public class Galerias_Slider extends AppCompatActivity  implements BaseSliderVie
                 for (int i=0; i<array.length(); i++){
                     JSONObject  c = array.getJSONObject(i);
                     url_maps.put(c.getString("titulo"), c.getString("url"));
+                    ids.add(c.getString("id"));
+                    titulos.add(c.getString("titulo"));
+                    urls.add(c.getString("url"));
                 }
 
 
@@ -85,7 +98,7 @@ public class Galerias_Slider extends AppCompatActivity  implements BaseSliderVie
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
+        posicionFoto = 0;
 
 
 
@@ -107,11 +120,12 @@ public class Galerias_Slider extends AppCompatActivity  implements BaseSliderVie
         }
 
 
-        mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Accordion);
+        mDemoSlider.setPresetTransformer(SliderLayout.Transformer.CubeIn);
         mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
         mDemoSlider.setCustomAnimation(new DescriptionAnimation());
         mDemoSlider.setDuration(4000);
         mDemoSlider.addOnPageChangeListener(this);
+
 
 
     }
@@ -125,11 +139,14 @@ public class Galerias_Slider extends AppCompatActivity  implements BaseSliderVie
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+           // Log.i("Posicion ", position + "");
     }
 
     @Override
     public void onPageSelected(int position) {
+        posicionFoto = ids.size() - position - 1;
+
+        Log.i("Posicion", position + "|"+posicionFoto+"|" + ids.get(posicionFoto));
 
     }
 
@@ -163,12 +180,12 @@ public class Galerias_Slider extends AppCompatActivity  implements BaseSliderVie
 
         RelativeLayout contenedor = (RelativeLayout) customActionBarView.findViewById(R.id.contenedor);
         contenedor.setBackgroundColor(Color.parseColor(color));
-        if ((MainActivity.urlImgPrincipal).length() > 10){
+        /*if ((MainActivity.urlImgPrincipal).length() > 10){
             Picasso.with(activity).load(MainActivity.urlImgPrincipal).placeholder(R.drawable.logosc).into(imagenPrincipal);
-        }
-        imagenPrincipal.setVisibility(View.VISIBLE);
-        textoPrincipal.setVisibility(View.GONE);
-        textoPrincipal.setText("");
+        }*/
+        imagenPrincipal.setVisibility(View.GONE);
+        textoPrincipal.setVisibility(View.VISIBLE);
+        textoPrincipal.setText("GALERÍA");
 
         iconoIzquierdo.setVisibility(View.VISIBLE);
         iconoIzquierdo.setImageResource(R.drawable.ic_action_icon_left);
@@ -178,7 +195,24 @@ public class Galerias_Slider extends AppCompatActivity  implements BaseSliderVie
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                onBackPressed();
+                finish();
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);
+
+            }
+        });
+
+        iconoDerecho.setVisibility(View.VISIBLE);
+        iconoDerecho.setImageResource(R.drawable.comunidad);
+        iconoDerecho.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent it = new Intent(activity, Galerias_Comentarios.class);
+                it.putExtra("id", ids.get(posicionFoto)+"");
+                it.putExtra("titulo", titulos.get(posicionFoto)+"");
+                it.putExtra("url", urls.get(posicionFoto)+"");
+                startActivity(it);
+                activity.overridePendingTransition(R.anim.slide_left, android.R.anim.fade_out);
 
             }
         });

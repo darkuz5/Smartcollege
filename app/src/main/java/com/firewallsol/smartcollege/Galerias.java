@@ -156,6 +156,7 @@ public class Galerias extends Fragment {
                             Intent it = new Intent(getContext(), Galerias_Fotos.class);
                             it.putExtra("id",id_galeria);
                             startActivity(it);
+                            activity.overridePendingTransition(R.anim.slide_left, android.R.anim.fade_out);
                         }
                     });
 

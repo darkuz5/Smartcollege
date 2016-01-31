@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity
     public static String alumno;
     public static String nombreAlumno;
     public static String idEscuela;
+    public static String idTutor;
 
 
 
@@ -146,6 +147,7 @@ public class MainActivity extends AppCompatActivity
         Cursor tutor = db.rawQuery("select * from tutor",null);
         navigationView.setBackgroundColor(Color.parseColor(color));
         if (tutor.moveToFirst()){
+            idTutor = tutor.getString(0);
             ((TextView) header.findViewById(R.id.nombre)).setText(tutor.getString(1));
             Picasso.with(activity).load(tutor.getString(6)).placeholder(R.drawable.logosc).into(foto_tutor);
         }

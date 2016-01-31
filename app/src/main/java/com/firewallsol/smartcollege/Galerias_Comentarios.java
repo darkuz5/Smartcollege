@@ -1,37 +1,48 @@
 package com.firewallsol.smartcollege;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.firewallsol.smartcollege.Database.Database;
+import com.firewallsol.smartcollege.Adaptadores.Items.ItemsInicio;
+import com.firewallsol.smartcollege.Funciones.jSONFunciones;
 import com.squareup.picasso.Picasso;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
-public class DetalleAviso extends AppCompatActivity {
-    public static Database db_sqlite;
-    public static InputMethodManager inputManager;
-    public static Activity activity;
+import de.hdodenhof.circleimageview.CircleImageView;
+
+public class Galerias_Comentarios extends AppCompatActivity {
+
+    private Activity activity;
     public static String color;
     public static ActionBar mActionBar;
     public static ImageView iconoDerecho;
@@ -40,14 +51,16 @@ public class DetalleAviso extends AppCompatActivity {
     public static TextView textoPrincipal;
     public static TextView textoSecundario;
     private LayoutInflater inflater;
+    public static InputMethodManager inputManager;
+    private ProgressDialog dialog;
 
-    ImageView foto, icon;
-    TextView fecha, titulo, resumen;
+    String id, titulo, url;
+    LinearLayout padre;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detalle_aviso);
+        setContentView(R.layout.activity_galeria__comentarios);
 
         inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         activity = this;
@@ -56,67 +69,35 @@ public class DetalleAviso extends AppCompatActivity {
         color = MainActivity.color;
         CustomActionBar();
 
-        foto = (ImageView) findViewById(R.id.foto);
-        icon = (ImageView) findViewById(R.id.icon);
-
-        fecha = (TextView) findViewById(R.id.fecha);
-        titulo = (TextView) findViewById(R.id.titulo);
-        resumen = (TextView) findViewById(R.id.resumen);
-
-
         Intent it = getIntent();
-        if (it.hasExtra("datos")){
-            String datos = it.getStringExtra("datos");
-            try {
-                JSONObject c = new JSONObject(datos);
-                fecha.setText(calcularFechaFull(c.getString("fecha")));
-                titulo.setText(c.getString("titulo"));
-                resumen.setText(c.getString("texto"));
-
-                if (c.getString("foto").length()>10){
-                    Picasso.with(activity).load(c.getString("foto")).into(foto);
-                } else {
-                    foto.setVisibility(View.GONE);
-                }
+        if (it.hasExtra("id")){
 
 
-                switch (c.getString("tipo")){
-                    case "1":
-                        Picasso.with(activity).load(R.drawable.alertaamarilla).into(icon);
-                        break;
-                    case "2":
-                        Picasso.with(activity).load(R.drawable.alertanaranja).into(icon);
-                        break;
-                    case "3":
-                        Picasso.with(activity).load(R.drawable.alertaroja).into(icon);
-                        break;
-                    default:
-                        Picasso.with(activity).load(R.drawable.alertagris).into(icon);
-                        break;
-                }
+            id = it.getStringExtra("id");
+            titulo =  it.getStringExtra("titulo");
+            url = it.getStringExtra("url");
 
+            padre = (LinearLayout) findViewById(R.id.padre);
 
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+        //new DescargaGalerias().execute();
+
 
 
         } else {
-            onBackPressed();
+            finish();
         }
 
 
 
 
+    }
 
+    public void onResume(){
+        super.onResume();
+        new DescargaGalerias().execute();
     }
 
 
-    public void onBackPressed(){
-        super.onBackPressed();
-        finish();
-        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);
-    }
     private void CustomActionBar() {
         // TODO Auto-generated method stub
         final LayoutInflater inflater = (LayoutInflater) mActionBar.getThemedContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -136,12 +117,12 @@ public class DetalleAviso extends AppCompatActivity {
 
         RelativeLayout contenedor = (RelativeLayout) customActionBarView.findViewById(R.id.contenedor);
         contenedor.setBackgroundColor(Color.parseColor(color));
-        if ((MainActivity.urlImgPrincipal).length() > 10){
+        /*if ((MainActivity.urlImgPrincipal).length() > 10){
             Picasso.with(activity).load(MainActivity.urlImgPrincipal).placeholder(R.drawable.logosc).into(imagenPrincipal);
-        }
-        imagenPrincipal.setVisibility(View.VISIBLE);
-        textoPrincipal.setVisibility(View.GONE);
-        textoPrincipal.setText("");
+        }*/
+        imagenPrincipal.setVisibility(View.GONE);
+        textoPrincipal.setVisibility(View.VISIBLE);
+        textoPrincipal.setText("COMENTARIOS");
 
         iconoIzquierdo.setVisibility(View.VISIBLE);
         iconoIzquierdo.setImageResource(R.drawable.ic_action_icon_left);
@@ -152,6 +133,25 @@ public class DetalleAviso extends AppCompatActivity {
             public void onClick(View v) {
                 // TODO Auto-generated method stub
                 onBackPressed();
+                finish();
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);
+
+            }
+        });
+
+        iconoDerecho.setVisibility(View.VISIBLE);
+        iconoDerecho.setImageResource(R.drawable.lapizcomenta);
+        iconoDerecho.setColorFilter(Color.parseColor("#FFFFFF"));
+        iconoDerecho.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("Ir","a nuevo comentario");
+                Intent itn = new Intent(activity, Galerias_Comentar.class);
+                itn.putExtra("id", id);
+                itn.putExtra("titulo",titulo);
+                itn.putExtra("url",url);
+                startActivity(itn);
+                activity.overridePendingTransition(R.anim.slide_left, android.R.anim.fade_out);
 
             }
         });
@@ -164,10 +164,93 @@ public class DetalleAviso extends AppCompatActivity {
         parent.setContentInsetsAbsolute(0, 0);
 
     }
+
+    class DescargaGalerias extends AsyncTask<Void, Void, String> {
+
+        String url;
+        ArrayList<ItemsInicio> arrayInicio;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            url = activity.getString(R.string.getComentariosFoto);
+            arrayInicio = new ArrayList<>();
+        }
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            String jsonRead = "";
+            try {
+                List<NameValuePair> paramsSend = new ArrayList<>();
+                paramsSend.add(new BasicNameValuePair("id_foto", id));
+                jSONFunciones json = new jSONFunciones();
+                jsonRead = json.jSONRead(url, jSONFunciones.POST, paramsSend);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return jsonRead;
+        }
+
+        @Override
+        protected void onPostExecute(String aVoid) {
+            super.onPostExecute(aVoid);
+            llenado(aVoid);
+        }
+    }
+
+
+    public void llenado (String datos){
+        Log.i("datos",datos);
+        padre.removeAllViews();
+        try {
+            JSONObject jsonObject = new JSONObject(datos);
+            if (jsonObject.has("comentarios")) {
+                JSONArray array = jsonObject.getJSONArray("comentarios");
+
+                for (int i=0; i<array.length(); i++) {
+                    final JSONObject c = array.getJSONObject(i);
+                    View item = inflater.inflate(R.layout.adapter_item_comentariogaleria, null);
+
+                    CircleImageView foto = (CircleImageView) item.findViewById(R.id.fotoperfil);
+                    String urlFoto = c.getString("foto_tutor");
+                    Log.i("utl",foto+"");
+                    try {
+                        Picasso.with(activity).load(urlFoto).into(foto);
+                    } catch (IllegalArgumentException e){
+                        e.printStackTrace();
+                    }
+                    ((TextView) item.findViewById(R.id.txtNombre)).setText(c.getString("tutor"));
+                    ((TextView) item.findViewById(R.id.txtResumen)).setText(c.getString("comentario"));
+                    ((TextView) item.findViewById(R.id.txtFecha)).setText(calcularFechaFull(c.getString("fecha")));
+
+
+                    padre.addView(item);
+
+                }
+
+            }
+
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
     private static String calcularFechaFull(String fecha) {
         String fec = "";
 
-        SimpleDateFormat fechaFormat = new SimpleDateFormat("dd ' de ' MMMM ' de ' yyyy");
+
+        if (fecha.contains(" ")){
+            fecha = fecha.substring(0,10);
+            Log.i("Fecha", fecha);
+        }
+
+        SimpleDateFormat fechaFormat = new SimpleDateFormat("dd ' de ' MMMM");
         SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -209,5 +292,6 @@ public class DetalleAviso extends AppCompatActivity {
 
         return fec;
     }
+
 
 }

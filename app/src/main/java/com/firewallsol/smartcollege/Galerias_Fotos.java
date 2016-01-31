@@ -177,9 +177,9 @@ public class Galerias_Fotos extends AppCompatActivity {
         if ((MainActivity.urlImgPrincipal).length() > 10){
             Picasso.with(activity).load(MainActivity.urlImgPrincipal).placeholder(R.drawable.logosc).into(imagenPrincipal);
         }
-        imagenPrincipal.setVisibility(View.VISIBLE);
-        textoPrincipal.setVisibility(View.GONE);
-        textoPrincipal.setText("");
+        imagenPrincipal.setVisibility(View.GONE);
+        textoPrincipal.setVisibility(View.VISIBLE);
+        textoPrincipal.setText("GALERÍA");
 
         iconoIzquierdo.setVisibility(View.VISIBLE);
         iconoIzquierdo.setImageResource(R.drawable.ic_action_icon_left);
@@ -189,7 +189,8 @@ public class Galerias_Fotos extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                onBackPressed();
+                finish();
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);
 
             }
         });

@@ -61,8 +61,8 @@
             android:layout_height="match_parent"
             android:clickable="true"
             android:focusable="true"
-            android:scaleType="center"
-            android:src="@drawable/ic_action_icon_right"
+            android:scaleType="centerInside"
+            android:src="@drawable/comunidad"
             android:visibility="gone" />
     </com.balysv.materialripple.MaterialRippleLayout>
 
