@@ -122,22 +122,6 @@ public class Avisos extends Fragment   implements BaseSliderView.OnSliderClickLi
                         url_maps.put(c.getString("titulo"), c.getString("foto"));
                         datax.add(c.toString());
 
-                        /*View aviso1 = inflater.inflate(R.layout.inicio_portada_item_adapter,null);
-                        ((TextView) aviso1.findViewById(R.id.tvTitulo)).setText(c.getString("titulo"));
-                        ImageView fotogde = (ImageView) aviso1.findViewById(R.id.imgImagen);
-                        Picasso.with(activity).load(c.getString("foto")).placeholder(R.drawable.logosc).into(fotogde);
-
-                        aviso1.findViewById(R.id.btn_aviso).setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent it = new Intent(getContext(), DetalleAviso.class);
-                                it.putExtra("datos",c.toString());
-                                startActivity(it);
-                            }
-                        });
-
-
-                        slider.addView(aviso1);*/
 
                     } else {
 
