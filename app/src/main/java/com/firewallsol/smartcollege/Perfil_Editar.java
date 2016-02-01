@@ -4,8 +4,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -14,7 +15,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.media.ExifInterface;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -22,7 +22,7 @@ import android.provider.MediaStore;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Base64;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
@@ -39,27 +39,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.balysv.materialripple.MaterialRippleLayout;
-import com.firewallsol.smartcollege.Funciones.jSONFunciones;
 import com.soundcloud.android.crop.Crop;
 import com.squareup.picasso.Picasso;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-public class Gacetas_Subir extends AppCompatActivity {
+public class Perfil_Editar extends AppCompatActivity {
 
-
-    public static InputMethodManager inputManager;
     public static String color;
     public static ActionBar mActionBar;
     public static ImageView iconoDerecho;
@@ -67,7 +57,14 @@ public class Gacetas_Subir extends AppCompatActivity {
     public static ImageView imagenPrincipal;
     public static TextView textoPrincipal;
     public static TextView textoSecundario;
-    public static Activity activity;
+    public static InputMethodManager inputManager;
+    private Activity activity;
+    private LayoutInflater inflater;
+
+    EditText txtNombre, txtCorreo, txtTelefono, txtContrasenaAcual, txtNuevaContrasena, txtRepiteContrasena;
+    Button btnEnviar;
+
+
     public static String Ruta_imagen;
     public static Bitmap imgx = null;
     public static Boolean ESTATUS_CAMBIO_FOTO;
@@ -76,56 +73,31 @@ public class Gacetas_Subir extends AppCompatActivity {
     private static int TAKE_PICTURE = 1;
     AlertDialog.Builder alert;
     int codex;
-    Button btnEnviar;
     EditText titulo, texto;
     String txtTitulo, txtTexto;
-    private LayoutInflater inflater;
     private ProgressDialog dialog;
-
-    public static boolean saveImageToInternalStorage(Bitmap image, File nameFile) {
-        try {
-            FileOutputStream fos = new FileOutputStream(nameFile);
-            image.compress(Bitmap.CompressFormat.JPEG, 80, fos);
-            fos.close();
-
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_gacetas_ubir);
-        ESTATUS_CAMBIO_FOTO = false;
+        setContentView(R.layout.activity_perfil_editar);
         inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         activity = this;
         inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
         mActionBar = getSupportActionBar();
         color = MainActivity.color;
         CustomActionBar();
-        Log.i("Color", color);
+        ESTATUS_CAMBIO_FOTO = false;
 
-        alert = new AlertDialog.Builder(Gacetas_Subir.this);
-
-        dialog = new ProgressDialog(activity);
-        dialog.setMessage("Enviando...");
-        dialog.setCancelable(false);
-
-
-        titulo = (EditText) findViewById(R.id.titulo);
-        texto = (EditText) findViewById(R.id.texto);
+        txtNombre = (EditText) findViewById(R.id.nombre);
+        txtCorreo = (EditText) findViewById(R.id.correo);
+        txtTelefono = (EditText) findViewById(R.id.telefono);
+        txtContrasenaAcual = (EditText) findViewById(R.id.contrasenaActual);
+        txtNuevaContrasena = (EditText) findViewById(R.id.nuevacontrasena);
+        txtRepiteContrasena = (EditText) findViewById(R.id.repetircontrasena);
+        btnEnviar = (Button) findViewById(R.id.btnEnviar);
         btnFoto = (ImageView) findViewById(R.id.fotosubir);
         registerForContextMenu(btnFoto);
-        btnEnviar = (Button) findViewById(R.id.btnEnviar);
-        GradientDrawable drawablex = (GradientDrawable) btnEnviar.getBackground();
-        drawablex.setColor(Color.parseColor(color));
-
-
-        GradientDrawable drawable = (GradientDrawable) btnFoto.getBackground();
-        drawable.setColor(Color.parseColor("#ffffff"));
         btnFoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -134,18 +106,105 @@ public class Gacetas_Subir extends AppCompatActivity {
         });
 
 
+        GradientDrawable drawablex = (GradientDrawable) btnEnviar.getBackground();
+        drawablex.setColor(Color.parseColor(color));
+
+        SQLiteDatabase db = MainActivity.db_sqlite.getWritableDatabase();
+        Cursor tutor = db.rawQuery("select * from tutor", null);
+        if (tutor.moveToFirst()) {
+
+            txtNombre.setText(tutor.getString(1));
+            txtCorreo.setText(tutor.getString(2));
+            txtTelefono.setText(tutor.getString(5));
+            if (tutor.getString(6) != null && tutor.getString(6).length() > 5)
+                Picasso.with(activity).load(tutor.getString(6)).placeholder(R.drawable.logosc).into(btnFoto);
+        }
+
+        tutor.close();
+        db.close();
+
         btnEnviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                txtTexto = texto.getText().toString();
-                txtTitulo = titulo.getText().toString();
-                new escribeGaceta().execute();
-
+                attemptLogin();
             }
         });
 
 
     }
+
+
+
+
+    private void CustomActionBar() {
+        // TODO Auto-generated method stub
+        final LayoutInflater inflater = (LayoutInflater) mActionBar.getThemedContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View customActionBarView = inflater.inflate(R.layout.activity_main_actionbar, null);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            getWindow().setStatusBarColor(Color.parseColor(color));
+        }
+        mActionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor(color)));
+
+        imagenPrincipal = (ImageView) customActionBarView.findViewById(R.id.imagenPrincipal);
+        textoPrincipal = (TextView) customActionBarView.findViewById(R.id.textoPrincipal);
+        textoSecundario = (TextView) customActionBarView.findViewById(R.id.textoSecundario);
+        iconoDerecho = (ImageView) customActionBarView.findViewById(R.id.iconoDerecho);
+        iconoIzquierdo = (ImageView) customActionBarView.findViewById(R.id.iconoIzquierdo);
+
+        RelativeLayout contenedor = (RelativeLayout) customActionBarView.findViewById(R.id.contenedor);
+        contenedor.setBackgroundColor(Color.parseColor(color));
+        /*if ((MainActivity.urlImgPrincipal).length() > 10){
+            Picasso.with(activity).load(MainActivity.urlImgPrincipal).placeholder(R.drawable.logosc).into(imagenPrincipal);
+        }*/
+        imagenPrincipal.setVisibility(View.GONE);
+        textoPrincipal.setVisibility(View.VISIBLE);
+        textoPrincipal.setText("EDITAR PERFIL");
+
+        iconoIzquierdo.setVisibility(View.VISIBLE);
+        iconoIzquierdo.setImageResource(R.drawable.ic_action_icon_left);
+        iconoIzquierdo.setColorFilter(Color.parseColor("#FFFFFF"));
+        iconoIzquierdo.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                onBackPressed();
+                finish();
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);
+
+            }
+        });
+
+        iconoDerecho.setVisibility(View.GONE);
+        iconoDerecho.setImageResource(R.drawable.lapizcomenta);
+        iconoDerecho.setColorFilter(Color.parseColor("#FFFFFF"));
+        /*iconoDerecho.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("Ir", "a nuevo comentario");
+                Intent itn = new Intent(activity, Galerias_Comentar.class);
+                itn.putExtra("id", id);
+                itn.putExtra("titulo", titulo);
+                itn.putExtra("url", url);
+                startActivity(itn);
+                activity.overridePendingTransition(R.anim.slide_left, android.R.anim.fade_out);
+
+            }
+        });*/
+
+        mActionBar.setCustomView(customActionBarView);
+        mActionBar.setDisplayShowCustomEnabled(true);
+
+
+        Toolbar parent = (Toolbar) customActionBarView.getParent();
+        parent.setContentInsetsAbsolute(0, 0);
+
+    }
+
+
+ /** Cambiar la foto **/
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -312,148 +371,76 @@ public class Gacetas_Subir extends AppCompatActivity {
         return inSampleSize;
     }
 
-    private void CustomActionBar() {
-        // TODO Auto-generated method stub
-        final LayoutInflater inflater = (LayoutInflater) mActionBar.getThemedContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View customActionBarView = inflater.inflate(R.layout.activity_main_actionbar, null);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            getWindow().setStatusBarColor(Color.parseColor(color));
+    /** Validacion de campos **/
+    private void attemptLogin() {
+        /*if (mAuthTask != null) {
+            return;
+        }*/
+
+        // Reset errors.
+        txtCorreo.setError(null);
+        txtTelefono.setError(null);
+        txtNombre.setError(null);
+
+        // Store values at the time of the login attempt.
+        String nombre = txtNombre.getText().toString();
+        String email = txtCorreo.getText().toString();
+        String telefono = txtTelefono.getText().toString();
+
+        Log.i("datos","telefono:"+telefono+"|correo"+email+"|nombre:"+nombre+"|");
+        boolean cancel = false;
+        View focusView = null;
+
+
+        if (TextUtils.isEmpty(telefono)) {
+            txtTelefono.setError(getString(R.string.error_field_required));
+            focusView = txtTelefono;
+            cancel = true;
         }
-        mActionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor(color)));
 
-        imagenPrincipal = (ImageView) customActionBarView.findViewById(R.id.imagenPrincipal);
-        textoPrincipal = (TextView) customActionBarView.findViewById(R.id.textoPrincipal);
-        textoSecundario = (TextView) customActionBarView.findViewById(R.id.textoSecundario);
-        iconoDerecho = (ImageView) customActionBarView.findViewById(R.id.iconoDerecho);
-        iconoIzquierdo = (ImageView) customActionBarView.findViewById(R.id.iconoIzquierdo);
 
-        RelativeLayout contenedor = (RelativeLayout) customActionBarView.findViewById(R.id.contenedor);
-        contenedor.setBackgroundColor(Color.parseColor(color));
-        if ((MainActivity.urlImgPrincipal).length() > 10) {
-            Picasso.with(activity).load(MainActivity.urlImgPrincipal).placeholder(R.drawable.logosc).into(imagenPrincipal);
+        if (TextUtils.isEmpty(nombre)) {
+            txtNombre.setError(getString(R.string.error_field_required));
+            focusView = txtNombre;
+            cancel = true;
         }
-        imagenPrincipal.setVisibility(View.VISIBLE);
-        textoPrincipal.setVisibility(View.GONE);
-        textoPrincipal.setText("");
-
-        iconoIzquierdo.setVisibility(View.VISIBLE);
-        iconoIzquierdo.setImageResource(R.drawable.ic_action_icon_left);
-        iconoIzquierdo.setColorFilter(Color.parseColor("#FFFFFF"));
-        iconoIzquierdo.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                onBackPressed();
-
-            }
-        });
-
-        mActionBar.setCustomView(customActionBarView);
-        mActionBar.setDisplayShowCustomEnabled(true);
-
-        imagenPrincipal.setVisibility(View.GONE);
-        textoPrincipal.setText("GACETA");
-        textoPrincipal.setVisibility(View.VISIBLE);
 
 
-        Toolbar parent = (Toolbar) customActionBarView.getParent();
-        parent.setContentInsetsAbsolute(0, 0);
+        if (TextUtils.isEmpty(email)) {
+            txtCorreo.setError(getString(R.string.error_field_required));
+            focusView = txtCorreo;
+            cancel = true;
+        }
+        else if (!isEmailValid(email)) {
+            txtCorreo.setError(getString(R.string.error_invalid_email));
+            focusView = txtCorreo;
+            cancel = true;
+        }
 
-    }
-
-    public void resultado(String data) {
-        Log.i("resultado", data);
-
-        if (data.contains("0")) {
-            alert.setTitle("Aviso");
-            alert.setMessage("Error al enviar la información");
-            alert.setIcon(android.R.drawable.stat_notify_error);
-            alert.setPositiveButton("OK", null);
-            alert.show();
-
-        } else if (data.contains("1")) {
-            alert.setTitle("Aviso");
-            alert.setIcon(android.R.drawable.stat_sys_upload_done);
-            alert.setMessage("Enviado");
-            alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    finish();
-                    overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);
-                }
-            });
-            alert.show();
-
-        } else if (data.contains("2")) {
-            alert.setTitle("Aviso");
-            alert.setIcon(android.R.drawable.stat_sys_upload_done);
-            alert.setMessage("Enviado");
-            alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    finish();
-                    overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);
-                }
-            });
-
-            alert.show();
-
+        if (cancel) {
+            // There was an error; don't attempt login and focus the first
+            // form field with an error.
+            focusView.requestFocus();
         } else {
+            // Show a progress spinner, and kick off a background task to
+            // perform the user login attempt.
+            //showProgress(true);
+            //mAuthTask = new UserLoginTask(email, password);
+            //mAuthTask.execute((Void) null);
 
+            Log.e("Todo ok", "ok");
         }
-
-
     }
 
-    class escribeGaceta extends AsyncTask<Void, Void, String> {
+    private boolean isEmailValid(String email) {
+        //TODO: Replace this with your own logic
+        return email.contains("@");
+    }
 
-        String url;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            url = activity.getString(R.string.comentaFoto);
-            dialog.show();
-        }
-
-        @Override
-        protected String doInBackground(Void... voids) {
-            String jsonRead = "";
-            try {
-                List<NameValuePair> paramsSend = new ArrayList<>();
-                paramsSend.add(new BasicNameValuePair("id_escuela", MainActivity.idEscuela));
-                paramsSend.add(new BasicNameValuePair("id_tutor", MainActivity.idTutor));
-                paramsSend.add(new BasicNameValuePair("titulo", txtTitulo));
-                paramsSend.add(new BasicNameValuePair("texto", txtTexto));
-                paramsSend.add(new BasicNameValuePair("opsys", "android"));
-
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                imgx.compress(Bitmap.CompressFormat.JPEG, 30, stream);
-                byte[] byte_arr = stream.toByteArray();
-                String image_str = Base64.encodeToString(byte_arr, Base64.DEFAULT);
-                Log.i("Foto", image_str);
-                paramsSend.add(new BasicNameValuePair("foto", image_str));
-
-
-                jSONFunciones json = new jSONFunciones();
-                jsonRead = json.jSONRead(url, jSONFunciones.POST, paramsSend);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return jsonRead;
-        }
-
-        @Override
-        protected void onPostExecute(String aVoid) {
-            super.onPostExecute(aVoid);
-            dialog.dismiss();
-            resultado(aVoid);
-        }
+    private boolean isPasswordValid(String password) {
+        //TODO: Replace this with your own logic
+        return password.length() > 1;
     }
 
 

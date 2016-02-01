@@ -37,9 +37,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Galerias_Fotos extends AppCompatActivity {
-    private Activity activity;
-    String id_galeria = "";
-    GridView gridView;
     public static String color;
     public static ActionBar mActionBar;
     public static ImageView iconoDerecho;
@@ -47,10 +44,13 @@ public class Galerias_Fotos extends AppCompatActivity {
     public static ImageView imagenPrincipal;
     public static TextView textoPrincipal;
     public static TextView textoSecundario;
-    private LayoutInflater inflater;
     public static InputMethodManager inputManager;
-    private ProgressDialog dialog;
     public static String datos = "";
+    String id_galeria = "";
+    GridView gridView;
+    private Activity activity;
+    private LayoutInflater inflater;
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +72,7 @@ public class Galerias_Fotos extends AppCompatActivity {
 
         activity = this;
         Intent it = getIntent();
-        if(it.hasExtra("id")){
+        if (it.hasExtra("id")) {
             id_galeria = it.getStringExtra("id");
         }
 
@@ -83,8 +83,83 @@ public class Galerias_Fotos extends AppCompatActivity {
 
     }
 
+    public void llenado(String datos) {
+        this.datos = datos;
+        Log.i("Datos", datos);
+        try {
+            ArrayList<String> mylist = new ArrayList<String>();
+            ArrayList<String> mytitle = new ArrayList<String>();
+            JSONObject jsonObject = new JSONObject(datos);
+            if (jsonObject.has("fotos")) {
+                JSONArray array = jsonObject.getJSONArray("fotos");
+                for (int i = 0; i < array.length(); i++) {
+                    JSONObject c = array.getJSONObject(i);
+
+                    mylist.add(c.getString("url"));
+                    mytitle.add(c.getString("titulo"));
+
+                }
 
 
+                gridView.setAdapter(new ImageAdapter(this, mylist, mytitle));
+            }
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private void CustomActionBar() {
+        // TODO Auto-generated method stub
+        final LayoutInflater inflater = (LayoutInflater) mActionBar.getThemedContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View customActionBarView = inflater.inflate(R.layout.activity_main_actionbar, null);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            getWindow().setStatusBarColor(Color.parseColor(color));
+        }
+        mActionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor(color)));
+
+        imagenPrincipal = (ImageView) customActionBarView.findViewById(R.id.imagenPrincipal);
+        textoPrincipal = (TextView) customActionBarView.findViewById(R.id.textoPrincipal);
+        textoSecundario = (TextView) customActionBarView.findViewById(R.id.textoSecundario);
+        iconoDerecho = (ImageView) customActionBarView.findViewById(R.id.iconoDerecho);
+        iconoIzquierdo = (ImageView) customActionBarView.findViewById(R.id.iconoIzquierdo);
+
+        RelativeLayout contenedor = (RelativeLayout) customActionBarView.findViewById(R.id.contenedor);
+        contenedor.setBackgroundColor(Color.parseColor(color));
+        if ((MainActivity.urlImgPrincipal).length() > 10) {
+            Picasso.with(activity).load(MainActivity.urlImgPrincipal).placeholder(R.drawable.logosc).into(imagenPrincipal);
+        }
+        imagenPrincipal.setVisibility(View.GONE);
+        textoPrincipal.setVisibility(View.VISIBLE);
+        textoPrincipal.setText("GALERÍA");
+
+        iconoIzquierdo.setVisibility(View.VISIBLE);
+        iconoIzquierdo.setImageResource(R.drawable.ic_action_icon_left);
+        iconoIzquierdo.setColorFilter(Color.parseColor("#FFFFFF"));
+        iconoIzquierdo.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                finish();
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);
+
+            }
+        });
+
+        mActionBar.setCustomView(customActionBarView);
+        mActionBar.setDisplayShowCustomEnabled(true);
+
+
+        Toolbar parent = (Toolbar) customActionBarView.getParent();
+        parent.setContentInsetsAbsolute(0, 0);
+
+    }
 
     class DescargaGalerias extends AsyncTask<Void, Void, String> {
 
@@ -123,88 +198,6 @@ public class Galerias_Fotos extends AppCompatActivity {
             dialog.dismiss();
         }
     }
-
-    public void llenado (String datos){
-        this.datos = datos;
-        Log.i("Datos", datos);
-        try {
-            ArrayList<String> mylist = new ArrayList<String>();
-            ArrayList<String> mytitle = new ArrayList<String>();
-            JSONObject  jsonObject = new JSONObject(datos);
-            if (jsonObject.has("fotos")){
-                JSONArray array = jsonObject.getJSONArray("fotos");
-                for (int i=0; i<array.length(); i++){
-                    JSONObject  c = array.getJSONObject(i);
-
-                    mylist.add(c.getString("url"));
-                    mytitle.add(c.getString("titulo"));
-
-                }
-
-
-                gridView.setAdapter(new ImageAdapter(this, mylist, mytitle));
-            }
-
-
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-
-    }
-
-
-    private void CustomActionBar() {
-        // TODO Auto-generated method stub
-        final LayoutInflater inflater = (LayoutInflater) mActionBar.getThemedContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View customActionBarView = inflater.inflate(R.layout.activity_main_actionbar, null);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            getWindow().setStatusBarColor(Color.parseColor(color));
-        }
-        mActionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor(color)));
-
-        imagenPrincipal = (ImageView) customActionBarView.findViewById(R.id.imagenPrincipal);
-        textoPrincipal = (TextView) customActionBarView.findViewById(R.id.textoPrincipal);
-        textoSecundario = (TextView) customActionBarView.findViewById(R.id.textoSecundario);
-        iconoDerecho = (ImageView) customActionBarView.findViewById(R.id.iconoDerecho);
-        iconoIzquierdo = (ImageView) customActionBarView.findViewById(R.id.iconoIzquierdo);
-
-        RelativeLayout contenedor = (RelativeLayout) customActionBarView.findViewById(R.id.contenedor);
-        contenedor.setBackgroundColor(Color.parseColor(color));
-        if ((MainActivity.urlImgPrincipal).length() > 10){
-            Picasso.with(activity).load(MainActivity.urlImgPrincipal).placeholder(R.drawable.logosc).into(imagenPrincipal);
-        }
-        imagenPrincipal.setVisibility(View.GONE);
-        textoPrincipal.setVisibility(View.VISIBLE);
-        textoPrincipal.setText("GALERÍA");
-
-        iconoIzquierdo.setVisibility(View.VISIBLE);
-        iconoIzquierdo.setImageResource(R.drawable.ic_action_icon_left);
-        iconoIzquierdo.setColorFilter(Color.parseColor("#FFFFFF"));
-        iconoIzquierdo.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                finish();
-                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);
-
-            }
-        });
-
-        mActionBar.setCustomView(customActionBarView);
-        mActionBar.setDisplayShowCustomEnabled(true);
-
-
-        Toolbar parent =(Toolbar) customActionBarView.getParent();
-        parent.setContentInsetsAbsolute(0, 0);
-
-    }
-
-
 
 
 }

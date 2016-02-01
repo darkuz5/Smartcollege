@@ -18,7 +18,7 @@ public class SplashScreen extends AppCompatActivity {
         setSupportActionBar(toolbar);*/
 
 
-        new Timer().schedule(new TimerTask(){
+        new Timer().schedule(new TimerTask() {
             public void run() {
                 SplashScreen.this.runOnUiThread(new Runnable() {
                     public void run() {

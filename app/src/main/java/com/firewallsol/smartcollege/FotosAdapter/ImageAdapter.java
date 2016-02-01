@@ -18,15 +18,14 @@ import java.util.ArrayList;
  * Created by DARKUZ5 on 25/01/2016.
  */
 public class ImageAdapter extends BaseAdapter {
-    // Contexto de la aplicación
-    private Context mContext;
-
-    // Array de identificadores
-    private String[] mThumbIds;
     ArrayList<String> mylist;
     ArrayList<String> titulo;
+    // Contexto de la aplicación
+    private Context mContext;
+    // Array de identificadores
+    private String[] mThumbIds;
 
-    public ImageAdapter(Context c, ArrayList<String> urls, ArrayList<String> titulo ) {
+    public ImageAdapter(Context c, ArrayList<String> urls, ArrayList<String> titulo) {
         this.mContext = c;
         this.mylist = urls;
         this.titulo = titulo;
@@ -45,7 +44,6 @@ public class ImageAdapter extends BaseAdapter {
     }
 
 
-
     public View getView(int position, final View convertView, ViewGroup parent) {
         //ImageView a retornar
         SquareImageView imageView;
@@ -62,7 +60,7 @@ public class ImageAdapter extends BaseAdapter {
         }
 
         final String urlFoto = mylist.get(position);
-        final String titul  =  titulo.get(position);
+        final String titul = titulo.get(position);
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,8 +77,9 @@ public class ImageAdapter extends BaseAdapter {
             }
         });
         //Setear la imagen desde el recurso drawable
-        Picasso.with(mContext).load(urlFoto).into(imageView);
-       // imageView.setImageResource();
+        if (urlFoto.length() > 5)
+            Picasso.with(mContext).load(urlFoto).into(imageView);
+        // imageView.setImageResource();
         return imageView;
     }
 

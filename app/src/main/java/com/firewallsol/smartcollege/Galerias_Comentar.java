@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -37,7 +38,6 @@ import java.util.List;
 import static android.graphics.Color.parseColor;
 
 public class Galerias_Comentar extends AppCompatActivity {
-    private Activity activity;
     public static String color;
     public static ActionBar mActionBar;
     public static ImageView iconoDerecho;
@@ -45,15 +45,15 @@ public class Galerias_Comentar extends AppCompatActivity {
     public static ImageView imagenPrincipal;
     public static TextView textoPrincipal;
     public static TextView textoSecundario;
-    private LayoutInflater inflater;
     public static InputMethodManager inputManager;
     String id, titulo, url;
-
     EditText comentario;
     ImageView foto;
     Button enviar;
     String texto;
-    AlertDialog.Builder  alert;
+    AlertDialog.Builder alert;
+    private Activity activity;
+    private LayoutInflater inflater;
     private ProgressDialog dialog;
 
     @Override
@@ -81,11 +81,11 @@ public class Galerias_Comentar extends AppCompatActivity {
 
 
         Intent it = getIntent();
-        if (it.hasExtra("id")){
+        if (it.hasExtra("id")) {
 
 
             id = it.getStringExtra("id");
-            titulo =  it.getStringExtra("titulo");
+            titulo = it.getStringExtra("titulo");
             url = it.getStringExtra("url");
 
 
@@ -99,14 +99,13 @@ public class Galerias_Comentar extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     texto = comentario.getText().toString();
-                    if(texto.length()> 2){
+                    if (texto.length() > 2) {
                         new ComentarFoto().execute();
                     } else {
-                        Toast.makeText(activity,"Escriba su comentario para poder continuar",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity, "Escriba su comentario para poder continuar", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
-
 
 
         } else {
@@ -163,11 +162,41 @@ public class Galerias_Comentar extends AppCompatActivity {
         mActionBar.setDisplayShowCustomEnabled(true);
 
 
-        Toolbar parent =(Toolbar) customActionBarView.getParent();
+        Toolbar parent = (Toolbar) customActionBarView.getParent();
         parent.setContentInsetsAbsolute(0, 0);
 
     }
 
+    public void resultado(String data) {
+
+
+        if (data.contains("0")) {
+            alert.setTitle("Aviso");
+            alert.setMessage("Error al enviar comentario");
+            alert.setIcon(android.R.drawable.stat_notify_error);
+            alert.setPositiveButton("OK", null);
+            alert.show();
+
+        } else if (data.contains("1")) {
+            comentario.setText("");
+            alert.setTitle("Aviso");
+            alert.setIcon(android.R.drawable.stat_sys_upload_done);
+            alert.setMessage("Comentario enviado");
+            alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                    overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);
+                }
+            });
+            alert.show();
+
+        } else {
+
+        }
+
+
+    }
 
     class ComentarFoto extends AsyncTask<Void, Void, String> {
 
@@ -204,31 +233,6 @@ public class Galerias_Comentar extends AppCompatActivity {
             dialog.dismiss();
             resultado(aVoid);
         }
-    }
-
-    public void resultado(String data){
-
-
-        if (data.contains("0")){
-            alert.setTitle("Aviso");
-            alert.setMessage("Error al enviar comentario");
-            alert.setIcon(android.R.drawable.stat_notify_error);
-            alert.setPositiveButton("OK",null);
-            alert.show();
-
-        } else if (data.contains("1")){
-            comentario.setText("");
-            alert.setTitle("Aviso");
-            alert.setIcon(android.R.drawable.stat_sys_upload_done);
-            alert.setMessage("Comentario enviado");
-            alert.setPositiveButton("OK",null);
-            alert.show();
-
-        } else {
-
-        }
-
-
     }
 
 }

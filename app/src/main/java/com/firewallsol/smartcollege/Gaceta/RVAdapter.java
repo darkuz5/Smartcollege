@@ -37,88 +37,6 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.GacetaViewHolder> 
         this.context = context;
     }
 
-    @Override
-    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
-        super.onAttachedToRecyclerView(recyclerView);
-    }
-
-    @Override
-    public GacetaViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.adapter_item_gaceta, viewGroup, false);
-        GacetaViewHolder pvh = new GacetaViewHolder(v);
-        return pvh;
-    }
-
-    @Override
-    public void onBindViewHolder(final GacetaViewHolder personViewHolder, int i) {
-        personViewHolder.txtNombre.setText(gacetas.get(i).tutor);
-        personViewHolder.txtFecha.setText(calcularFechaFull(gacetas.get(i).fecha));
-        personViewHolder.txtTitulo.setText(gacetas.get(i).titulo);
-        personViewHolder.txtResumen.setText(gacetas.get(i).texto);
-        Picasso.with(context).load(gacetas.get(i).avatar_tutor).into(personViewHolder.fotoperfil);
-        if (gacetas.get(i).url.length() > 2)
-            personViewHolder.imgAlerta.setVisibility(View.VISIBLE);
-        else
-            personViewHolder.imgAlerta.setVisibility(View.GONE);
-        final int pox = i;
-        personViewHolder.btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Activity activity = (Activity) context;
-                Intent it = new Intent(context, Gacetas_Detalle.class);
-                it.putExtra("id",gacetas.get(pox).id);
-                it.putExtra("tutor",gacetas.get(pox).tutor);
-                it.putExtra("avatar_tutor",gacetas.get(pox).avatar_tutor);
-                it.putExtra("titulo",gacetas.get(pox).titulo);
-                it.putExtra("texto",gacetas.get(pox).texto);
-                it.putExtra("fecha",gacetas.get(pox).fecha);
-                it.putExtra("foto",gacetas.get(pox).foto);
-                it.putExtra("url",gacetas.get(pox).url);
-                activity.startActivity(it);
-                activity.overridePendingTransition(R.anim.slide_left, android.R.anim.fade_out);
-
-            }
-        });
-
-
-
-    }
-
-    @Override
-    public int getItemCount() {
-        return gacetas.size();
-    }
-
-
-    public static class GacetaViewHolder extends RecyclerView.ViewHolder {
-
-        CardView cv;
-        MaterialRippleLayout btn;
-        CircleImageView fotoperfil;
-        TextView txtNombre;
-        TextView txtFecha;
-        ImageView imgAlerta;
-        TextView txtTitulo;
-        TextView txtResumen;
-
-
-
-        GacetaViewHolder(View itemView) {
-            super(itemView);
-            cv = (CardView) itemView.findViewById(R.id.cv);
-            btn = (MaterialRippleLayout) itemView.findViewById(R.id.btn_aviso);
-            fotoperfil = (CircleImageView) itemView.findViewById(R.id.fotoperfil);
-            txtNombre = (TextView) itemView.findViewById(R.id.txtNombre);
-            txtFecha = (TextView) itemView.findViewById(R.id.txtFecha);
-            imgAlerta = (ImageView) itemView.findViewById(R.id.imgAlerta);
-            txtTitulo = (TextView) itemView.findViewById(R.id.txtTitulo);
-            txtResumen = (TextView) itemView.findViewById(R.id.txtResumen);
-        }
-    }
-
-
-
-
     private static String calcularFechaFull(String fecha) {
         String fec = "";
 
@@ -150,21 +68,96 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.GacetaViewHolder> 
 
             Date ayerFinal = parseFormat.parse(parseFormat.format(ayer.getTime()));
 
-            if(fecDateParse.equals(fecActual)) {
+            if (fecDateParse.equals(fecActual)) {
                 fec = "HOY";
-            } else if ((fecDateHoraParse.after(ayerInicio) || fecDateHoraParse.equals(ayerInicio)) && (fecDateHoraParse.before(ayerFinal) || fecDateHoraParse.equals(ayerFinal))){
+            } else if ((fecDateHoraParse.after(ayerInicio) || fecDateHoraParse.equals(ayerInicio)) && (fecDateHoraParse.before(ayerFinal) || fecDateHoraParse.equals(ayerFinal))) {
                 fec = "AYER";
             } else {
                 fec = fechaFormat.format(fecDateHoraParse);
             }
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         return fec;
     }
 
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+    }
+
+    @Override
+    public GacetaViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.adapter_item_gaceta, viewGroup, false);
+        GacetaViewHolder pvh = new GacetaViewHolder(v);
+        return pvh;
+    }
+
+    @Override
+    public void onBindViewHolder(final GacetaViewHolder personViewHolder, int i) {
+        personViewHolder.txtNombre.setText(gacetas.get(i).tutor);
+        personViewHolder.txtFecha.setText(calcularFechaFull(gacetas.get(i).fecha));
+        personViewHolder.txtTitulo.setText(gacetas.get(i).titulo);
+        personViewHolder.txtResumen.setText(gacetas.get(i).texto);
+        Picasso.with(context).load(gacetas.get(i).avatar_tutor).into(personViewHolder.fotoperfil);
+        if (gacetas.get(i).url.length() > 2)
+            personViewHolder.imgAlerta.setVisibility(View.VISIBLE);
+        else
+            personViewHolder.imgAlerta.setVisibility(View.GONE);
+        final int pox = i;
+        personViewHolder.btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Activity activity = (Activity) context;
+                Intent it = new Intent(context, Gacetas_Detalle.class);
+                it.putExtra("id", gacetas.get(pox).id);
+                it.putExtra("tutor", gacetas.get(pox).tutor);
+                it.putExtra("avatar_tutor", gacetas.get(pox).avatar_tutor);
+                it.putExtra("titulo", gacetas.get(pox).titulo);
+                it.putExtra("texto", gacetas.get(pox).texto);
+                it.putExtra("fecha", gacetas.get(pox).fecha);
+                it.putExtra("foto", gacetas.get(pox).foto);
+                it.putExtra("url", gacetas.get(pox).url);
+                activity.startActivity(it);
+                activity.overridePendingTransition(R.anim.slide_left, android.R.anim.fade_out);
+
+            }
+        });
+
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return gacetas.size();
+    }
+
+    public static class GacetaViewHolder extends RecyclerView.ViewHolder {
+
+        CardView cv;
+        MaterialRippleLayout btn;
+        CircleImageView fotoperfil;
+        TextView txtNombre;
+        TextView txtFecha;
+        ImageView imgAlerta;
+        TextView txtTitulo;
+        TextView txtResumen;
+
+
+        GacetaViewHolder(View itemView) {
+            super(itemView);
+            cv = (CardView) itemView.findViewById(R.id.cv);
+            btn = (MaterialRippleLayout) itemView.findViewById(R.id.btn_aviso);
+            fotoperfil = (CircleImageView) itemView.findViewById(R.id.fotoperfil);
+            txtNombre = (TextView) itemView.findViewById(R.id.txtNombre);
+            txtFecha = (TextView) itemView.findViewById(R.id.txtFecha);
+            imgAlerta = (ImageView) itemView.findViewById(R.id.imgAlerta);
+            txtTitulo = (TextView) itemView.findViewById(R.id.txtTitulo);
+            txtResumen = (TextView) itemView.findViewById(R.id.txtResumen);
+        }
+    }
 
 
 }

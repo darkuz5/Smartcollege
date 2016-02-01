@@ -54,18 +54,24 @@ public class MainActivity extends AppCompatActivity
     public static CircleImageView foto_tutor;
     public static FragmentManager supportFragment;
 
-    /** Action Bar **/
+    /**
+     * Action Bar
+     **/
     public static ImageView imagenPincipal;
     public static TextView textoPrincipal;
     public static ImageView iconoDerecho;
 
 
-    /** Contenido **/
+    /**
+     * Contenido
+     **/
     public static String contenido_avisos;
-    public static String contenido_galerias="";
+    public static String contenido_galerias = "";
 
 
-    /** Variables **/
+    /**
+     * Variables
+     **/
     public static String urlImgPrincipal;
     public static String alumno;
     public static String nombreAlumno;
@@ -73,11 +79,12 @@ public class MainActivity extends AppCompatActivity
     public static String idTutor;
 
 
-    /** Varibales para Gacetas **/
-    public static  List<Gaceta> gacetas = null;
+    /**
+     * Varibales para Gacetas
+     **/
+    public static List<Gaceta> gacetas = null;
     public static int banderaPage = 1;
     public static Boolean endLove = false;
-
 
 
     static Boolean cargado = false;
@@ -118,26 +125,26 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_avisos);
 
 
         Intent it = getIntent();
-        if(it.hasExtra("color")){
+        if (it.hasExtra("color")) {
             color = it.getStringExtra("color");
         }
-        if(it.hasExtra("alumno")){
+        if (it.hasExtra("alumno")) {
             alumno = it.getStringExtra("alumno");
 
-            Cursor alumn = db.rawQuery("select * from hijos where id = '"+alumno+"'",null);
-            if(alumn.moveToFirst()){
+            Cursor alumn = db.rawQuery("select * from hijos where id = '" + alumno + "'", null);
+            if (alumn.moveToFirst()) {
                 nombreAlumno = alumn.getString(1);
             }
             alumn.close();
         }
 
-        if (color.length()<6){
+        if (color.length() < 6) {
             color = "#A01027";
         }
         toolbar.setBackgroundColor(Color.parseColor(color));
@@ -147,31 +154,34 @@ public class MainActivity extends AppCompatActivity
             getWindow().setStatusBarColor(Color.parseColor(color));
         }
         /**  DATOS DEL COLEGIO **/
-        Cursor config = db.rawQuery("select * from colegio",null);
-        if (config.moveToFirst()){
+        Cursor config = db.rawQuery("select * from colegio", null);
+        if (config.moveToFirst()) {
             idEscuela = config.getString(0);
-            urlImgPrincipal = "http://smartcollege.mx/"+config.getString(9);
-            Picasso.with(activity).load("http://smartcollege.mx/"+config.getString(9)).placeholder(R.drawable.logosc).into(imagenPincipal);
+            urlImgPrincipal = "http://smartcollege.mx/" + config.getString(9);
+            Picasso.with(activity).load("http://smartcollege.mx/" + config.getString(9)).placeholder(R.drawable.logosc).into(imagenPincipal);
         } else {
-            urlImgPrincipal ="";
+            urlImgPrincipal = "";
         }
 
         /**  DATOS DEL TUTOR **/
         View header = navigationView.getHeaderView(0);
         btn_tutor = (MaterialRippleLayout) header.findViewById(R.id.btn_tutor);
         foto_tutor = (CircleImageView) header.findViewById(R.id.foto);
-        Cursor tutor = db.rawQuery("select * from tutor",null);
+        Cursor tutor = db.rawQuery("select * from tutor", null);
         navigationView.setBackgroundColor(Color.parseColor(color));
-        if (tutor.moveToFirst()){
+        if (tutor.moveToFirst()) {
             idTutor = tutor.getString(0);
             ((TextView) header.findViewById(R.id.nombre)).setText(tutor.getString(1));
-            Picasso.with(activity).load(tutor.getString(6)).placeholder(R.drawable.logosc).into(foto_tutor);
+            if (tutor.getString(6) != null && tutor.getString(6).length() > 5)
+                Picasso.with(activity).load(tutor.getString(6)).placeholder(R.drawable.logosc).into(foto_tutor);
         }
         btn_tutor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent it = new Intent(getApplicationContext(), Perfil.class);
                 startActivity(it);
+                activity.overridePendingTransition(R.anim.slide_left, android.R.anim.fade_out);
+
             }
         });
 
@@ -219,7 +229,7 @@ public class MainActivity extends AppCompatActivity
             textoPrincipal.setVisibility(View.GONE);
             textoPrincipal.setText("AVISOS");
             iconoDerecho.setVisibility(View.GONE);
-            Log.i("cargar","Avisos");
+            Log.i("cargar", "Avisos");
 
         } else if (id == R.id.nav_eventos) {
             showFragmentView(1);
@@ -230,7 +240,7 @@ public class MainActivity extends AppCompatActivity
 
             Log.i("cargar", "Eventos");
         } else if (id == R.id.nav_alumnos) {
-            Log.i("cargar","Alumnos");
+            Log.i("cargar", "Alumnos");
             showFragmentView(2);
             imagenPincipal.setVisibility(View.GONE);
             textoPrincipal.setVisibility(View.VISIBLE);
@@ -238,7 +248,7 @@ public class MainActivity extends AppCompatActivity
             iconoDerecho.setVisibility(View.GONE);
 
         } else if (id == R.id.nav_galeria) {
-            Log.i("cargar","Galeria");
+            Log.i("cargar", "Galeria");
             showFragmentView(3);
             imagenPincipal.setVisibility(View.GONE);
             textoPrincipal.setVisibility(View.VISIBLE);
@@ -246,7 +256,7 @@ public class MainActivity extends AppCompatActivity
             iconoDerecho.setVisibility(View.GONE);
 
         } else if (id == R.id.nav_gaceta) {
-            Log.i("cargar","Gaceta");
+            Log.i("cargar", "Gaceta");
             showFragmentView(4);
             imagenPincipal.setVisibility(View.GONE);
             textoPrincipal.setVisibility(View.VISIBLE);
@@ -322,7 +332,7 @@ public class MainActivity extends AppCompatActivity
                     f = Galerias.newInstance();
                     break;
                 case 4:
-                    f = Gacetas.newInstance("","");
+                    f = Gacetas.newInstance("", "");
                     break;
                 case 9:
                     cambiarAlumno();
@@ -338,12 +348,12 @@ public class MainActivity extends AppCompatActivity
         } else {
             f = Loader.newInstance("", "");
         }
-        if(f != null){
+        if (f != null) {
             supportFragment.beginTransaction().replace(R.id.content_frame, f).commit();
         }
     }
 
-    public void salir(){
+    public void salir() {
         new AlertDialog.Builder(activity)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setTitle("Salir")
@@ -370,7 +380,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    public void cambiarAlumno(){
+    public void cambiarAlumno() {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -397,11 +407,11 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         protected Void doInBackground(Void... voids) {
-            if(!isCancelled()) {
+            if (!isCancelled()) {
                 try {
                     getPortada();
 
-                     Thread.sleep(1000);
+                    Thread.sleep(1000);
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -420,11 +430,10 @@ public class MainActivity extends AppCompatActivity
                 String jsonRead = json.jSONRead(url, jSONFunciones.POST, paramsSend);
                 Log.e("json", jsonRead);
                 JSONObject jsonObject = new JSONObject(jsonRead);
-                if (jsonObject.has("avisos")){
+                if (jsonObject.has("avisos")) {
 
                     contenido_avisos = jsonRead;
                 }
-
 
 
             } catch (Exception e) {

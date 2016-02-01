@@ -19,17 +19,16 @@ import java.util.List;
  */
 public class jSONFunciones {
 
-    static String response;
     public final static int GET = 1;
     public final static int POST = 2;
+    static String response;
 
     public String jSONRead(String url, int method) {
         return this.jSONRead(url, method, null);
     }
 
     public String jSONRead(String url, int method, List<NameValuePair> params) {
-        try
-        {
+        try {
             response = null;
             DefaultHttpClient httpClient = new DefaultHttpClient();
             HttpEntity httpEntity = null;

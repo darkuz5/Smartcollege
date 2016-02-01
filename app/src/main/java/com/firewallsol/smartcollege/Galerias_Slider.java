@@ -33,10 +33,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Galerias_Slider extends AppCompatActivity  implements BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener{
+public class Galerias_Slider extends AppCompatActivity implements BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener {
 
-    private Activity activity;
-    private SliderLayout mDemoSlider;
     public static String color;
     public static ActionBar mActionBar;
     public static ImageView iconoDerecho;
@@ -44,20 +42,21 @@ public class Galerias_Slider extends AppCompatActivity  implements BaseSliderVie
     public static ImageView imagenPrincipal;
     public static TextView textoPrincipal;
     public static TextView textoSecundario;
-    private LayoutInflater inflater;
     public static InputMethodManager inputManager;
-    private ProgressDialog dialog;
+    public static int posicionFoto = 0;
     ArrayList<String> ids;
     ArrayList<String> urls;
     ArrayList<String> titulos;
-    public static int posicionFoto=0;
-
+    private Activity activity;
+    private SliderLayout mDemoSlider;
+    private LayoutInflater inflater;
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_galerias__slider);
-        mDemoSlider = (SliderLayout)findViewById(R.id.slider);
+        mDemoSlider = (SliderLayout) findViewById(R.id.slider);
 
         inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         activity = this;
@@ -75,14 +74,14 @@ public class Galerias_Slider extends AppCompatActivity  implements BaseSliderVie
 
         String datos = Galerias_Fotos.datos;
 
-        HashMap<String,String> url_maps = new HashMap<String, String>();
+        HashMap<String, String> url_maps = new HashMap<String, String>();
         try {
 
             JSONObject jsonObject = new JSONObject(datos);
-            if (jsonObject.has("fotos")){
+            if (jsonObject.has("fotos")) {
                 JSONArray array = jsonObject.getJSONArray("fotos");
-                for (int i=0; i<array.length(); i++){
-                    JSONObject  c = array.getJSONObject(i);
+                for (int i = 0; i < array.length(); i++) {
+                    JSONObject c = array.getJSONObject(i);
                     url_maps.put(c.getString("titulo"), c.getString("url"));
                     ids.add(c.getString("id"));
                     titulos.add(c.getString("titulo"));
@@ -90,9 +89,7 @@ public class Galerias_Slider extends AppCompatActivity  implements BaseSliderVie
                 }
 
 
-
             }
-
 
 
         } catch (JSONException e) {
@@ -101,8 +98,7 @@ public class Galerias_Slider extends AppCompatActivity  implements BaseSliderVie
         posicionFoto = 0;
 
 
-
-        for(String name : url_maps.keySet()){
+        for (String name : url_maps.keySet()) {
             TextSliderView textSliderView = new TextSliderView(this);
             // initialize a SliderLayout
             textSliderView
@@ -114,7 +110,7 @@ public class Galerias_Slider extends AppCompatActivity  implements BaseSliderVie
             //add your extra information
             textSliderView.bundle(new Bundle());
             textSliderView.getBundle()
-                    .putString("extra",name);
+                    .putString("extra", name);
 
             mDemoSlider.addSlider(textSliderView);
         }
@@ -125,7 +121,6 @@ public class Galerias_Slider extends AppCompatActivity  implements BaseSliderVie
         mDemoSlider.setCustomAnimation(new DescriptionAnimation());
         mDemoSlider.setDuration(4000);
         mDemoSlider.addOnPageChangeListener(this);
-
 
 
     }
@@ -139,14 +134,14 @@ public class Galerias_Slider extends AppCompatActivity  implements BaseSliderVie
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-           // Log.i("Posicion ", position + "");
+        // Log.i("Posicion ", position + "");
     }
 
     @Override
     public void onPageSelected(int position) {
         posicionFoto = ids.size() - position - 1;
 
-        Log.i("Posicion", position + "|"+posicionFoto+"|" + ids.get(posicionFoto));
+        Log.i("Posicion", position + "|" + posicionFoto + "|" + ids.get(posicionFoto));
 
     }
 
@@ -208,9 +203,9 @@ public class Galerias_Slider extends AppCompatActivity  implements BaseSliderVie
             public void onClick(View v) {
 
                 Intent it = new Intent(activity, Galerias_Comentarios.class);
-                it.putExtra("id", ids.get(posicionFoto)+"");
-                it.putExtra("titulo", titulos.get(posicionFoto)+"");
-                it.putExtra("url", urls.get(posicionFoto)+"");
+                it.putExtra("id", ids.get(posicionFoto) + "");
+                it.putExtra("titulo", titulos.get(posicionFoto) + "");
+                it.putExtra("url", urls.get(posicionFoto) + "");
                 startActivity(it);
                 activity.overridePendingTransition(R.anim.slide_left, android.R.anim.fade_out);
 
@@ -221,7 +216,7 @@ public class Galerias_Slider extends AppCompatActivity  implements BaseSliderVie
         mActionBar.setDisplayShowCustomEnabled(true);
 
 
-        Toolbar parent =(Toolbar) customActionBarView.getParent();
+        Toolbar parent = (Toolbar) customActionBarView.getParent();
         parent.setContentInsetsAbsolute(0, 0);
 
     }

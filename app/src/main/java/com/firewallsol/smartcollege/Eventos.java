@@ -20,19 +20,14 @@ public class Eventos extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    public static ArrayList<ItemsInicio> arrayInicio;
+    public static View root;
+    public static FragmentManager supportFragment;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
     private AutoScrollViewPager pager;
-    public static ArrayList<ItemsInicio> arrayInicio;
-
     private Activity activity;
-    public static View root;
-    public static FragmentManager supportFragment;
-
-
 
 
     public Eventos() {
@@ -57,6 +52,25 @@ public class Eventos extends Fragment {
         return fragment;
     }
 
+    public static void showFragmentView(int fragmentId) {
+        Fragment f = null;
+        switch (fragmentId) {
+            case 0:
+                f = Eventos_Calendar.newInstance();
+                break;
+            case 20:
+                f = Eventos_Lista.newInstance();
+                break;
+
+        }
+
+        //f = Loader.newInstance("", "");
+
+        if (f != null) {
+            supportFragment.beginTransaction().replace(R.id.content_frame_eventos, f).commit();
+        }
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,8 +85,8 @@ public class Eventos extends Fragment {
                              Bundle savedInstanceState) {
         activity = getActivity();
         // Inflate the layout for this fragment
-        root =  inflater.inflate(R.layout.fragment_eventos, container, false);
-        supportFragment =getChildFragmentManager();
+        root = inflater.inflate(R.layout.fragment_eventos, container, false);
+        supportFragment = getChildFragmentManager();
         showFragmentView(0);
 
         root.findViewById(R.id.proxEventos).setOnClickListener(new View.OnClickListener() {
@@ -89,30 +103,7 @@ public class Eventos extends Fragment {
         });
 
 
-
-
-
-
         return root;
-    }
-
-    public static void showFragmentView(int fragmentId) {
-        Fragment f = null;
-            switch (fragmentId) {
-                case 0:
-                    f = Eventos_Calendar.newInstance();
-                    break;
-                case 20:
-                    f = Eventos_Lista.newInstance();
-                    break;
-
-            }
-
-            //f = Loader.newInstance("", "");
-
-        if(f != null){
-            supportFragment.beginTransaction().replace(R.id.content_frame_eventos, f).commit();
-        }
     }
 
 

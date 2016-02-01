@@ -26,20 +26,13 @@ import java.util.Map;
 
 public class Eventos_Calendar extends Fragment {
 
-    private Activity activity;
-    private View root;
+    final static Calendar currentCalender = Calendar.getInstance(Locale.getDefault());
     public static CompactCalendarView compactCalendarView;
     public static int azul;
-
-
-
-
-    final static Calendar currentCalender = Calendar.getInstance(Locale.getDefault());
-    private SimpleDateFormat dateFormatForMonth = new SimpleDateFormat("MMMM yyyy", Locale.getDefault());
     private static Map<Date, List<Booking>> bookings = new HashMap<>();
-
-
-
+    private Activity activity;
+    private View root;
+    private SimpleDateFormat dateFormatForMonth = new SimpleDateFormat("MMMM yyyy", Locale.getDefault());
 
 
     public Eventos_Calendar() {
@@ -55,6 +48,32 @@ public class Eventos_Calendar extends Fragment {
         return fragment;
     }
 
+    private static void addEvents2(CompactCalendarView compactCalendarView, Date fecha) {
+        Log.i("XXX", Calendar.DATE + "");
+        // currentCalender.add(fecha,1);
+
+        compactCalendarView.addEvent(new CalendarDayEvent(fecha.getTime(), azul), false);
+        bookings.put(fecha, createBookings());
+
+
+    }
+
+    private static List<Booking> createBookings() {
+        return Arrays.asList();
+    }
+
+    private static Date ConvertToDate(String dateString) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date convertedDate = new Date();
+        try {
+            convertedDate = dateFormat.parse(dateString);
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return convertedDate;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +85,7 @@ public class Eventos_Calendar extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        root =  inflater.inflate(R.layout.fragment_eventoscalendar, container, false);
+        root = inflater.inflate(R.layout.fragment_eventoscalendar, container, false);
         activity = getActivity();
 
 
@@ -85,7 +104,7 @@ public class Eventos_Calendar extends Fragment {
             public void onDayClick(Date dateClicked) {
                 List<Booking> bookingsFromMap = bookings.get(dateClicked);
                 Log.d("MainActivity", "inside onclick " + dateClicked);
-                if(bookingsFromMap != null){
+                if (bookingsFromMap != null) {
                     Log.d("MainActivity", bookingsFromMap.toString());
 
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
@@ -132,22 +151,6 @@ public class Eventos_Calendar extends Fragment {
         return root;
     }
 
-
-
-    private static void addEvents2(CompactCalendarView compactCalendarView, Date fecha) {
-        Log.i("XXX", Calendar.DATE + "");
-        // currentCalender.add(fecha,1);
-
-        compactCalendarView.addEvent(new CalendarDayEvent(fecha.getTime(), azul), false);
-        bookings.put(fecha, createBookings());
-
-
-    }
-
-    private static List<Booking> createBookings() {
-        return Arrays.asList();
-    }
-
     private void setToMidnight(Calendar calendar) {
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
@@ -155,20 +158,8 @@ public class Eventos_Calendar extends Fragment {
         calendar.set(Calendar.MILLISECOND, 0);
     }
 
-
     private String capitalize(final String line) {
         return Character.toUpperCase(line.charAt(0)) + line.substring(1);
-    }
-    private static Date ConvertToDate(String dateString){
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date convertedDate = new Date();
-        try {
-            convertedDate = dateFormat.parse(dateString);
-        } catch (ParseException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return convertedDate;
     }
 
     public class Booking {
@@ -189,7 +180,6 @@ public class Eventos_Calendar extends Fragment {
                     '}';
         }
     }
-
 
 
 }

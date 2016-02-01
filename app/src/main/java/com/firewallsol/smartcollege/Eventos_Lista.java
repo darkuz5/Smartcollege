@@ -12,17 +12,10 @@ import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 
 public class Eventos_Lista extends Fragment {
 
-    private Activity activity;
-    private View root;
     public static CompactCalendarView compactCalendarView;
     public static int azul;
-
-
-
-
-
-
-
+    private Activity activity;
+    private View root;
 
 
     public Eventos_Lista() {
@@ -49,16 +42,12 @@ public class Eventos_Lista extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        root =  inflater.inflate(R.layout.fragment_eventoslista, container, false);
+        root = inflater.inflate(R.layout.fragment_eventoslista, container, false);
         activity = getActivity();
-
-
 
 
         return root;
     }
-
-
 
 
 }

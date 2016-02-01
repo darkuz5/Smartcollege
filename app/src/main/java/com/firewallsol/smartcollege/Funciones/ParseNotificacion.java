@@ -24,7 +24,7 @@ public class ParseNotificacion extends ParsePushBroadcastReceiver {
         try {
             String jsonParse = intent.getExtras().getString("com.parse.Data");
 
-           if (Aplicacion.isApplicationActivityVisible) {
+            if (Aplicacion.isApplicationActivityVisible) {
 
               /*   if(MainActivity.posicion_activa_menu != 8) {
 
@@ -76,7 +76,7 @@ public class ParseNotificacion extends ParsePushBroadcastReceiver {
             }*/
 
             Log.e("Receive", jsonParse);
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

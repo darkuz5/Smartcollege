@@ -35,28 +35,23 @@ public class Gacetas extends Fragment implements SwipeRefreshLayout.OnRefreshLis
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    private AutoScrollViewPager pager;
     public static ArrayList<ItemsInicio> arrayInicio;
-
-    private Activity activity;
-    private View root;
-
-
-    //private List<Gaceta> gacetas;
-    private RecyclerView rv;
-    private SwipeRefreshLayout swipeRefreshLayout;
-    private ProgressDialog dialog;
     int pagina = 0;
     RVAdapter adapter;
     Boolean primera = false;
     Boolean gotomove = false;
     List<NameValuePair> params;
     List<NameValuePair> paramsSend;
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
+    private AutoScrollViewPager pager;
+    private Activity activity;
+    private View root;
+    //private List<Gaceta> gacetas;
+    private RecyclerView rv;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private ProgressDialog dialog;
 
 
     public Gacetas() {
@@ -94,7 +89,7 @@ public class Gacetas extends Fragment implements SwipeRefreshLayout.OnRefreshLis
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        root =  inflater.inflate(R.layout.fragment_gaceta, container, false);
+        root = inflater.inflate(R.layout.fragment_gaceta, container, false);
         activity = getActivity();
 
         rv = (RecyclerView) root.findViewById(R.id.RecView);
@@ -114,13 +109,13 @@ public class Gacetas extends Fragment implements SwipeRefreshLayout.OnRefreshLis
 
         if (MainActivity.gacetas == null) {
             MainActivity.gacetas = new ArrayList<>();
-            primera =  true;
-            Log.i("Accion","nuevo");
+            primera = true;
+            Log.i("Accion", "nuevo");
 
         } else {
             initializeAdapter();
             Log.i("Accion", "Actuaiza");
-            primera =  false;
+            primera = false;
         }
 
         if (primera) {
@@ -129,9 +124,8 @@ public class Gacetas extends Fragment implements SwipeRefreshLayout.OnRefreshLis
             new DescargaGacetas().execute();
         }
 
-       // swipeRefreshLayout.setOnRefreshListener((SwipeRefreshLayout.OnRefreshListener) this);
+        // swipeRefreshLayout.setOnRefreshListener((SwipeRefreshLayout.OnRefreshListener) this);
         swipeRefreshLayout.setOnRefreshListener(this);
-
 
 
         rv.setOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -145,7 +139,7 @@ public class Gacetas extends Fragment implements SwipeRefreshLayout.OnRefreshLis
                         gotomove = true;
                         MainActivity.banderaPage++;
                         pagina = (MainActivity.banderaPage * 10) - 10;
-                        Log.i("Pagina", pagina+"");
+                        Log.i("Pagina", pagina + "");
                         paramsSend = new ArrayList<>();
                         paramsSend.add(new BasicNameValuePair("id_escuela", MainActivity.idEscuela));
                         paramsSend.add(new BasicNameValuePair("indice", pagina + ""));
@@ -255,8 +249,6 @@ public class Gacetas extends Fragment implements SwipeRefreshLayout.OnRefreshLis
             dialog.dismiss();
         }
     }
-
-
 
 
 }

@@ -37,14 +37,14 @@ public class Database extends SQLiteOpenHelper {
                     "foto VARCHAR " +
                     ");";
 
-    private static final String sqlDirectorio=
+    private static final String sqlDirectorio =
             "CREATE TABLE IF NOT EXISTS directorio (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "nombre VARCHAR, " +
                     "puesto VARCHAR, " +
                     "contacto VARCHAR " +
                     ");";
-    private static final String sqlHijos=
+    private static final String sqlHijos =
             "CREATE TABLE IF NOT EXISTS hijos (" +
                     "id VARCHAR, " +
                     "nombre VARCHAR, " +

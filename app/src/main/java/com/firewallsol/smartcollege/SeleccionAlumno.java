@@ -34,8 +34,8 @@ public class SeleccionAlumno extends AppCompatActivity {
     public static ImageView imagenPrincipal;
     public static TextView textoPrincipal;
     public static TextView textoSecundario;
-    private LayoutInflater inflater;
     LinearLayout padre;
+    private LayoutInflater inflater;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,27 +55,26 @@ public class SeleccionAlumno extends AppCompatActivity {
             db.close();
         }*/
 
-        Cursor config = db.rawQuery("select * from colegio",null);
-        if (config.moveToFirst()){
-            color =  "#"+config.getString(5);
+        Cursor config = db.rawQuery("select * from colegio", null);
+        if (config.moveToFirst()) {
+            color = "#" + config.getString(5);
         } else {
             color = "#A01027";
         }
 
-        if (color.length()<6){
+        if (color.length() < 6) {
             color = "#A01027";
         }
 
         Log.i("Color", color);
 
 
-
         CustomActionBar();
 
         padre = (LinearLayout) findViewById(R.id.padre);
-        Cursor hijos = db.rawQuery("select * from hijos order by id asc",null);
-        if (hijos.moveToFirst()){
-            do{
+        Cursor hijos = db.rawQuery("select * from hijos order by id asc", null);
+        if (hijos.moveToFirst()) {
+            do {
                 View adp_alumno = inflater.inflate(R.layout.adapter_alumno, null);
                 ((TextView) adp_alumno.findViewById(R.id.nombre)).setText(hijos.getString(1));
                 final String id_alumno = hijos.getString(0);
@@ -84,8 +83,8 @@ public class SeleccionAlumno extends AppCompatActivity {
                     public void onClick(View v) {
 
                         Intent it = new Intent(getApplicationContext(), MainActivity.class);
-                        it.putExtra("color",color);
-                        it.putExtra("alumno",id_alumno);
+                        it.putExtra("color", color);
+                        it.putExtra("alumno", id_alumno);
                         startActivity(it);
                         finish();
 
@@ -93,9 +92,8 @@ public class SeleccionAlumno extends AppCompatActivity {
                 });
 
 
-
                 padre.addView(adp_alumno);
-            }while(hijos.moveToNext());
+            } while (hijos.moveToNext());
         }
 
 

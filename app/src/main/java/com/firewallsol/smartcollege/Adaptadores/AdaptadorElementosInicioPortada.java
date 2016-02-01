@@ -58,7 +58,7 @@ public class AdaptadorElementosInicioPortada extends PagerAdapter {
         ImageView imgImagen = (ImageView) itemView.findViewById(R.id.imgImagen);
         TextView tvTitulo = (TextView) itemView.findViewById(R.id.tvTitulo);
 
-        if(item.slide_image_url != null && !item.slide_image_url.equals("null") && !TextUtils.isEmpty(item.slide_image_url))
+        if (item.slide_image_url != null && !item.slide_image_url.equals("null") && !TextUtils.isEmpty(item.slide_image_url))
             Picasso.with(activity).load(item.slide_image_url).into(imgImagen);
 
         tvTitulo.setText(item.slide_title);

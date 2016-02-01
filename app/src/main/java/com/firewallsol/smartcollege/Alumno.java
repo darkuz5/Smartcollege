@@ -16,14 +16,12 @@ import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 
 public class Alumno extends Fragment {
 
-    private Activity activity;
-    private View root;
     public static CompactCalendarView compactCalendarView;
     public static int azul;
     public static Database db_sqlite;
     public static InputMethodManager inputManager;
-
-
+    private Activity activity;
+    private View root;
 
 
     public Alumno() {
@@ -50,7 +48,7 @@ public class Alumno extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        root =  inflater.inflate(R.layout.fragment_alumno, container, false);
+        root = inflater.inflate(R.layout.fragment_alumno, container, false);
         activity = getActivity();
 
 
@@ -64,8 +62,6 @@ public class Alumno extends Fragment {
 
         return root;
     }
-
-
 
 
 }

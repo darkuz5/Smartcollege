@@ -56,10 +56,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
-    public static Database db_sqlite;
-    public static InputMethodManager inputManager;
-    public static Activity activity;
-
     /**
      * A dummy authentication store containing known user names and passwords.
      * TODO: remove after connecting to a real authentication system.
@@ -67,6 +63,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private static final String[] DUMMY_CREDENTIALS = new String[]{
             "foo@example.com:hello", "bar@example.com:world"
     };
+    public static Database db_sqlite;
+    public static InputMethodManager inputManager;
+    public static Activity activity;
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -94,7 +93,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
 
         Cursor config = db.rawQuery("select * from tutor", null);
-        if (config.moveToFirst()){
+        if (config.moveToFirst()) {
             Intent it = new Intent(getApplicationContext(), SeleccionAlumno.class);
             startActivity(it);
             finish();
@@ -102,7 +101,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
 
 
-        if(db != null) {
+        if (db != null) {
             db.close();
         }
 
@@ -345,7 +344,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
 
         @Override
-        protected void onPreExecute(){
+        protected void onPreExecute() {
             showProgress(true);
         }
 
@@ -365,7 +364,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
 
         @Override
-        protected void onPostExecute( String jsonRead) {
+        protected void onPostExecute(String jsonRead) {
             mAuthTask = null;
             Boolean success = false;
 
@@ -373,12 +372,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             JSONObject jsonObject = null;
             try {
                 jsonObject = new JSONObject(jsonRead);
-                if(jsonObject.has("error")){
+                if (jsonObject.has("error")) {
                     //Tiene Error
-                    success =  false;
+                    success = false;
                 }
-                if (jsonObject.has("tutor")){
-                    success =  true;
+                if (jsonObject.has("tutor")) {
+                    success = true;
                     JSONArray array = jsonObject.getJSONArray("tutor");
                     llenatutor(array);
 
@@ -400,11 +399,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected void llenatutor(JSONArray array) throws JSONException {
             SQLiteDatabase db = db_sqlite.getWritableDatabase();
             db.execSQL("delete from tutor");
-            for(int i=0; i< array.length(); i++){
+            for (int i = 0; i < array.length(); i++) {
                 JSONObject c = array.getJSONObject(i);
-                db.execSQL("insert into tutor values ('"+c.getString("id")+"','"+c.getString("nombre")+"', '"+c.getString("email")+"', " +
-                        "'"+c.getString("usuario")+"', '"+c.getString("id_escuela")+"', " +
-                        "'"+c.getString("telefono")+"' ,'"+c.getString("foto")+"')");
+                db.execSQL("insert into tutor values ('" + c.getString("id") + "','" + c.getString("nombre") + "', '" + c.getString("email") + "', " +
+                        "'" + c.getString("usuario") + "', '" + c.getString("id_escuela") + "', " +
+                        "'" + c.getString("telefono") + "' ,'" + c.getString("foto") + "')");
 
                 id_escuela = c.getString("id_escuela");
                 id_tutor = c.getString("id");
@@ -426,8 +425,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         getColegiosTask(String id_escuela, String id_tutor) {
             escuela = id_escuela;
-            tutor   =  id_tutor;
+            tutor = id_tutor;
         }
+
         @Override
         protected String doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
@@ -443,7 +443,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
 
         @Override
-        protected void onPostExecute( String jsonRead) {
+        protected void onPostExecute(String jsonRead) {
             mAuthTask = null;
 
             Boolean success = false;
@@ -452,12 +452,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             JSONObject jsonObject = null;
             try {
                 jsonObject = new JSONObject(jsonRead);
-                if(jsonObject.has("error")){
+                if (jsonObject.has("error")) {
                     //Tiene Error
-                    success =  false;
+                    success = false;
                 }
-                if (jsonObject.has("colegio")){
-                    success =  true;
+                if (jsonObject.has("colegio")) {
+                    success = true;
                     JSONArray array = jsonObject.getJSONArray("colegio");
                     llenacole(jsonObject);
 
@@ -481,21 +481,21 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             JSONArray array = jsonobj.getJSONArray("colegio");
             SQLiteDatabase db = db_sqlite.getWritableDatabase();
             db.execSQL("delete from colegio");
-            for(int i=0; i< array.length(); i++){
+            for (int i = 0; i < array.length(); i++) {
                 JSONObject c = array.getJSONObject(i);
-                String sqlQuery = "insert into colegio values ('"+c.getString("id")+"','"+c.getString("nombre")+"', '"+c.getString("contacto")+"', " +
-                        "'"+c.getString("telefono")+"', '"+c.getString("descripcion")+"', " +
-                        "'"+c.getString("color")+"', '"+c.getString("correo")+"', " +
-                        "'"+c.getString("direccion")+"', '"+c.getString("sitioweb")+"', " +
-                        "'"+c.getString("foto")+"')";
-                Log.i("Constula",sqlQuery);
+                String sqlQuery = "insert into colegio values ('" + c.getString("id") + "','" + c.getString("nombre") + "', '" + c.getString("contacto") + "', " +
+                        "'" + c.getString("telefono") + "', '" + c.getString("descripcion") + "', " +
+                        "'" + c.getString("color") + "', '" + c.getString("correo") + "', " +
+                        "'" + c.getString("direccion") + "', '" + c.getString("sitioweb") + "', " +
+                        "'" + c.getString("foto") + "')";
+                Log.i("Constula", sqlQuery);
                 db.execSQL(sqlQuery);
             }
 
             db.execSQL("delete from directorio");
-            if (jsonobj.has("directorio")){
+            if (jsonobj.has("directorio")) {
                 JSONArray directorio = jsonobj.getJSONArray("directorio");
-                for (int i=0; i<directorio.length(); i++){
+                for (int i = 0; i < directorio.length(); i++) {
                     JSONObject c = directorio.getJSONObject(i);
                     db.execSQL("insert into directorio (nombre, puesto, contacto) values ('" + c.getString("nombre") + "', '" + c.getString("puesto") + "', '" + c.getString("contacto") + "')");
                 }
@@ -520,6 +520,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             escuela = id_escuela;
             tutor = id_tutor;
         }
+
         @Override
         protected String doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
@@ -536,7 +537,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
 
         @Override
-        protected void onPostExecute( String jsonRead) {
+        protected void onPostExecute(String jsonRead) {
             mAuthTask = null;
 
             Boolean success = false;
@@ -545,9 +546,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             JSONObject jsonObject = null;
             try {
                 jsonObject = new JSONObject(jsonRead);
-                if(jsonObject.has("error")){
+                if (jsonObject.has("error")) {
                     //Tiene Error
-                    success =  false;
+                    success = false;
                 }
                 if (jsonObject.has("tutor")) {
                     success = true;
@@ -571,16 +572,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         }
 
-        protected  void llenaHijos(JSONObject jsonObject) throws JSONException {
+        protected void llenaHijos(JSONObject jsonObject) throws JSONException {
             JSONArray array = jsonObject.getJSONArray("tutor");
             SQLiteDatabase db = db_sqlite.getWritableDatabase();
             db.execSQL("delete from hijos");
-            for(int i=0; i< array.length(); i++){
+            for (int i = 0; i < array.length(); i++) {
                 JSONObject c = array.getJSONObject(i);
                 db.execSQL("insert into hijos values ('" + c.getString("id") + "','" + c.getString("nombre") + "', '" + c.getString("clave") + "', " +
                         "'" + c.getString("id_grado") + "', '" + c.getString("grado") + "', " +
                         "'" + c.getString("id_grupo") + "', '" + c.getString("grupo") + "', " +
-                        "'" + c.getString("id_escuela")+"' ,'"+c.getString("referencia_bancaria")+"')");
+                        "'" + c.getString("id_escuela") + "' ,'" + c.getString("referencia_bancaria") + "')");
             }
             db.close();
         }

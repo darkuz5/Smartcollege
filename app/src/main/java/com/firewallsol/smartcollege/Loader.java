@@ -19,18 +19,13 @@ public class Loader extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    public static ArrayList<ItemsInicio> arrayInicio;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
     private AutoScrollViewPager pager;
-    public static ArrayList<ItemsInicio> arrayInicio;
-
     private Activity activity;
     private View root;
-
-
 
 
     public Loader() {
@@ -68,8 +63,7 @@ public class Loader extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        root =  inflater.inflate(R.layout.fragment_loader, container, false);
-
+        root = inflater.inflate(R.layout.fragment_loader, container, false);
 
 
         return root;

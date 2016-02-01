@@ -91,6 +91,10 @@ public class EmojiHandler {
         return sb.toString();
     }
 
+    public static String toUnicode(char c) {
+        return String.format("\\u%04x", (int) c);
+    }
+
     public String decodeHtml(String emoji) {
         return StringEscapeUtils.unescapeHtml3(emoji);
     }
@@ -159,9 +163,5 @@ public class EmojiHandler {
             Log.i("UE", encoding);
             return text;
         }
-    }
-
-    public static String toUnicode(char c) {
-        return String.format("\\u%04x", (int) c);
     }
 }

@@ -2,6 +2,7 @@ package com.firewallsol.smartcollege;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -27,17 +28,17 @@ import com.squareup.picasso.Picasso;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Perfil extends AppCompatActivity {
-public static Database db_sqlite;
-public static InputMethodManager inputManager;
-public static Activity activity;
-public static String color;
-public static ActionBar mActionBar;
-public static ImageView iconoDerecho;
-public static ImageView iconoIzquierdo;
-public static ImageView imagenPrincipal;
-public static TextView textoPrincipal;
-public static TextView textoSecundario;
-private LayoutInflater inflater;
+    public static Database db_sqlite;
+    public static InputMethodManager inputManager;
+    public static Activity activity;
+    public static String color;
+    public static ActionBar mActionBar;
+    public static ImageView iconoDerecho;
+    public static ImageView iconoIzquierdo;
+    public static ImageView imagenPrincipal;
+    public static TextView textoPrincipal;
+    public static TextView textoSecundario;
+    private LayoutInflater inflater;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +55,8 @@ private LayoutInflater inflater;
         db_sqlite = MainActivity.db_sqlite;
         SQLiteDatabase db = db_sqlite.getWritableDatabase();
 
-        Cursor tutor = db.rawQuery("select * from tutor",null);
-        if (tutor.moveToFirst()){
+        Cursor tutor = db.rawQuery("select * from tutor", null);
+        if (tutor.moveToFirst()) {
             ((TextView) findViewById(R.id.nombre)).setText(tutor.getString(1));
             CircleImageView foto_tutor = (CircleImageView) findViewById(R.id.foto);
             Picasso.with(activity).load(tutor.getString(6)).placeholder(R.drawable.logosc).into(foto_tutor);
@@ -87,7 +88,7 @@ private LayoutInflater inflater;
         iconoDerecho = (ImageView) customActionBarView.findViewById(R.id.iconoDerecho);
         iconoIzquierdo = (ImageView) customActionBarView.findViewById(R.id.iconoIzquierdo);
 
-        MaterialRippleLayout  btnrigh = (MaterialRippleLayout) customActionBarView.findViewById(R.id.btn_right);
+        MaterialRippleLayout btnrigh = (MaterialRippleLayout) customActionBarView.findViewById(R.id.btn_right);
         btnrigh.removeAllViews();
         Button x = new Button(getApplicationContext());
         x.setLayoutParams(textoPrincipal.getLayoutParams());
@@ -100,7 +101,7 @@ private LayoutInflater inflater;
 
         RelativeLayout contenedor = (RelativeLayout) customActionBarView.findViewById(R.id.contenedor);
         contenedor.setBackgroundColor(Color.parseColor(color));
-        if ((MainActivity.urlImgPrincipal).length() > 10){
+        if ((MainActivity.urlImgPrincipal).length() > 10) {
             Picasso.with(activity).load(MainActivity.urlImgPrincipal).placeholder(R.drawable.logosc).into(imagenPrincipal);
         }
         imagenPrincipal.setVisibility(View.GONE);
@@ -119,8 +120,10 @@ private LayoutInflater inflater;
         btnrigh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent it = new Intent(getApplicationContext(), Perfil.class);
-                //startActivity(it);
+
+                Intent itn = new Intent(activity, Perfil_Editar.class);
+                startActivity(itn);
+                activity.overridePendingTransition(R.anim.slide_left, android.R.anim.fade_out);
             }
         });
 
@@ -129,7 +132,7 @@ private LayoutInflater inflater;
         mActionBar.setDisplayShowCustomEnabled(true);
 
 
-        Toolbar parent =(Toolbar) customActionBarView.getParent();
+        Toolbar parent = (Toolbar) customActionBarView.getParent();
         parent.setContentInsetsAbsolute(0, 0);
 
     }

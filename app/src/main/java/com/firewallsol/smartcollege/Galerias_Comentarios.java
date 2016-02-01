@@ -42,7 +42,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Galerias_Comentarios extends AppCompatActivity {
 
-    private Activity activity;
     public static String color;
     public static ActionBar mActionBar;
     public static ImageView iconoDerecho;
@@ -50,12 +49,64 @@ public class Galerias_Comentarios extends AppCompatActivity {
     public static ImageView imagenPrincipal;
     public static TextView textoPrincipal;
     public static TextView textoSecundario;
-    private LayoutInflater inflater;
     public static InputMethodManager inputManager;
-    private ProgressDialog dialog;
-
     String id, titulo, url;
     LinearLayout padre;
+    private Activity activity;
+    private LayoutInflater inflater;
+    private ProgressDialog dialog;
+
+    private static String calcularFechaFull(String fecha) {
+        String fec = "";
+
+
+        if (fecha.contains(" ")) {
+            fecha = fecha.substring(0, 10);
+            Log.i("Fecha", fecha);
+        }
+
+        SimpleDateFormat fechaFormat = new SimpleDateFormat("dd ' de ' MMMM");
+        SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        try {
+
+            Date fecDateHoraParse = parseFormat.parse(fecha);
+
+            Calendar today = Calendar.getInstance();
+            Date fecActual = dateFormat.parse(dateFormat.format(today.getTime()));
+            Date fecDateParse = dateFormat.parse(fecha);
+
+            Calendar ayer = Calendar.getInstance();
+            ayer.add(Calendar.DATE, -1);
+            ayer.set(Calendar.HOUR_OF_DAY, 0);
+            ayer.set(Calendar.MINUTE, 0);
+            ayer.set(Calendar.SECOND, 0);
+
+            Date ayerInicio = parseFormat.parse(parseFormat.format(ayer.getTime()));
+
+            ayer = Calendar.getInstance();
+            ayer.add(Calendar.DATE, -1);
+            ayer.set(Calendar.HOUR_OF_DAY, 23);
+            ayer.set(Calendar.MINUTE, 59);
+            ayer.set(Calendar.SECOND, 59);
+
+            Date ayerFinal = parseFormat.parse(parseFormat.format(ayer.getTime()));
+
+            if (fecDateParse.equals(fecActual)) {
+                fec = "HOY";
+            } else if ((fecDateHoraParse.after(ayerInicio) || fecDateHoraParse.equals(ayerInicio)) && (fecDateHoraParse.before(ayerFinal) || fecDateHoraParse.equals(ayerFinal))) {
+                fec = "AYER";
+            } else {
+                fec = fechaFormat.format(fecDateHoraParse);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return fec;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,17 +121,16 @@ public class Galerias_Comentarios extends AppCompatActivity {
         CustomActionBar();
 
         Intent it = getIntent();
-        if (it.hasExtra("id")){
+        if (it.hasExtra("id")) {
 
 
             id = it.getStringExtra("id");
-            titulo =  it.getStringExtra("titulo");
+            titulo = it.getStringExtra("titulo");
             url = it.getStringExtra("url");
 
             padre = (LinearLayout) findViewById(R.id.padre);
 
-        //new DescargaGalerias().execute();
-
+            //new DescargaGalerias().execute();
 
 
         } else {
@@ -88,15 +138,12 @@ public class Galerias_Comentarios extends AppCompatActivity {
         }
 
 
-
-
     }
 
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         new DescargaGalerias().execute();
     }
-
 
     private void CustomActionBar() {
         // TODO Auto-generated method stub
@@ -145,11 +192,11 @@ public class Galerias_Comentarios extends AppCompatActivity {
         iconoDerecho.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("Ir","a nuevo comentario");
+                Log.i("Ir", "a nuevo comentario");
                 Intent itn = new Intent(activity, Galerias_Comentar.class);
                 itn.putExtra("id", id);
-                itn.putExtra("titulo",titulo);
-                itn.putExtra("url",url);
+                itn.putExtra("titulo", titulo);
+                itn.putExtra("url", url);
                 startActivity(itn);
                 activity.overridePendingTransition(R.anim.slide_left, android.R.anim.fade_out);
 
@@ -160,8 +207,46 @@ public class Galerias_Comentarios extends AppCompatActivity {
         mActionBar.setDisplayShowCustomEnabled(true);
 
 
-        Toolbar parent =(Toolbar) customActionBarView.getParent();
+        Toolbar parent = (Toolbar) customActionBarView.getParent();
         parent.setContentInsetsAbsolute(0, 0);
+
+    }
+
+    public void llenado(String datos) {
+        Log.i("datos", datos);
+        padre.removeAllViews();
+        try {
+            JSONObject jsonObject = new JSONObject(datos);
+            if (jsonObject.has("comentarios")) {
+                JSONArray array = jsonObject.getJSONArray("comentarios");
+
+                for (int i = 0; i < array.length(); i++) {
+                    final JSONObject c = array.getJSONObject(i);
+                    View item = inflater.inflate(R.layout.adapter_item_comentariogaleria, null);
+
+                    CircleImageView foto = (CircleImageView) item.findViewById(R.id.fotoperfil);
+                    String urlFoto = c.getString("foto_tutor");
+                    Log.i("utl", foto + "");
+                    try {
+                        Picasso.with(activity).load(urlFoto).into(foto);
+                    } catch (IllegalArgumentException e) {
+                        e.printStackTrace();
+                    }
+                    ((TextView) item.findViewById(R.id.txtNombre)).setText(c.getString("tutor"));
+                    ((TextView) item.findViewById(R.id.txtResumen)).setText(c.getString("comentario"));
+                    ((TextView) item.findViewById(R.id.txtFecha)).setText(calcularFechaFull(c.getString("fecha")));
+
+
+                    padre.addView(item);
+
+                }
+
+            }
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -198,99 +283,6 @@ public class Galerias_Comentarios extends AppCompatActivity {
             super.onPostExecute(aVoid);
             llenado(aVoid);
         }
-    }
-
-
-    public void llenado (String datos){
-        Log.i("datos",datos);
-        padre.removeAllViews();
-        try {
-            JSONObject jsonObject = new JSONObject(datos);
-            if (jsonObject.has("comentarios")) {
-                JSONArray array = jsonObject.getJSONArray("comentarios");
-
-                for (int i=0; i<array.length(); i++) {
-                    final JSONObject c = array.getJSONObject(i);
-                    View item = inflater.inflate(R.layout.adapter_item_comentariogaleria, null);
-
-                    CircleImageView foto = (CircleImageView) item.findViewById(R.id.fotoperfil);
-                    String urlFoto = c.getString("foto_tutor");
-                    Log.i("utl",foto+"");
-                    try {
-                        Picasso.with(activity).load(urlFoto).into(foto);
-                    } catch (IllegalArgumentException e){
-                        e.printStackTrace();
-                    }
-                    ((TextView) item.findViewById(R.id.txtNombre)).setText(c.getString("tutor"));
-                    ((TextView) item.findViewById(R.id.txtResumen)).setText(c.getString("comentario"));
-                    ((TextView) item.findViewById(R.id.txtFecha)).setText(calcularFechaFull(c.getString("fecha")));
-
-
-                    padre.addView(item);
-
-                }
-
-            }
-
-
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-
-    private static String calcularFechaFull(String fecha) {
-        String fec = "";
-
-
-        if (fecha.contains(" ")){
-            fecha = fecha.substring(0,10);
-            Log.i("Fecha", fecha);
-        }
-
-        SimpleDateFormat fechaFormat = new SimpleDateFormat("dd ' de ' MMMM");
-        SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-        try {
-
-            Date fecDateHoraParse = parseFormat.parse(fecha);
-
-            Calendar today = Calendar.getInstance();
-            Date fecActual = dateFormat.parse(dateFormat.format(today.getTime()));
-            Date fecDateParse = dateFormat.parse(fecha);
-
-            Calendar ayer = Calendar.getInstance();
-            ayer.add(Calendar.DATE, -1);
-            ayer.set(Calendar.HOUR_OF_DAY, 0);
-            ayer.set(Calendar.MINUTE, 0);
-            ayer.set(Calendar.SECOND, 0);
-
-            Date ayerInicio = parseFormat.parse(parseFormat.format(ayer.getTime()));
-
-            ayer = Calendar.getInstance();
-            ayer.add(Calendar.DATE, -1);
-            ayer.set(Calendar.HOUR_OF_DAY, 23);
-            ayer.set(Calendar.MINUTE, 59);
-            ayer.set(Calendar.SECOND, 59);
-
-            Date ayerFinal = parseFormat.parse(parseFormat.format(ayer.getTime()));
-
-            if(fecDateParse.equals(fecActual)) {
-                fec = "HOY";
-            } else if ((fecDateHoraParse.after(ayerInicio) || fecDateHoraParse.equals(ayerInicio)) && (fecDateHoraParse.before(ayerFinal) || fecDateHoraParse.equals(ayerFinal))){
-                fec = "AYER";
-            } else {
-                fec = fechaFormat.format(fecDateHoraParse);
-            }
-
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return fec;
     }
 
 
