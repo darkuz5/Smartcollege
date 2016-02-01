@@ -20,7 +20,8 @@ public class Database extends SQLiteOpenHelper {
                     "usuario VARCHAR, " +
                     "escuela VARCHAR, " +
                     "telefono VARCHAR, " +
-                    "foto VARCHAR " +
+                    "foto VARCHAR, " +
+                    "pass VARCHAR " +
                     ");";
 
     private static final String sqlColegio =

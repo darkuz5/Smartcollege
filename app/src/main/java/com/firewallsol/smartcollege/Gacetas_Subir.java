@@ -415,7 +415,7 @@ public class Gacetas_Subir extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            url = activity.getString(R.string.comentaFoto);
+            url = activity.getString(R.string.subeGaceta);
             dialog.show();
         }
 
@@ -434,8 +434,10 @@ public class Gacetas_Subir extends AppCompatActivity {
                 imgx.compress(Bitmap.CompressFormat.JPEG, 30, stream);
                 byte[] byte_arr = stream.toByteArray();
                 String image_str = Base64.encodeToString(byte_arr, Base64.DEFAULT);
-                Log.i("Foto", image_str);
+                //Log.i("Foto", image_str);
                 paramsSend.add(new BasicNameValuePair("foto", image_str));
+
+                Log.i("datos","escuela:"+MainActivity.idEscuela+"|tutor:"+MainActivity.idTutor+"|titulo:"+txtTitulo+"|texto:"+txtTexto+"|opsys:android|foto:"+image_str);
 
 
                 jSONFunciones json = new jSONFunciones();

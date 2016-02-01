@@ -403,7 +403,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 JSONObject c = array.getJSONObject(i);
                 db.execSQL("insert into tutor values ('" + c.getString("id") + "','" + c.getString("nombre") + "', '" + c.getString("email") + "', " +
                         "'" + c.getString("usuario") + "', '" + c.getString("id_escuela") + "', " +
-                        "'" + c.getString("telefono") + "' ,'" + c.getString("foto") + "')");
+                        "'" + c.getString("telefono") + "' ,'" + c.getString("foto") + "' ,'"+mPassword+"')");
 
                 id_escuela = c.getString("id_escuela");
                 id_tutor = c.getString("id");
