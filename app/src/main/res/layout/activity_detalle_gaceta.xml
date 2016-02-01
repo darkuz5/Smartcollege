@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.firewallsol.smartcollege.DetalleAviso">
@@ -39,6 +40,7 @@
                     android:layout_width="40dip"
                     android:layout_height="40dip"
                     android:id="@+id/icon"
+                    android:visibility="gone"
                     android:layout_alignParentRight="true"
                     android:src="@drawable/alertagris" />
             </RelativeLayout>
@@ -52,19 +54,52 @@
                 android:textColor="#000000"
                 android:id="@+id/titulo" />
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_marginBottom="7dip"
-                android:layout_height="300dip"
-                android:scaleType="fitCenter"
-                android:id="@+id/foto" />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="7dip"
                 android:text="New Text"
                 android:id="@+id/resumen" />
+
+            <com.balysv.materialripple.MaterialRippleLayout
+                android:id="@+id/btn_vermas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:mrl_rippleDuration="200"
+                app:mrl_rippleOverlay="true">
+                <LinearLayout
+                    android:id="@+id/vermas"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+
+
+                    <ImageView
+                        android:layout_width="30dip"
+                        android:layout_height="40dip"
+                        android:id="@+id/imageView6"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/clip" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Ver más..."
+                        android:layout_marginLeft="10dip"
+                        android:id="@+id/textView3"
+                        android:gravity="center_vertical"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                </com.balysv.materialripple.MaterialRippleLayout>
+
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="300dip"
+                android:scaleType="fitCenter"
+                android:layout_marginBottom="7dip"
+                android:id="@+id/foto" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

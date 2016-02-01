@@ -47,12 +47,16 @@ public class Gacetas extends Fragment implements SwipeRefreshLayout.OnRefreshLis
     private View root;
 
 
-    private List<Gaceta> gacetas;
+    //private List<Gaceta> gacetas;
     private RecyclerView rv;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ProgressDialog dialog;
     int pagina = 0;
     RVAdapter adapter;
+    Boolean primera = false;
+    Boolean gotomove = false;
+    List<NameValuePair> params;
+    List<NameValuePair> paramsSend;
 
 
     public Gacetas() {
@@ -94,7 +98,7 @@ public class Gacetas extends Fragment implements SwipeRefreshLayout.OnRefreshLis
         activity = getActivity();
 
         rv = (RecyclerView) root.findViewById(R.id.RecView);
-        LinearLayoutManager llm = new LinearLayoutManager(activity.getApplicationContext());
+        final LinearLayoutManager llm = new LinearLayoutManager(activity.getApplicationContext());
         rv.setLayoutManager(llm);
         rv.setHasFixedSize(true);
 
@@ -106,29 +110,52 @@ public class Gacetas extends Fragment implements SwipeRefreshLayout.OnRefreshLis
         dialog.setMessage("Cargando...");
         dialog.setCancelable(false);
 
+        adapter = null;
 
-        gacetas = new ArrayList<>();
-        rv.setOnScrollListener(new EndlessRecyclerOnScrollListener(llm) {
-            @Override
-            public void onLoadMore(int current_page) {
-                int paginax = current_page * 10 - 10;
-                pagina = paginax;
-                new DescargaGacetas().execute();
+        if (MainActivity.gacetas == null) {
+            MainActivity.gacetas = new ArrayList<>();
+            primera =  true;
+            Log.i("Accion","nuevo");
 
-            }
-        });
+        } else {
+            initializeAdapter();
+            Log.i("Accion", "Actuaiza");
+            primera =  false;
+        }
 
-
-
-
-
-
-        new DescargaGacetas().execute();
+        if (primera) {
+            paramsSend = new ArrayList<>();
+            paramsSend.add(new BasicNameValuePair("id_escuela", MainActivity.idEscuela));
+            new DescargaGacetas().execute();
+        }
 
        // swipeRefreshLayout.setOnRefreshListener((SwipeRefreshLayout.OnRefreshListener) this);
         swipeRefreshLayout.setOnRefreshListener(this);
 
 
+
+        rv.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                int totalItemCount = llm.getItemCount();
+                int lastVisibleItem = llm.findLastVisibleItemPosition();
+
+                if (totalItemCount > 1) {
+                    if (lastVisibleItem >= totalItemCount - 2 && !MainActivity.endLove) {
+                        gotomove = true;
+                        MainActivity.banderaPage++;
+                        pagina = (MainActivity.banderaPage * 10) - 10;
+                        Log.i("Pagina", pagina+"");
+                        paramsSend = new ArrayList<>();
+                        paramsSend.add(new BasicNameValuePair("id_escuela", MainActivity.idEscuela));
+                        paramsSend.add(new BasicNameValuePair("indice", pagina + ""));
+                        new DescargaGacetas().execute();
+                    }
+                }
+            }
+
+
+        });
 
 
         return root;
@@ -137,7 +164,7 @@ public class Gacetas extends Fragment implements SwipeRefreshLayout.OnRefreshLis
 
     private void initializeAdapter() {
         if (adapter == null) {
-            adapter = new RVAdapter(gacetas, activity);
+            adapter = new RVAdapter(MainActivity.gacetas, activity);
             rv.setAdapter(adapter);
             Log.i("Accion", "Crear Adapter");
         } else {
@@ -160,51 +187,53 @@ public class Gacetas extends Fragment implements SwipeRefreshLayout.OnRefreshLis
                     JSONObject c = gaceta.getJSONObject(i);
                     final String datos = c.toString();
 
-                    gacetas.add(new Gaceta(c.getString("id"), c.getString("tutor"), c.getString("avatar_tutor"), c.getString("titulo"),
+                    MainActivity.gacetas.add(new Gaceta(c.getString("id"), c.getString("tutor"), c.getString("avatar_tutor"), c.getString("titulo"),
                             c.getString("texto"), c.getString("fecha"), c.getString("foto"), c.getString("url")));
 
-
                 }
-
+            } else {
+                MainActivity.endLove = true;
             }
-
-
         }
-
-
         initializeAdapter();
-
     }
 
 
     public void onRefresh() {
+        gotomove = true;
+        adapter = null;
+
+        MainActivity.banderaPage = 1;
+        MainActivity.endLove = false;
+        MainActivity.gacetas.clear();
+
+
         swipeRefreshLayout.setRefreshing(false);
-        pagina = 0;
-        gacetas.clear();
-        adapter.notifyDataSetChanged();
+
+        paramsSend = new ArrayList<>();
+        paramsSend.add(new BasicNameValuePair("id_escuela", MainActivity.idEscuela));
         new DescargaGacetas().execute();
+        MainActivity.banderaPage = 1;
     }
 
-    class DescargaGacetas extends AsyncTask<Void, Void, String> {
+    class DescargaGacetas extends AsyncTask<String, Void, String> {
 
         String url;
-        ArrayList<ItemsInicio> arrayInicio;
 
         @Override
         protected void onPreExecute() {
-            super.onPreExecute();
+            if (!swipeRefreshLayout.isRefreshing())
+                swipeRefreshLayout.setRefreshing(true);
             url = activity.getString(R.string.getGaceta);
-            arrayInicio = new ArrayList<>();
             dialog.show();
         }
 
         @Override
-        protected String doInBackground(Void... voids) {
+        protected String doInBackground(String... voids) {
             String jsonRead = "";
             try {
-                List<NameValuePair> paramsSend = new ArrayList<>();
-                paramsSend.add(new BasicNameValuePair("id_escuela", MainActivity.idEscuela));
-                paramsSend.add(new BasicNameValuePair("indice", pagina+""));
+
+//                Log.i("Pagina", MainActivity.banderaPage + "|Escuela:"+MainActivity.idEscuela+"|"+params.toString());
                 jSONFunciones json = new jSONFunciones();
                 jsonRead = json.jSONRead(url, jSONFunciones.POST, paramsSend);
 

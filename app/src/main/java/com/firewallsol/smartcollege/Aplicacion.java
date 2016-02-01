@@ -6,11 +6,13 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.multidex.MultiDex;
 
+import com.crashlytics.android.Crashlytics;
 import com.firewallsol.smartcollege.Funciones.GPSClass;
 import com.parse.Parse;
 import com.parse.ParseInstallation;
 import com.parse.ParsePush;
 
+import io.fabric.sdk.android.Fabric;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 /**
@@ -27,6 +29,7 @@ public class Aplicacion extends Application implements Application.ActivityLifec
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
         MultiDex.install(this);
         registerActivityLifecycleCallbacks(this);
         activity = getApplicationContext();

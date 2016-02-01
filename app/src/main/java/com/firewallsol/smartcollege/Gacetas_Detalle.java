@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -18,17 +19,15 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.balysv.materialripple.MaterialRippleLayout;
 import com.firewallsol.smartcollege.Database.Database;
 import com.squareup.picasso.Picasso;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class DetalleAviso extends AppCompatActivity {
+public class Gacetas_Detalle extends AppCompatActivity {
     public static Database db_sqlite;
     public static InputMethodManager inputManager;
     public static Activity activity;
@@ -40,6 +39,7 @@ public class DetalleAviso extends AppCompatActivity {
     public static TextView textoPrincipal;
     public static TextView textoSecundario;
     private LayoutInflater inflater;
+    MaterialRippleLayout vermas;
 
     ImageView foto, icon;
     TextView fecha, titulo, resumen;
@@ -47,7 +47,7 @@ public class DetalleAviso extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detalle_aviso);
+        setContentView(R.layout.activity_detalle_gaceta);
 
         inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         activity = this;
@@ -62,43 +62,39 @@ public class DetalleAviso extends AppCompatActivity {
         fecha = (TextView) findViewById(R.id.fecha);
         titulo = (TextView) findViewById(R.id.titulo);
         resumen = (TextView) findViewById(R.id.resumen);
+        vermas = (MaterialRippleLayout) findViewById(R.id.btn_vermas);
 
 
         Intent it = getIntent();
-        if (it.hasExtra("datos")){
-            String datos = it.getStringExtra("datos");
-            try {
-                JSONObject c = new JSONObject(datos);
-                fecha.setText(calcularFechaFull(c.getString("fecha")));
-                titulo.setText(c.getString("titulo"));
-                resumen.setText(c.getString("texto"));
+        if (it.hasExtra("id")){
 
-                if (c.getString("foto").length()>10){
-                    Picasso.with(activity).load(c.getString("foto")).into(foto);
+
+                fecha.setText(calcularFechaFull(it.getStringExtra("fecha")));
+                titulo.setText(it.getStringExtra("titulo"));
+                resumen.setText(it.getStringExtra("texto"));
+
+                final String url = it.getStringExtra("url");
+
+                if (it.getStringExtra("foto").length()>10){
+                    Picasso.with(activity).load(it.getStringExtra("foto")).into(foto);
                 } else {
                     foto.setVisibility(View.GONE);
                 }
+                if (it.getStringExtra("url").length()>10){
+                   vermas.setOnClickListener(new View.OnClickListener() {
+                       @Override
+                       public void onClick(View v) {
 
-
-                switch (c.getString("tipo")){
-                    case "1":
-                        Picasso.with(activity).load(R.drawable.alertaamarilla).into(icon);
-                        break;
-                    case "2":
-                        Picasso.with(activity).load(R.drawable.alertanaranja).into(icon);
-                        break;
-                    case "3":
-                        Picasso.with(activity).load(R.drawable.alertaroja).into(icon);
-                        break;
-                    default:
-                        Picasso.with(activity).load(R.drawable.alertagris).into(icon);
-                        break;
+                           Intent i = new Intent(Intent.ACTION_VIEW);
+                           i.setData(Uri.parse(url));
+                           startActivity(i);
+                           activity.overridePendingTransition(R.anim.slide_left, android.R.anim.fade_out);
+                       }
+                   });
+                } else {
+                    vermas.setVisibility(View.GONE);
                 }
 
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
 
 
         } else {
@@ -160,13 +156,16 @@ public class DetalleAviso extends AppCompatActivity {
         mActionBar.setDisplayShowCustomEnabled(true);
 
         imagenPrincipal.setVisibility(View.GONE);
-        textoPrincipal.setText("AVISOS");
+        textoPrincipal.setText("GACETA");
         textoPrincipal.setVisibility(View.VISIBLE);
+
 
         Toolbar parent =(Toolbar) customActionBarView.getParent();
         parent.setContentInsetsAbsolute(0, 0);
 
     }
+
+
     private static String calcularFechaFull(String fecha) {
         String fec = "";
 

@@ -31,6 +31,7 @@ import com.balysv.materialripple.MaterialRippleLayout;
 import com.firewallsol.smartcollege.Adaptadores.Items.ItemsInicio;
 import com.firewallsol.smartcollege.Database.Database;
 import com.firewallsol.smartcollege.Funciones.jSONFunciones;
+import com.firewallsol.smartcollege.Gaceta.Gaceta;
 import com.squareup.picasso.Picasso;
 
 import org.apache.http.NameValuePair;
@@ -49,10 +50,15 @@ public class MainActivity extends AppCompatActivity
     public static InputMethodManager inputManager;
     public static Activity activity;
     public static String color;
-    public static ImageView imagenPincipal;
     public static MaterialRippleLayout btn_tutor;
     public static CircleImageView foto_tutor;
     public static FragmentManager supportFragment;
+
+    /** Action Bar **/
+    public static ImageView imagenPincipal;
+    public static TextView textoPrincipal;
+    public static ImageView iconoDerecho;
+
 
     /** Contenido **/
     public static String contenido_avisos;
@@ -65,6 +71,12 @@ public class MainActivity extends AppCompatActivity
     public static String nombreAlumno;
     public static String idEscuela;
     public static String idTutor;
+
+
+    /** Varibales para Gacetas **/
+    public static  List<Gaceta> gacetas = null;
+    public static int banderaPage = 1;
+    public static Boolean endLove = false;
 
 
 
@@ -84,17 +96,21 @@ public class MainActivity extends AppCompatActivity
 
 
         imagenPincipal = (ImageView) toolbar.findViewById(R.id.img_principal);
+        iconoDerecho = (ImageView) toolbar.findViewById(R.id.iconoDerecho);
+        textoPrincipal = (TextView) toolbar.findViewById(R.id.textoPrincipal);
         supportFragment = getSupportFragmentManager();
 
 
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        iconoDerecho.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onClick(View v) {
+
+                Intent it = new Intent(getApplicationContext(), Gacetas_Subir.class);
+                activity.startActivity(it);
+                activity.overridePendingTransition(R.anim.slide_left, android.R.anim.fade_out);
             }
-        });*/
+        });
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -190,27 +206,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    /*@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }*/
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -220,40 +215,83 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_avisos) {
             showFragmentView(0);
+            imagenPincipal.setVisibility(View.VISIBLE);
+            textoPrincipal.setVisibility(View.GONE);
+            textoPrincipal.setText("AVISOS");
+            iconoDerecho.setVisibility(View.GONE);
             Log.i("cargar","Avisos");
+
         } else if (id == R.id.nav_eventos) {
             showFragmentView(1);
+            imagenPincipal.setVisibility(View.GONE);
+            textoPrincipal.setVisibility(View.VISIBLE);
+            textoPrincipal.setText("EVENTOS");
+            iconoDerecho.setVisibility(View.GONE);
+
             Log.i("cargar", "Eventos");
         } else if (id == R.id.nav_alumnos) {
             Log.i("cargar","Alumnos");
             showFragmentView(2);
+            imagenPincipal.setVisibility(View.GONE);
+            textoPrincipal.setVisibility(View.VISIBLE);
+            textoPrincipal.setText("ALUMNOS");
+            iconoDerecho.setVisibility(View.GONE);
 
         } else if (id == R.id.nav_galeria) {
             Log.i("cargar","Galeria");
             showFragmentView(3);
+            imagenPincipal.setVisibility(View.GONE);
+            textoPrincipal.setVisibility(View.VISIBLE);
+            textoPrincipal.setText("GALERÍA");
+            iconoDerecho.setVisibility(View.GONE);
 
         } else if (id == R.id.nav_gaceta) {
             Log.i("cargar","Gaceta");
             showFragmentView(4);
+            imagenPincipal.setVisibility(View.GONE);
+            textoPrincipal.setVisibility(View.VISIBLE);
+            textoPrincipal.setText("GACETA");
+            iconoDerecho.setImageResource(R.drawable.new_gaceta);
+            iconoDerecho.setVisibility(View.VISIBLE);
 
         } else if (id == R.id.nav_documentos) {
             showFragmentView(5);
+            imagenPincipal.setVisibility(View.GONE);
+            textoPrincipal.setVisibility(View.VISIBLE);
+            textoPrincipal.setText("DOCUMENTOS");
+            iconoDerecho.setVisibility(View.GONE);
 
         } else if (id == R.id.nav_pagos) {
             showFragmentView(6);
+            imagenPincipal.setVisibility(View.GONE);
+            textoPrincipal.setVisibility(View.VISIBLE);
+            textoPrincipal.setText("PAGOS");
+            iconoDerecho.setVisibility(View.GONE);
 
         } else if (id == R.id.nav_servicios) {
             showFragmentView(7);
             Log.i("cargar", "Servicios");
+            imagenPincipal.setVisibility(View.GONE);
+            textoPrincipal.setVisibility(View.VISIBLE);
+            textoPrincipal.setText("SERVICIOS");
+            iconoDerecho.setVisibility(View.GONE);
 
         } else if (id == R.id.nav_contaco) {
             showFragmentView(8);
             Log.i("cargar", "Contacto");
+            imagenPincipal.setVisibility(View.GONE);
+            textoPrincipal.setVisibility(View.VISIBLE);
+            textoPrincipal.setText("CONTACTO");
+            iconoDerecho.setVisibility(View.GONE);
 
         } else if (id == R.id.nac_alumno) {
             //showFragmentView(9);
             Log.i("cargar", "Cambiar Alumno");
             cambiarAlumno();
+            /*imagenPincipal.setVisibility(View.VISIBLE);
+            textoPrincipal.setVisibility(View.GONE);
+            textoPrincipal.setText("AVISOS");
+            iconoDerecho.setVisibility(View.GONE);*/
 
         } else if (id == R.id.nav_salir) {
             //showFragmentView(10);

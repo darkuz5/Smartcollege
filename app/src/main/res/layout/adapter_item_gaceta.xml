@@ -75,7 +75,8 @@
                         android:layout_centerInParent="true"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:layout_alignParentTop="true"/>
+                        android:layout_alignParentTop="true"
+                        android:src="@drawable/clip" />
                 </RelativeLayout>
             </LinearLayout>
 

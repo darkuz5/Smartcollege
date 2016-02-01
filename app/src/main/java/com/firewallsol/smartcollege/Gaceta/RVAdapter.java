@@ -4,7 +4,9 @@ package com.firewallsol.smartcollege.Gaceta;
  * Created by DARKUZ5 on 02/12/2015.
  */
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.balysv.materialripple.MaterialRippleLayout;
+import com.firewallsol.smartcollege.Gacetas_Detalle;
 import com.firewallsol.smartcollege.R;
 import com.squareup.picasso.Picasso;
 
@@ -47,13 +50,35 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.GacetaViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(GacetaViewHolder personViewHolder, int i) {
+    public void onBindViewHolder(final GacetaViewHolder personViewHolder, int i) {
         personViewHolder.txtNombre.setText(gacetas.get(i).tutor);
         personViewHolder.txtFecha.setText(calcularFechaFull(gacetas.get(i).fecha));
         personViewHolder.txtTitulo.setText(gacetas.get(i).titulo);
         personViewHolder.txtResumen.setText(gacetas.get(i).texto);
         Picasso.with(context).load(gacetas.get(i).avatar_tutor).into(personViewHolder.fotoperfil);
+        if (gacetas.get(i).url.length() > 2)
+            personViewHolder.imgAlerta.setVisibility(View.VISIBLE);
+        else
+            personViewHolder.imgAlerta.setVisibility(View.GONE);
+        final int pox = i;
+        personViewHolder.btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Activity activity = (Activity) context;
+                Intent it = new Intent(context, Gacetas_Detalle.class);
+                it.putExtra("id",gacetas.get(pox).id);
+                it.putExtra("tutor",gacetas.get(pox).tutor);
+                it.putExtra("avatar_tutor",gacetas.get(pox).avatar_tutor);
+                it.putExtra("titulo",gacetas.get(pox).titulo);
+                it.putExtra("texto",gacetas.get(pox).texto);
+                it.putExtra("fecha",gacetas.get(pox).fecha);
+                it.putExtra("foto",gacetas.get(pox).foto);
+                it.putExtra("url",gacetas.get(pox).url);
+                activity.startActivity(it);
+                activity.overridePendingTransition(R.anim.slide_left, android.R.anim.fade_out);
 
+            }
+        });
 
 
 

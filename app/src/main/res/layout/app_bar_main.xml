@@ -22,7 +22,6 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_marginRight="40dip"
                 android:layout_height="match_parent">
 
 
@@ -32,8 +31,42 @@
                     android:layout_height="match_parent"
                     android:id="@+id/img_principal"
                     android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:src="@drawable/logosc" />
+                    android:src="@drawable/logosc"
+                    android:layout_toLeftOf="@+id/btn_right"
+                    android:layout_toStartOf="@+id/btn_right" />
+
+                <TextView
+                    android:id="@+id/textoPrincipal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:visibility="gone"
+                    android:textColor="@color/colorBlanco"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_toLeftOf="@+id/btn_right"
+                    android:layout_toStartOf="@+id/btn_right" />
+
+                <com.balysv.materialripple.MaterialRippleLayout
+                    android:id="@+id/btn_right"
+                    android:layout_height="match_parent"
+                    android:layout_width="?android:attr/actionBarSize"
+                    android:layout_alignParentRight="true"
+                    app:mrl_rippleDuration="200"
+                    app:mrl_rippleOverlay="true">
+
+                    <ImageView
+                        android:id="@+id/iconoDerecho"
+                        android:layout_width="?android:attr/actionBarSize"
+                        android:layout_height="match_parent"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/comunidad"
+                        android:visibility="gone" />
+                </com.balysv.materialripple.MaterialRippleLayout>
             </RelativeLayout>
 
             </android.support.v7.widget.Toolbar>

@@ -20,6 +20,7 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
+
     <permission
         android:name="com.firewallsol.smartcollege.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
@@ -87,8 +88,20 @@
             android:launchMode="singleTask" />
         <activity
             android:name=".Galerias_Comentar"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".Gacetas_Detalle"
+            android:launchMode="singleTask" />
+        <activity
+            android:name="com.soundcloud.android.crop.CropImageActivity" />
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="d8d72bb09cc7e1aed5531b9bd10ae6a90e017497" />
+
+        <activity android:name=".Gacetas_Subir"
             android:windowSoftInputMode="stateHidden"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask" />
     </application>
 
 </manifest>
