@@ -106,7 +106,27 @@
             android:name=".Perfil_Editar"
             android:launchMode="singleTask"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".RecuperarPass"></activity>
+
+        <activity
+            android:name=".Boleta"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".Reporte"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".ReporteDetalle"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".ListaTareasExamenes"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".Tarea"
+            android:launchMode="singleTask" />
+
+        <activity android:name=".RecuperarPass"
+            android:launchMode="singleTask" >
+
+        </activity>
     </application>
 
 </manifest>

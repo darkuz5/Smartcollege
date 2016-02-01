@@ -77,6 +77,8 @@ public class MainActivity extends AppCompatActivity
     public static String nombreAlumno;
     public static String idEscuela;
     public static String idTutor;
+    public static String idGrupo;
+
 
 
     /**
@@ -140,6 +142,7 @@ public class MainActivity extends AppCompatActivity
             Cursor alumn = db.rawQuery("select * from hijos where id = '" + alumno + "'", null);
             if (alumn.moveToFirst()) {
                 nombreAlumno = alumn.getString(1);
+                idGrupo = alumn.getString(3);
             }
             alumn.close();
         }
