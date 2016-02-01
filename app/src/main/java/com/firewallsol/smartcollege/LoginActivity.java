@@ -92,11 +92,22 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         SQLiteDatabase db = db_sqlite.getWritableDatabase();
 
 
+        findViewById(R.id.lost_password).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it = new Intent(getApplicationContext(), RecuperarPass.class);
+                startActivity(it);
+                activity.overridePendingTransition(R.anim.slide_left, android.R.anim.fade_out);
+            }
+        });
+
+
         Cursor config = db.rawQuery("select * from tutor", null);
         if (config.moveToFirst()) {
             Intent it = new Intent(getApplicationContext(), SeleccionAlumno.class);
             startActivity(it);
             finish();
+            activity.overridePendingTransition(R.anim.slide_left, android.R.anim.fade_out);
 
         }
 

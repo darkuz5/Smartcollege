@@ -13,10 +13,6 @@
         android:layout_height="315dp" /> -->
 
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/scrollView" >
 
         <LinearLayout
             android:id="@+id/contenido"
@@ -73,5 +69,5 @@
 
             </android.support.v4.widget.SwipeRefreshLayout>
         </LinearLayout>
-    </ScrollView>
+
 </LinearLayout>
