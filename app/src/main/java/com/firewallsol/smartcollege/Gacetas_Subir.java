@@ -164,6 +164,7 @@ public class Gacetas_Subir extends AppCompatActivity {
     private void beginCrop(Uri source) {
         //Uri outputUri = Uri.fromFile(new File(getCacheDir(), "cropped"));
         //new Crop(source).output(outputUri).asSquare().start(this);
+
         if (codex == TAKE_PICTURE) {
             try {
 
