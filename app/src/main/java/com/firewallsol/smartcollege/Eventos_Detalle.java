@@ -31,6 +31,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 public class Eventos_Detalle extends AppCompatActivity {
     private Activity activity;
     private LayoutInflater inflater;
@@ -70,7 +74,7 @@ public class Eventos_Detalle extends AppCompatActivity {
             try {
                 JSONObject c = new JSONObject(it.getStringExtra("datos"));
                 ((TextView) findViewById(R.id.titulo)).setText(c.getString("nombre"));
-                ((TextView) findViewById(R.id.fecha)).setText(c.getString("fecha"));
+                ((TextView) findViewById(R.id.fecha)).setText(calcularFechaFull(c.getString("fecha")));
                 ((TextView) findViewById(R.id.texto)).setText(c.getString("descripcion"));
                 String coordenadas = c.getString("coordenadas");
                 if (TextUtils.isEmpty(coordenadas)){
@@ -161,4 +165,51 @@ public class Eventos_Detalle extends AppCompatActivity {
         parent.setContentInsetsAbsolute(0, 0);
 
     }
+
+    private static String calcularFechaFull(String fecha) {
+        String fec = "";
+
+        SimpleDateFormat fechaFormat = new SimpleDateFormat("dd ' de ' MMMM ' de ' yyyy");
+        SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        try {
+
+            Date fecDateHoraParse = parseFormat.parse(fecha);
+
+            Calendar today = Calendar.getInstance();
+            Date fecActual = dateFormat.parse(dateFormat.format(today.getTime()));
+            Date fecDateParse = dateFormat.parse(fecha);
+
+            Calendar ayer = Calendar.getInstance();
+            ayer.add(Calendar.DATE, -1);
+            ayer.set(Calendar.HOUR_OF_DAY, 0);
+            ayer.set(Calendar.MINUTE, 0);
+            ayer.set(Calendar.SECOND, 0);
+
+            Date ayerInicio = parseFormat.parse(parseFormat.format(ayer.getTime()));
+
+            ayer = Calendar.getInstance();
+            ayer.add(Calendar.DATE, -1);
+            ayer.set(Calendar.HOUR_OF_DAY, 23);
+            ayer.set(Calendar.MINUTE, 59);
+            ayer.set(Calendar.SECOND, 59);
+
+            Date ayerFinal = parseFormat.parse(parseFormat.format(ayer.getTime()));
+
+            if (fecDateParse.equals(fecActual)) {
+                fec = "HOY";
+            } else if ((fecDateHoraParse.after(ayerInicio) || fecDateHoraParse.equals(ayerInicio)) && (fecDateHoraParse.before(ayerFinal) || fecDateHoraParse.equals(ayerFinal))) {
+                fec = "AYER";
+            } else {
+                fec = fechaFormat.format(fecDateHoraParse);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return fec;
+    }
+
 }
