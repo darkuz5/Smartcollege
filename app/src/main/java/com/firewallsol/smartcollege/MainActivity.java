@@ -32,6 +32,7 @@ import com.firewallsol.smartcollege.Adaptadores.Items.ItemsInicio;
 import com.firewallsol.smartcollege.Database.Database;
 import com.firewallsol.smartcollege.Funciones.jSONFunciones;
 import com.firewallsol.smartcollege.Gaceta.Gaceta;
+import com.firewallsol.smartcollege.Servicio.Servicio;
 import com.squareup.picasso.Picasso;
 
 import org.apache.http.NameValuePair;
@@ -88,6 +89,17 @@ public class MainActivity extends AppCompatActivity
     public static int banderaPage = 1;
     public static Boolean endLove = false;
     static Boolean cargado = false;
+
+
+    /**
+     * Varibales para Servicios
+     **/
+    public static List<Servicio> servicios = null;
+    public static int SbanderaPage = 1;
+    public static Boolean SendLove = false;
+    static Boolean Scargado = false;
+
+
 
     public static TextView menuNombreUser;
 
@@ -352,6 +364,9 @@ public class MainActivity extends AppCompatActivity
                     break;
                 case 4:
                     f = Gacetas.newInstance("", "");
+                    break;
+                case 7:
+                    f = Servicios.newInstance();
                     break;
                 case 8:
                     f = Contacto.newInstance();

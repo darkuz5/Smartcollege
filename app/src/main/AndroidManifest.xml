@@ -159,7 +159,10 @@
         <activity
             android:name=".Maps"
             android:label="@string/title_activity_maps" />
-        <activity android:name=".Eventos_Lista_Calendar"></activity>
+        <activity android:name=".Eventos_Lista_Calendar"
+            android:launchMode="singleTask" />
+        <activity android:name=".Servicios_Detalle"
+            android:launchMode="singleTask"/>
     </application>
 
 </manifest>
