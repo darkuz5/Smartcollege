@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.firewallsol.smartcollege.Adaptadores.Items.ItemsInicio;
 
@@ -28,6 +29,7 @@ public class Eventos extends Fragment {
     private String mParam2;
     private AutoScrollViewPager pager;
     private Activity activity;
+
 
 
     public Eventos() {
@@ -87,7 +89,7 @@ public class Eventos extends Fragment {
         // Inflate the layout for this fragment
         root = inflater.inflate(R.layout.fragment_eventos, container, false);
         supportFragment = getChildFragmentManager();
-        showFragmentView(0);
+        showFragmentView(20);
 
         root.findViewById(R.id.proxEventos).setOnClickListener(new View.OnClickListener() {
             @Override

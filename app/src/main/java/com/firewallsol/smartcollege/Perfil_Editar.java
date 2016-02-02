@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -15,6 +16,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -23,6 +25,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
@@ -39,14 +42,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.balysv.materialripple.MaterialRippleLayout;
+import com.firewallsol.smartcollege.Funciones.jSONFunciones;
 import com.soundcloud.android.crop.Crop;
 import com.squareup.picasso.Picasso;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Perfil_Editar extends AppCompatActivity {
 
@@ -76,6 +89,10 @@ public class Perfil_Editar extends AppCompatActivity {
     EditText titulo, texto;
     String txtTitulo, txtTexto;
     private ProgressDialog dialog;
+    String passAnterior="";
+
+
+    String sCorreo, sTelefono, sPass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +107,7 @@ public class Perfil_Editar extends AppCompatActivity {
         ESTATUS_CAMBIO_FOTO = false;
 
         txtNombre = (EditText) findViewById(R.id.nombre);
+        txtNombre.setEnabled(false);
         txtCorreo = (EditText) findViewById(R.id.correo);
         txtTelefono = (EditText) findViewById(R.id.telefono);
         txtContrasenaAcual = (EditText) findViewById(R.id.contrasenaActual);
@@ -106,6 +124,16 @@ public class Perfil_Editar extends AppCompatActivity {
         });
 
 
+
+        alert = new AlertDialog.Builder(Perfil_Editar.this);
+
+        dialog = new ProgressDialog(activity);
+        dialog.setMessage("Enviando...");
+        dialog.setCancelable(false);
+
+
+
+
         GradientDrawable drawablex = (GradientDrawable) btnEnviar.getBackground();
         drawablex.setColor(Color.parseColor(color));
 
@@ -118,6 +146,7 @@ public class Perfil_Editar extends AppCompatActivity {
             txtTelefono.setText(tutor.getString(5));
             if (tutor.getString(6) != null && tutor.getString(6).length() > 5)
                 Picasso.with(activity).load(tutor.getString(6)).placeholder(R.drawable.logosc).into(btnFoto);
+            passAnterior = tutor.getString(7);
         }
 
         tutor.close();
@@ -382,11 +411,21 @@ public class Perfil_Editar extends AppCompatActivity {
         txtCorreo.setError(null);
         txtTelefono.setError(null);
         txtNombre.setError(null);
+        txtContrasenaAcual.setError(null);
+        txtNuevaContrasena.setError(null);
+        txtRepiteContrasena.setError(null);
 
         // Store values at the time of the login attempt.
         String nombre = txtNombre.getText().toString();
         String email = txtCorreo.getText().toString();
         String telefono = txtTelefono.getText().toString();
+
+        String pass = txtContrasenaAcual.getText().toString();
+        String nuevopass = txtNuevaContrasena.getText().toString();
+        String repitepass = txtRepiteContrasena.getText().toString();
+
+        sCorreo = email;
+        sTelefono = telefono;
 
         Log.i("datos","telefono:"+telefono+"|correo"+email+"|nombre:"+nombre+"|");
         boolean cancel = false;
@@ -418,6 +457,25 @@ public class Perfil_Editar extends AppCompatActivity {
             cancel = true;
         }
 
+        if (nuevopass.length() > 0 || repitepass.length() > 0){
+            if (!passAnterior.equals(pass)){
+                txtContrasenaAcual.setText("");
+                txtContrasenaAcual.setError("La contraseña es errónea");
+                focusView = txtContrasenaAcual;
+                cancel = true;
+            } else if (!nuevopass.equals(repitepass)){
+                txtNuevaContrasena.setText("");
+                txtRepiteContrasena.setText("");
+                txtNuevaContrasena.setError("Las contraseñas no coinciden");
+                focusView = txtNuevaContrasena;
+                cancel = true;
+            }else {
+                sPass = nuevopass;
+            }
+        } else  {
+            sPass = passAnterior;
+        }
+
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
@@ -428,6 +486,8 @@ public class Perfil_Editar extends AppCompatActivity {
             //showProgress(true);
             //mAuthTask = new UserLoginTask(email, password);
             //mAuthTask.execute((Void) null);
+
+            new modificaPerfil().execute();
 
             Log.e("Todo ok", "ok");
         }
@@ -441,6 +501,121 @@ public class Perfil_Editar extends AppCompatActivity {
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
         return password.length() > 1;
+    }
+
+
+    public void resultado(String data) {
+        Log.i("resultado", data);
+
+        if (data.contains("0") && !data.contains("smartcollege")) {
+            alert.setTitle("Aviso");
+            alert.setMessage("Error al enviar la información");
+            alert.setIcon(android.R.drawable.stat_notify_error);
+            alert.setPositiveButton("OK", null);
+            alert.show();
+
+        } else if (data.contains("1") && !data.contains("smartcollege")) {
+            SQLiteDatabase db = MainActivity.db_sqlite.getWritableDatabase();
+            db.execSQL("update tutor set email='" + sCorreo + "', pass='" + sPass + "', telefono='" + sTelefono + "'");
+            db.close();
+            alert.setTitle("Aviso");
+            alert.setIcon(android.R.drawable.stat_sys_upload_done);
+            alert.setMessage("Enviado");
+            alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                    overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);
+                }
+            });
+            alert.show();
+
+        } else if (data.contains("2")) {
+
+            SQLiteDatabase db = MainActivity.db_sqlite.getWritableDatabase();
+            try {
+                JSONObject jsonObject = new JSONObject(data);
+                if (jsonObject.has("resultado")){
+                    JSONArray arra = jsonObject.getJSONArray("resultado");
+                    JSONObject contenido = arra.getJSONObject(0);
+                    String fotoUrl = contenido.getString("foto");
+                    db.execSQL("update tutor set foto='"+fotoUrl+"'");
+                    Log.e("Actualizafoto", fotoUrl);
+                    MainActivity.cambiardatosUser(fotoUrl);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            db.execSQL("update tutor set email='"+sCorreo+"', pass='"+sPass+"', telefono='"+sTelefono+"'");
+            db.close();
+            alert.setTitle("Aviso");
+            alert.setIcon(android.R.drawable.stat_sys_upload_done);
+            alert.setMessage("Enviado");
+            alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                    overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);
+                }
+            });
+
+            alert.show();
+
+        } else {
+
+        }
+
+
+    }
+
+    class modificaPerfil extends AsyncTask<Void, Void, String> {
+
+        String url;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            url = activity.getString(R.string.updateTutor);
+            dialog.show();
+        }
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            String jsonRead = "";
+            try {
+                List<NameValuePair> paramsSend = new ArrayList<>();
+                paramsSend.add(new BasicNameValuePair("id_tutor", MainActivity.idTutor));
+                paramsSend.add(new BasicNameValuePair("correo", sCorreo));
+                paramsSend.add(new BasicNameValuePair("password", sPass));
+                paramsSend.add(new BasicNameValuePair("telefono", sTelefono));
+                paramsSend.add(new BasicNameValuePair("opsys", "android"));
+
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                imgx.compress(Bitmap.CompressFormat.JPEG, 30, stream);
+                byte[] byte_arr = stream.toByteArray();
+                String image_str = Base64.encodeToString(byte_arr, Base64.DEFAULT);
+                Log.i("Foto", image_str);
+                paramsSend.add(new BasicNameValuePair("foto", image_str));
+
+
+
+                jSONFunciones json = new jSONFunciones();
+                jsonRead = json.jSONRead(url, jSONFunciones.POST, paramsSend);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return jsonRead;
+        }
+
+        @Override
+        protected void onPostExecute(String aVoid) {
+            super.onPostExecute(aVoid);
+            dialog.dismiss();
+            resultado(aVoid);
+        }
     }
 
 

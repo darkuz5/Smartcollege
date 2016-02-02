@@ -81,6 +81,11 @@ public class SeleccionAlumno extends AppCompatActivity {
                 adp_alumno.findViewById(R.id.btn_alumno).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        try {
+                            MainActivity.activity.finish();
+                        } catch (NullPointerException e){
+                            e.printStackTrace();
+                        }
 
                         Intent it = new Intent(getApplicationContext(), MainActivity.class);
                         it.putExtra("color", color);

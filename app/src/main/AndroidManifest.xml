@@ -64,9 +64,9 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".LoginActivity"
-            android:windowSoftInputMode="stateHidden"
             android:label="@string/title_activity_login"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".SeleccionAlumno"
             android:label="@string/title_activity_login"
@@ -107,7 +107,6 @@
             android:name=".Perfil_Editar"
             android:launchMode="singleTask"
             android:windowSoftInputMode="stateHidden" />
-
         <activity
             android:name=".Boleta"
             android:launchMode="singleTask" />
@@ -123,13 +122,13 @@
         <activity
             android:name=".Tarea"
             android:launchMode="singleTask" />
-
-        <activity android:name=".RecuperarPass"
-            android:windowSoftInputMode="stateHidden"
+        <activity
+            android:name=".RecuperarPass"
             android:label="RECUPERAR CONTRASEÑA"
-            android:launchMode="singleTask" >
-
-        </activity>
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="stateHidden"/>
+        <activity android:name=".Eventos_Detalle"
+            android:launchMode="singleTask"/>
     </application>
 
 </manifest>

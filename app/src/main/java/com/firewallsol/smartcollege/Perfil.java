@@ -52,6 +52,16 @@ public class Perfil extends AppCompatActivity {
         color = MainActivity.color;
         CustomActionBar();
 
+
+
+    }
+
+    public void onResume(){
+        super.onResume();
+        cargaTutor();
+    }
+
+    public void cargaTutor(){
         db_sqlite = MainActivity.db_sqlite;
         SQLiteDatabase db = db_sqlite.getWritableDatabase();
 
@@ -68,9 +78,7 @@ public class Perfil extends AppCompatActivity {
 
 
         db.close();
-
     }
-
     private void CustomActionBar() {
         // TODO Auto-generated method stub
         final LayoutInflater inflater = (LayoutInflater) mActionBar.getThemedContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);

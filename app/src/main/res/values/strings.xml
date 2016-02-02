@@ -46,7 +46,7 @@
     <string name="getPagosAlumno">http://smartcollege.mx/servicios/getPagosAlumno.php</string>
     <string name="subeComprobantePago">http://smartcollege.mx/servicios/subeComprobantePago.php</string>
     <string name="getServicios">http://smartcollege.mx/servicios/getServicios.php</string>
-
+    <string name="getEventos">http://smartcollege.mx/servicios/getEventos.php</string>
     <string name="subeGaceta">http://smartcollege.mx/servicios/subeGaceta.php</string>
     <string name="getGaceta">http://smartcollege.mx/servicios/getGaceta.php</string>
     <string name="updateTutor">http://smartcollege.mx/servicios/updateTutor.php</string>
