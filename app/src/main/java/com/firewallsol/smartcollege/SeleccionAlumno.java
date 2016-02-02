@@ -68,7 +68,6 @@ public class SeleccionAlumno extends AppCompatActivity {
 
         Log.i("Color", color);
 
-
         CustomActionBar();
 
         padre = (LinearLayout) findViewById(R.id.padre);

@@ -1,6 +1,7 @@
 package com.firewallsol.smartcollege;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -148,11 +149,14 @@ public class Eventos_Lista extends Fragment {
 
                     ((TextView) evento.findViewById(R.id.txtDia)).setText(fecha[2]);
                     ((TextView) evento.findViewById(R.id.txtMes)).setText(mes(fecha[1]));
-
+                    final String data  = c.toString();
                     evento.findViewById(R.id.btn_aviso).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-
+                            Intent it = new Intent(getContext(), Eventos_Detalle.class);
+                            it.putExtra("datos", data);
+                            startActivity(it);
+                            getActivity().overridePendingTransition(R.anim.slide_left, android.R.anim.fade_out);
                         }
                     });
                     padre.addView(evento);
