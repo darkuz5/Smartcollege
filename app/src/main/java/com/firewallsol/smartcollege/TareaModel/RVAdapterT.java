@@ -4,16 +4,30 @@ package com.firewallsol.smartcollege.TareaModel;
  * Created by DARKUZ5 on 02/12/2015.
  */
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.balysv.materialripple.MaterialRippleLayout;
+import com.firewallsol.smartcollege.Alumno;
+import com.firewallsol.smartcollege.Gacetas_Detalle;
+import com.firewallsol.smartcollege.MainActivity;
 import com.firewallsol.smartcollege.R;
+import com.firewallsol.smartcollege.ReporteDetalle;
+import com.firewallsol.smartcollege.Tarea;
+import com.firewallsol.smartcollege.TareaDetalle;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -24,6 +38,7 @@ public class RVAdapterT extends RecyclerView.Adapter<RVAdapterT.TareaViewHolder>
 
     Context context;
     List<TareaModel> tareas;
+
 
     public RVAdapterT(List<TareaModel> tareas, Context context) {
         this.tareas = tareas;
@@ -44,9 +59,27 @@ public class RVAdapterT extends RecyclerView.Adapter<RVAdapterT.TareaViewHolder>
 
     @Override
     public void onBindViewHolder(TareaViewHolder tareaViewHolder, int i) {
+
+
         tareaViewHolder.txtMateria.setText(tareas.get(i).materia);
-        tareaViewHolder.txtFecha.setText(calcularFecha(tareas.get(i).fecha));
-        tareaViewHolder.txtTitulo.setText(tareas.get(i).descripcion);
+        tareaViewHolder.txtTitulo.setText(tareas.get(i).titulo);
+        tareaViewHolder.txtFecha.setText(tareas.get(i).fecha);
+        tareaViewHolder.txtTexto.setText(tareas.get(i).descripcion);
+        tareaViewHolder.img.setColorFilter(Color.parseColor(MainActivity.color));
+        final int pox = i;
+        tareaViewHolder.btn_tarea.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Activity activity = (Activity) context;
+                Intent it = new Intent(context, TareaDetalle.class);
+                it.putExtra("materia", tareas.get(pox).materia);
+                it.putExtra("titulo", tareas.get(pox).titulo);
+                it.putExtra("fecha", tareas.get(pox).fecha);
+                it.putExtra("texto",tareas.get(pox).descripcion);
+                activity.startActivity(it);
+                activity.overridePendingTransition(R.anim.slide_left, android.R.anim.fade_out);
+            }
+        });
 
 
 
@@ -67,6 +100,8 @@ public class RVAdapterT extends RecyclerView.Adapter<RVAdapterT.TareaViewHolder>
         TextView txtTitulo;
         TextView txtFecha;
         TextView txtTexto;
+        ImageView img;
+        MaterialRippleLayout btn_tarea;
 
 
 
@@ -74,109 +109,12 @@ public class RVAdapterT extends RecyclerView.Adapter<RVAdapterT.TareaViewHolder>
             super(itemView);
             cv = (CardView) itemView.findViewById(R.id.cv);
             btn = (MaterialRippleLayout) itemView.findViewById(R.id.btn_aviso);
-
             txtMateria = (TextView) itemView.findViewById(R.id.txtMateria);
             txtFecha = (TextView) itemView.findViewById(R.id.txtFecha);
             txtTitulo = (TextView) itemView.findViewById(R.id.txtTitulo);
             txtTexto = (TextView) itemView.findViewById(R.id.txtTexto);
+            img = (ImageView) itemView.findViewById(R.id.imgAlerta);
+            btn_tarea = (MaterialRippleLayout) itemView.findViewById(R.id.btn_aviso);
         }
     }
-
-
-    private static String calcularFecha(String fecha) {
-        String fec = "";
-
-        SimpleDateFormat fechaFormat = new SimpleDateFormat("dd/MM/yy");
-        SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat horaFormat = new SimpleDateFormat("HH:mm");
-
-        try {
-
-            Date fecDateHoraParse = parseFormat.parse(fecha);
-
-            Calendar today = Calendar.getInstance();
-            Date fecActual = dateFormat.parse(dateFormat.format(today.getTime()));
-            Date fecDateParse = dateFormat.parse(fecha);
-
-            Calendar ayer = Calendar.getInstance();
-            ayer.add(Calendar.DATE, -1);
-            ayer.set(Calendar.HOUR_OF_DAY, 0);
-            ayer.set(Calendar.MINUTE, 0);
-            ayer.set(Calendar.SECOND, 0);
-
-            Date ayerInicio = parseFormat.parse(parseFormat.format(ayer.getTime()));
-
-            ayer = Calendar.getInstance();
-            ayer.add(Calendar.DATE, -1);
-            ayer.set(Calendar.HOUR_OF_DAY, 23);
-            ayer.set(Calendar.MINUTE, 59);
-            ayer.set(Calendar.SECOND, 59);
-
-            Date ayerFinal = parseFormat.parse(parseFormat.format(ayer.getTime()));
-
-            if(fecDateParse.equals(fecActual)) {
-                fec = horaFormat.format(fecDateHoraParse);
-            } else if ((fecDateHoraParse.after(ayerInicio) || fecDateHoraParse.equals(ayerInicio)) && (fecDateHoraParse.before(ayerFinal) || fecDateHoraParse.equals(ayerFinal))){
-                fec = "AYER";
-            } else {
-                fec = fechaFormat.format(fecDateHoraParse);
-            }
-
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return fec;
-    }
-
-
-    private static String calcularFechaFull(String fecha) {
-        String fec = "";
-
-        SimpleDateFormat fechaFormat = new SimpleDateFormat("dd ' de ' MMMM");
-        SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-        try {
-
-            Date fecDateHoraParse = parseFormat.parse(fecha);
-
-            Calendar today = Calendar.getInstance();
-            Date fecActual = dateFormat.parse(dateFormat.format(today.getTime()));
-            Date fecDateParse = dateFormat.parse(fecha);
-
-            Calendar ayer = Calendar.getInstance();
-            ayer.add(Calendar.DATE, -1);
-            ayer.set(Calendar.HOUR_OF_DAY, 0);
-            ayer.set(Calendar.MINUTE, 0);
-            ayer.set(Calendar.SECOND, 0);
-
-            Date ayerInicio = parseFormat.parse(parseFormat.format(ayer.getTime()));
-
-            ayer = Calendar.getInstance();
-            ayer.add(Calendar.DATE, -1);
-            ayer.set(Calendar.HOUR_OF_DAY, 23);
-            ayer.set(Calendar.MINUTE, 59);
-            ayer.set(Calendar.SECOND, 59);
-
-            Date ayerFinal = parseFormat.parse(parseFormat.format(ayer.getTime()));
-
-            if(fecDateParse.equals(fecActual)) {
-                fec = "HOY";
-            } else if ((fecDateHoraParse.after(ayerInicio) || fecDateHoraParse.equals(ayerInicio)) && (fecDateHoraParse.before(ayerFinal) || fecDateHoraParse.equals(ayerFinal))){
-                fec = "AYER";
-            } else {
-                fec = fechaFormat.format(fecDateHoraParse);
-            }
-
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return fec;
-    }
-
-
-
 }

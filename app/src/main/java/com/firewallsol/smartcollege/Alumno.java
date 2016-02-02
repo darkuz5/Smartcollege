@@ -18,6 +18,8 @@ import com.balysv.materialripple.MaterialRippleLayout;
 import com.firewallsol.smartcollege.Adaptadores.Items.ItemsInicio;
 import com.firewallsol.smartcollege.Database.Database;
 import com.firewallsol.smartcollege.Funciones.jSONFunciones;
+import com.firewallsol.smartcollege.Gaceta.Gaceta;
+import com.firewallsol.smartcollege.TareaModel.TareaModel;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 
 import org.apache.http.NameValuePair;
@@ -37,6 +39,11 @@ public class Alumno extends Fragment {
     public static Database db_sqlite;
     public static InputMethodManager inputManager;
 
+    //variables para tareas
+    public static int banderaPage = 1;
+    public static Boolean endLove = false;
+    public static List<TareaModel> tareas = null;
+
     //contenido
     public static String json_calificaciones;
     public static String json_reportes;
@@ -45,6 +52,7 @@ public class Alumno extends Fragment {
     public static String json_examenes;
     static Boolean cargadoCalif = false;
     static Boolean cargandoRepor = false;
+    static Boolean cargandoPremio = false;
     static Boolean cargado = false;
 
 
@@ -104,6 +112,17 @@ public class Alumno extends Fragment {
             public void onClick(View v) {
 
                 Intent it = new Intent(activity.getApplicationContext(), ListaTareasExamenes.class);
+                startActivity(it);
+                activity.overridePendingTransition(R.anim.slide_left, R.anim.anim_null);
+
+            }
+        });
+        MaterialRippleLayout btnPremio = (MaterialRippleLayout) root.findViewById(R.id.btn_premios);
+        btnPremio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent it = new Intent(activity.getApplicationContext(), Premio.class);
                 startActivity(it);
                 activity.overridePendingTransition(R.anim.slide_left, R.anim.anim_null);
 

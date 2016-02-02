@@ -122,6 +122,15 @@
         <activity
             android:name=".Tarea"
             android:launchMode="singleTask" />
+        <activity
+            android:name=".TareaDetalle"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".Premio"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".PremioDetalle"
+            android:launchMode="singleTask" />
 
         <activity android:name=".RecuperarPass"
             android:launchMode="singleTask" >

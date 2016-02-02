@@ -42,13 +42,16 @@
                     <RelativeLayout
                         android:orientation="horizontal"
                         android:layout_width="0dp"
-                        android:layout_weight="0.64"
+                        android:layout_weight="2"
                         android:layout_height="match_parent">
 
                         <ImageView
                             android:layout_width="20dip"
                             android:layout_height="20dip"
                             android:id="@+id/imgAlerta"
+                            android:layout_toLeftOf="@+id/txtFecha"
+                            android:gravity="right"
+                            android:layout_gravity="right"
                             android:src="@drawable/calendarionegro"
                             android:layout_alignParentTop="true"
                             android:layout_alignParentLeft="true"
@@ -58,12 +61,12 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="New Text"
-                            android:gravity="left"
-                            android:layout_marginRight="5dip"
+                            android:gravity="right"
+                            android:textColor="@color/color_gris"
                             android:id="@+id/txtFecha"
-                            android:layout_toLeftOf="@+id/imgAlerta"
                             android:layout_alignParentRight="true"
-                            android:layout_alignParentEnd="true" />
+                            android:layout_alignParentEnd="true"
+                            />
 
                     </RelativeLayout>
                 </LinearLayout>

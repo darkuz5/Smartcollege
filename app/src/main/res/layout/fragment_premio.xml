@@ -11,6 +11,13 @@
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="315dp" /> -->
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView" >
+
         <LinearLayout
             android:id="@+id/contenido"
             android:orientation="vertical"
@@ -39,32 +46,19 @@
                         android:text="Avisos"
                         android:textColor="@color/colorTexto"
                         android:textSize="15sp"
-                        android:id="@+id/alumno"
+                        android:id="@+id/textView2"
                         android:layout_gravity="center_vertical" />
                 </LinearLayout>
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="match_parent"
-                android:layout_height="2px"
-                android:background="@color/color_gris" />
-            <android.support.v4.widget.SwipeRefreshLayout
+            <LinearLayout
+                android:id="@+id/otros"
                 android:orientation="vertical"
-                android:id="@+id/swipeRefresh_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/RecView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                </android.support.v7.widget.RecyclerView>
-
-            </android.support.v4.widget.SwipeRefreshLayout>
+            </LinearLayout>
         </LinearLayout>
-
+    </ScrollView>
 </LinearLayout>

@@ -6,12 +6,14 @@ package com.firewallsol.smartcollege.TareaModel;
 public class TareaModel {
     String id;
     String materia;
+    String titulo;
     String descripcion;
     String fecha;
 
-    public TareaModel(String id, String materia, String descripcion,  String fecha) {
+    public TareaModel(String id, String materia, String titulo, String descripcion,  String fecha) {
         this.id = id;
         this.materia = materia;
+        this.titulo = titulo;
         this.descripcion = descripcion;
         this.fecha = fecha;
 
