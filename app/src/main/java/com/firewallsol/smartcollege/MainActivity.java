@@ -87,9 +87,14 @@ public class MainActivity extends AppCompatActivity
     public static List<Gaceta> gacetas = null;
     public static int banderaPage = 1;
     public static Boolean endLove = false;
-
-
     static Boolean cargado = false;
+
+    public static TextView menuNombreUser;
+
+
+    /** Variable para Eventos **/
+    public static String eventos=null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -170,11 +175,13 @@ public class MainActivity extends AppCompatActivity
         View header = navigationView.getHeaderView(0);
         btn_tutor = (MaterialRippleLayout) header.findViewById(R.id.btn_tutor);
         foto_tutor = (CircleImageView) header.findViewById(R.id.foto);
+        menuNombreUser = (TextView) header.findViewById(R.id.nombre);
+
         Cursor tutor = db.rawQuery("select * from tutor", null);
         navigationView.setBackgroundColor(Color.parseColor(color));
         if (tutor.moveToFirst()) {
             idTutor = tutor.getString(0);
-            ((TextView) header.findViewById(R.id.nombre)).setText(tutor.getString(1));
+            menuNombreUser.setText(tutor.getString(1));
             if (tutor.getString(6) != null && tutor.getString(6).length() > 5)
                 Picasso.with(activity).load(tutor.getString(6)).placeholder(R.drawable.logosc).into(foto_tutor);
         }
@@ -192,6 +199,15 @@ public class MainActivity extends AppCompatActivity
         showFragmentView(20);
         config.close();
         db.close();
+
+    }
+
+    public static void cambiardatosUser(String urlFoto){
+
+
+            if (urlFoto!= null && urlFoto.length()> 5)
+                Picasso.with(activity).load(urlFoto).placeholder(R.drawable.logosc).into(foto_tutor);
+
 
     }
 

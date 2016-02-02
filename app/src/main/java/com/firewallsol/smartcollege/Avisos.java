@@ -231,7 +231,7 @@ public class Avisos extends Fragment implements BaseSliderView.OnSliderClickList
 
             if (jsonObject.has("avisos")) {
                 JSONArray array = jsonObject.getJSONArray("avisos");
-                for (int i = 1; i < array.length(); i++) {
+                for (int i = 0; i < array.length(); i++) {
                     final JSONObject c = array.getJSONObject(i);
                     if (i < 4) {
 

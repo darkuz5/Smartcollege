@@ -20,7 +20,7 @@
             android:title="Galerías" />
         <item
             android:id="@+id/nav_gaceta"
-            android:icon="@drawable/comunidad"
+            android:icon="@drawable/gaceta"
             android:title="Gaceta" />
         <item
             android:id="@+id/nav_documentos"

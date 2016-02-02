@@ -29,6 +29,7 @@
                 android:background="@drawable/rbtn_selector"
                 android:layout_weight="1"
                 android:layout_width="0dp"
+                android:checked="true"
                 android:layout_height="wrap_content" />
 
             <RadioButton
@@ -42,7 +43,6 @@
                 android:background="@drawable/rbtn_selector"
                 android:layout_weight="1"
                 android:layout_width="0dp"
-                android:checked="true"
                 android:layout_height="wrap_content" />
 
         </RadioGroup>

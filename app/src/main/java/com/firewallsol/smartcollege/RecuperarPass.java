@@ -16,6 +16,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.firewallsol.smartcollege.Funciones.jSONFunciones;
 
@@ -28,6 +29,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class RecuperarPass extends AppCompatActivity {
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
@@ -36,6 +38,8 @@ public class RecuperarPass extends AppCompatActivity {
     private View mProgressView;
     private View mLoginFormView;
     private UserRecuperaPass mAuthTask = null;
+    android.app.AlertDialog.Builder alert;
+    Button mEmailSignInButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +51,7 @@ public class RecuperarPass extends AppCompatActivity {
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+        mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -112,7 +116,7 @@ public class RecuperarPass extends AppCompatActivity {
         protected String doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
             List<NameValuePair> paramsSend = new ArrayList<>();
-            paramsSend.add(new BasicNameValuePair("usuario", mEmail.trim()));
+            paramsSend.add(new BasicNameValuePair("nombre_usuario", mEmail.trim()));
             jSONFunciones jSONFunciones = new jSONFunciones();
             String url = getString(R.string.recuperarPassword);
             jSONFunciones json = new jSONFunciones();
@@ -135,9 +139,9 @@ public class RecuperarPass extends AppCompatActivity {
                     //Tiene Error
                     success = false;
                 }
-                if (jsonObject.has("tutor")) {
+                if (jsonObject.has("resultado")) {
                     success = true;
-                    JSONArray array = jsonObject.getJSONArray("tutor");
+                    JSONArray array = jsonObject.getJSONArray("resultado");
                     llenatutor(array);
 
 
@@ -150,15 +154,35 @@ public class RecuperarPass extends AppCompatActivity {
 
             } else {
                 showProgress(false);
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
+                //mPasswordView.setError(getString(R.string.error_incorrect_password));
+                //mPasswordView.requestFocus();
             }
         }
 
         protected void llenatutor(JSONArray array) throws JSONException {
-            for (int i = 0; i < array.length(); i++) {
-
-
+            String srr = array.toString();
+            Log.i("arr", srr);
+            if (srr.contains("0")){
+                mEmailView.setText("");
+                mEmailView.setError("Error, Intente nuevamente");
+                mEmailView.requestFocus();
+                showProgress(false);
+            } else if (srr.contains("1")){
+                mEmailView.clearFocus();
+                mEmailSignInButton.requestFocus();
+                Toast.makeText(getApplicationContext(),"Un correo fue enviado con los datos para acceder a su cuenta", Toast.LENGTH_LONG).show();
+                finish();
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);
+            } else if (srr.contains("2")){
+                mEmailView.setText("");
+                mEmailView.setError("Usuario no encontrado");
+                mEmailView.requestFocus();
+                showProgress(false);
+            } else {
+                mEmailView.setText("");
+                mEmailView.setError("Error desconocido");
+                mEmailView.requestFocus();
+                showProgress(false);
             }
 
         }
@@ -200,6 +224,11 @@ public class RecuperarPass extends AppCompatActivity {
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
             mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
+    }
+
+    public static void hideSoftKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager = (InputMethodManager)  activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
     }
 
 }
