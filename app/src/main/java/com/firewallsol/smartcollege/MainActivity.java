@@ -353,6 +353,9 @@ public class MainActivity extends AppCompatActivity
                 case 4:
                     f = Gacetas.newInstance("", "");
                     break;
+                case 8:
+                    f = Contacto.newInstance();
+                    break;
                 case 9:
                     cambiarAlumno();
                     break;
