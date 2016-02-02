@@ -24,6 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="New Text"
+                android:textColor="@color/color_negro"
                 android:id="@+id/textView4" />
 
             <LinearLayout
@@ -32,9 +33,10 @@
                 android:layout_height="match_parent">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/imageView7" />
+                    android:layout_width="30dip"
+                    android:layout_height="30dip"
+                    android:id="@+id/imageView7"
+                    android:src="@drawable/calendarionegro" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -65,11 +67,12 @@
                     android:text="New Text"
                     android:id="@+id/textView7" />
             </LinearLayout>
-            <com.google.android.gms.maps.MapView
+            <fragment
+                android:id="@+id/map"
+                class="com.google.android.gms.maps.MapFragment"
                 android:layout_width="match_parent"
-                android:layout_height="250dip"
-                android:id="@+id/view"
-                android:layout_gravity="center_vertical" />
+                android:layout_height="250dip" />
+
         </LinearLayout>
     </ScrollView>
 
