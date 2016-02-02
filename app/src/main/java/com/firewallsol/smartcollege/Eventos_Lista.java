@@ -82,6 +82,8 @@ public class Eventos_Lista extends Fragment {
 
 
 
+
+
         return root;
     }
 

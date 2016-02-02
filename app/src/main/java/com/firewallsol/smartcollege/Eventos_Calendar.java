@@ -1,8 +1,12 @@
 package com.firewallsol.smartcollege;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,11 +14,20 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.firewallsol.smartcollege.Adaptadores.Items.ItemsInicio;
+import com.firewallsol.smartcollege.Funciones.jSONFunciones;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import com.github.sundeepk.compactcalendarview.domain.CalendarDayEvent;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -32,6 +45,7 @@ public class Eventos_Calendar extends Fragment {
     private static Map<Date, List<Booking>> bookings = new HashMap<>();
     private Activity activity;
     private View root;
+    String eventos;
     private SimpleDateFormat dateFormatForMonth = new SimpleDateFormat("MMMM yyyy", Locale.getDefault());
 
 
@@ -57,6 +71,9 @@ public class Eventos_Calendar extends Fragment {
 
 
     }
+
+
+
 
     private static List<Booking> createBookings() {
         return Arrays.asList();
@@ -99,6 +116,22 @@ public class Eventos_Calendar extends Fragment {
         final ImageButton showNextMonthBut = (ImageButton) root.findViewById(R.id.next_button);
 
 
+        eventos = MainActivity.eventos;
+        //minflater = inflater;
+        azul = Color.parseColor(MainActivity.color);
+        if (TextUtils.isEmpty(eventos)){
+            /** Descargar Eventos **/
+            new DescargarEventos().execute();
+        } else {
+            try {
+                llenado(eventos);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+
         compactCalendarView.setListener(new CompactCalendarView.CompactCalendarViewListener() {
             @Override
             public void onDayClick(Date dateClicked) {
@@ -110,10 +143,10 @@ public class Eventos_Calendar extends Fragment {
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
                     System.out.format("%30s %s\n", "yyyy-MM-dd", sdf.format(dateClicked));
 
-                    /*Intent it = new Intent(getActivity(),Eventos.class);
+                    Intent it = new Intent(getActivity(),Eventos_Lista_Calendar.class);
                     it.putExtra("fecha",sdf.format(dateClicked));
                     startActivity(it);
-                    activity.overridePendingTransition(R.anim.slide_left, R.anim.anim_null);*/
+                    getActivity().overridePendingTransition(R.anim.slide_left, android.R.anim.fade_out);
 
                    /* mutableBookings.clear();
                     for(Booking booking : bookingsFromMap){
@@ -178,6 +211,64 @@ public class Eventos_Calendar extends Fragment {
                     "title='" + title + '\'' +
                     ", date=" + date +
                     '}';
+        }
+
+    }
+    class DescargarEventos extends AsyncTask<Void, Void, String> {
+
+        String url;
+        ArrayList<ItemsInicio> arrayInicio;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            url = activity.getString(R.string.getEventos);
+            arrayInicio = new ArrayList<>();
+
+        }
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            String jsonRead = "";
+            try {
+                List<NameValuePair> paramsSend = new ArrayList<>();
+                paramsSend.add(new BasicNameValuePair("id_escuela", MainActivity.idEscuela));
+                jSONFunciones json = new jSONFunciones();
+                jsonRead = json.jSONRead(url, jSONFunciones.POST, paramsSend);
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return jsonRead;
+        }
+
+        @Override
+        protected void onPostExecute(String aVoid) {
+            super.onPostExecute(aVoid);
+            try {
+                llenado(aVoid);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+
+
+    public  static void llenado(String datos) throws JSONException {
+        Log.i("Eventos", datos);
+
+        JSONObject jsonObj = new JSONObject(datos);
+        if (jsonObj.has("eventos")) {
+            JSONArray evento = jsonObj.getJSONArray("eventos");
+            for (int i = 0; i < evento.length(); i++) {
+                JSONObject c = evento.getJSONObject(i);
+                Date fecha = ConvertToDate(c.getString("fecha"));
+                addEvents2(compactCalendarView, fecha);
+            }
         }
     }
 

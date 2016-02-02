@@ -7,9 +7,11 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -18,7 +20,16 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class Eventos_Detalle extends AppCompatActivity {
     private Activity activity;
@@ -32,11 +43,20 @@ public class Eventos_Detalle extends AppCompatActivity {
     public static TextView textoSecundario;
     public static InputMethodManager inputManager;
 
+    private GoogleMap map;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MapsInitializer.initialize(this);
         setContentView(R.layout.activity_eventos_detalle);
+
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+
         inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         activity = this;
         inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -47,7 +67,34 @@ public class Eventos_Detalle extends AppCompatActivity {
         Intent it = getIntent();
         if (it.hasExtra("datos")){
 
+            try {
+                JSONObject c = new JSONObject(it.getStringExtra("datos"));
+                ((TextView) findViewById(R.id.titulo)).setText(c.getString("nombre"));
+                ((TextView) findViewById(R.id.fecha)).setText(c.getString("fecha"));
+                ((TextView) findViewById(R.id.texto)).setText(c.getString("descripcion"));
+                String coordenadas = c.getString("coordenadas");
+                if (TextUtils.isEmpty(coordenadas)){
+                    findViewById(R.id.ubica).setVisibility(View.GONE);
+                } else {
+                    String[] coordena = coordenadas.split(", ");
+                    final LatLng KIEL = new LatLng(Double.parseDouble(coordena[0] + "0"), Double.parseDouble(coordena[1] + "0"));
+                    map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
+                            .getMap();
+                    Marker kiel = map.addMarker(new MarkerOptions()
+                            .position(KIEL)
+                            .title(c.getString("nombre"))
+                            .snippet(c.getString("descripcion")));
 
+                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(KIEL, 15));
+                    map.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
+
+                }
+
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
 
         } else {

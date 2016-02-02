@@ -98,9 +98,11 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="d8d72bb09cc7e1aed5531b9bd10ae6a90e017497" />
-        <meta-data
+        <!--
+            <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyCfbEyJMCcN4sQXQpGqvOn0Q4F9Ijsy8EY" />
+        -->
 
         <activity
             android:name=".Gacetas_Subir"
@@ -156,7 +158,8 @@
 
         <activity
             android:name=".Maps"
-            android:label="@string/title_activity_maps"></activity>
+            android:label="@string/title_activity_maps" />
+        <activity android:name=".Eventos_Lista_Calendar"></activity>
     </application>
 
 </manifest>
