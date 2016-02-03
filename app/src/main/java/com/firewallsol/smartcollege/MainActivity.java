@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity
     public static MaterialRippleLayout btn_tutor;
     public static CircleImageView foto_tutor;
     public static FragmentManager supportFragment;
+    public static final String MyPREFERENCES = "MyPrefs" ;
 
     /**
      * Action Bar
@@ -188,6 +190,11 @@ public class MainActivity extends AppCompatActivity
         if (color.length() < 6) {
             color = "#A01027";
         }
+        SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putString("color", color);
+        editor.commit();
+
         toolbar.setBackgroundColor(Color.parseColor(color));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
