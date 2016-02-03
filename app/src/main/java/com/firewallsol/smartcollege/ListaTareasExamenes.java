@@ -88,6 +88,17 @@ public class ListaTareasExamenes extends AppCompatActivity {
 
             }
         });
+        MaterialRippleLayout btnExamen = (MaterialRippleLayout) findViewById(R.id.btn_examenes);
+        btnExamen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent it = new Intent(getApplicationContext(), Examen.class);
+                startActivity(it);
+                overridePendingTransition(R.anim.slide_left, R.anim.anim_null);
+
+            }
+        });
 
 
     }

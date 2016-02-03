@@ -137,6 +137,12 @@
             android:name=".PremioDetalle"
             android:launchMode="singleTask" />
         <activity
+            android:name=".Examen"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".ExamenDetalle"
+            android:launchMode="singleTask" />
+        <activity
             android:name=".RecuperarPass"
             android:label="RECUPERAR CONTRASEÑA"
             android:launchMode="singleTask"

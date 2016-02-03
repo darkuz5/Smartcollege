@@ -17,6 +17,8 @@ import android.widget.TextView;
 import com.balysv.materialripple.MaterialRippleLayout;
 import com.firewallsol.smartcollege.Adaptadores.Items.ItemsInicio;
 import com.firewallsol.smartcollege.Database.Database;
+import com.firewallsol.smartcollege.ExamenModel.ExamenModel;
+import com.firewallsol.smartcollege.ExamenModel.TemarioModel;
 import com.firewallsol.smartcollege.Funciones.jSONFunciones;
 import com.firewallsol.smartcollege.Gaceta.Gaceta;
 import com.firewallsol.smartcollege.TareaModel.TareaModel;
@@ -43,6 +45,8 @@ public class Alumno extends Fragment {
     public static int banderaPage = 1;
     public static Boolean endLove = false;
     public static List<TareaModel> tareas = null;
+    public static List<ExamenModel> examenes = null;
+    public static List<TemarioModel> temario = null;
 
     //contenido
     public static String json_calificaciones;
@@ -58,6 +62,7 @@ public class Alumno extends Fragment {
 
     public Alumno() {
         // Required empty public constructor
+
     }
 
 
@@ -128,6 +133,7 @@ public class Alumno extends Fragment {
 
             }
         });
+
         return root;
     }
 
