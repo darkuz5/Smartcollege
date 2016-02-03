@@ -30,6 +30,7 @@ import android.widget.TextView;
 import com.balysv.materialripple.MaterialRippleLayout;
 import com.firewallsol.smartcollege.Adaptadores.Items.ItemsInicio;
 import com.firewallsol.smartcollege.Database.Database;
+import com.firewallsol.smartcollege.Documento.Documento;
 import com.firewallsol.smartcollege.Funciones.jSONFunciones;
 import com.firewallsol.smartcollege.Gaceta.Gaceta;
 import com.firewallsol.smartcollege.Servicio.Servicio;
@@ -98,6 +99,16 @@ public class MainActivity extends AppCompatActivity
     public static int SbanderaPage = 1;
     public static Boolean SendLove = false;
     static Boolean Scargado = false;
+
+
+
+    /**
+     * Varibales para Documentos
+     **/
+    public static List<Documento> documentos = null;
+    public static int DbanderaPage = 1;
+    public static Boolean DendLove = false;
+    static Boolean Dcargado = false;
 
 
 
@@ -364,6 +375,9 @@ public class MainActivity extends AppCompatActivity
                     break;
                 case 4:
                     f = Gacetas.newInstance("", "");
+                    break;
+                case 5:
+                    f = Documentos.newInstance();
                     break;
                 case 7:
                     f = Servicios.newInstance();
