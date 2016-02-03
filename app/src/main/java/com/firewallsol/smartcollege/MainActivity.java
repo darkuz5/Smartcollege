@@ -436,6 +436,7 @@ public class MainActivity extends AppCompatActivity
                         hijos.close();
                         Cursor materias = db.rawQuery("select * from materias", null);
                         if (materias.moveToFirst()) {
+
                             do {
                                 ParsePush.unsubscribeInBackground("m" + materias.getString(0));
                             } while (materias.moveToNext());
