@@ -107,8 +107,6 @@ public class Eventos_Detalle extends AppCompatActivity {
 
         }
 
-
-
     }
 
 

@@ -105,7 +105,7 @@ public class RVAdapterServicios extends RecyclerView.Adapter<RVAdapterServicios.
             public void onClick(View v) {
                 Activity activity = (Activity) context;
                 Intent it = new Intent(context, Servicios_Detalle.class);
-                it.putExtra("data", servicio.get(pox).data);
+                it.putExtra("datos", servicio.get(pox).data);
                 activity.startActivity(it);
                 activity.overridePendingTransition(R.anim.slide_left, android.R.anim.fade_out);
 
