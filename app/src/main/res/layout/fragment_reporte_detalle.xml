@@ -74,10 +74,10 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
                         <ImageView
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
                             android:id="@+id/imgFlag"
-                            android:src="@drawable/flagamarilla"/>
+                            android:src="@drawable/copaverde"/>
                     </LinearLayout>
                 </LinearLayout>
                 <LinearLayout
@@ -97,6 +97,7 @@
                         android:id="@+id/txtAsunto"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="16sp"
                         android:text="Asunto"
                         android:textColor="@color/colorTexto"/>
                 </LinearLayout>

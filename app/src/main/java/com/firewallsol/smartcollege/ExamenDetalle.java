@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -20,22 +22,26 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.firewallsol.smartcollege.Adaptadores.Items.ItemsInicio;
+import com.firewallsol.smartcollege.ExamenModel.ExamenModel;
+import com.firewallsol.smartcollege.ExamenModel.TemarioModel;
+import com.firewallsol.smartcollege.Funciones.jSONFunciones;
 import com.squareup.picasso.Picasso;
 
-import org.joda.time.DateTime;
-import org.joda.time.Days;
-import org.joda.time.Hours;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 
-public class TareaDetalle extends AppCompatActivity {
+public class ExamenDetalle extends AppCompatActivity {
     public static Activity activity;
     public static String color;
     public static ActionBar mActionBar;
@@ -46,29 +52,70 @@ public class TareaDetalle extends AppCompatActivity {
     public static TextView textoSecundario;
     private ProgressDialog dialog;
     private LayoutInflater inflater;
-    private String materia;
+    List<TemarioModel> temario;
     LinearLayout otros;
     String jsonRead;
+    public String idExamen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.fragment_tarea_detalle);
+        setContentView(R.layout.fragment_examen_detalle);
 
         inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 
-
-        TextView alumno = (TextView) findViewById(R.id.txtAlumno);
+        TextView alumno = (TextView) findViewById(R.id.textView2);
         alumno.setText(MainActivity.nombreAlumno);
-        setDatos();
+
+
+        otros = (LinearLayout) findViewById(R.id.otros);
+
         //actionbar
         mActionBar = getSupportActionBar();
         color = MainActivity.color;
         CustomActionBar();
+
+        //Cargando
+        dialog = new ProgressDialog(this);
+        dialog.setMessage("Cargando...");
+        dialog.setCancelable(false);
+        Intent it = this.getIntent();
+       if(it.hasExtra("id_examen")){
+            idExamen = it.getStringExtra("id_examen");
+        }
+
+        try {
+            llenado(Alumno.json_examenes);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
     }
+    public void llenado(String result)throws JSONException{
+        //Log.e("json", jsonRead);
+        if (result.length() > 0) {
+            JSONObject jsonObj = new JSONObject(result);
+            if (jsonObj.has("temario")) {
+                JSONArray tareasArr = jsonObj.getJSONArray("temario");
+                for (int i = 0; i < tareasArr.length(); i++) {
+                    JSONObject c = tareasArr.getJSONObject(i);
+                    final String datos = c.toString();
+
+                    if(idExamen.equals(c.getString("id_examen"))){
+                        View aviso2 = inflater.inflate(R.layout.adapter_item_temario, null);
+                        ((TextView) aviso2.findViewById(R.id.txtTitulo)).setText(c.getString("titulo"));
+                        ((TextView) aviso2.findViewById(R.id.txtDescrip)).setText(c.getString("descripcion"));
 
 
+                        otros.addView(aviso2);
+                    }
+
+                }
+            }
+        }
+    }
 
     private void CustomActionBar() {
         // TODO Auto-generated method stub
@@ -95,7 +142,7 @@ public class TareaDetalle extends AppCompatActivity {
         }
         imagenPrincipal.setVisibility(View.GONE);
         textoPrincipal.setVisibility(View.VISIBLE);
-        textoPrincipal.setText(materia);
+        textoPrincipal.setText("TEMARIO");
 
         iconoIzquierdo.setVisibility(View.VISIBLE);
         iconoIzquierdo.setImageResource(R.drawable.ic_action_icon_left);
@@ -119,68 +166,11 @@ public class TareaDetalle extends AppCompatActivity {
 
     }
 
-
-    public void setDatos() {
-        Intent it = getIntent();
-        if (it.hasExtra("materia")) {
-            ((TextView) findViewById(R.id.txtFecha)).setText(it.getStringExtra("fecha"));
-            materia = it.getStringExtra("materia");
-            ((TextView) findViewById(R.id.txtAsunto)).setText(it.getStringExtra("titulo"));
-            ((TextView) findViewById(R.id.txtTexto)).setText(it.getStringExtra("texto"));
-        }
-    }
     @Override
     public void onBackPressed() {
         //Login.clearVariables();
         finish();
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);
-    }
-
-
-    private static String calcularFechaFull(String fecha) {
-        String fec = "";
-
-        SimpleDateFormat fechaFormat = new SimpleDateFormat("dd ' de ' MMMM ' de ' yyyy");
-        SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-        try {
-
-            Date fecDateHoraParse = parseFormat.parse(fecha);
-
-            Calendar today = Calendar.getInstance();
-            Date fecActual = dateFormat.parse(dateFormat.format(today.getTime()));
-            Date fecDateParse = dateFormat.parse(fecha);
-
-            Calendar ayer = Calendar.getInstance();
-            ayer.add(Calendar.DATE, -1);
-            ayer.set(Calendar.HOUR_OF_DAY, 0);
-            ayer.set(Calendar.MINUTE, 0);
-            ayer.set(Calendar.SECOND, 0);
-
-            Date ayerInicio = parseFormat.parse(parseFormat.format(ayer.getTime()));
-
-            ayer = Calendar.getInstance();
-            ayer.add(Calendar.DATE, -1);
-            ayer.set(Calendar.HOUR_OF_DAY, 23);
-            ayer.set(Calendar.MINUTE, 59);
-            ayer.set(Calendar.SECOND, 59);
-
-            Date ayerFinal = parseFormat.parse(parseFormat.format(ayer.getTime()));
-
-            if (fecDateParse.equals(fecActual)) {
-                fec = "HOY";
-            } else if ((fecDateHoraParse.after(ayerInicio) || fecDateHoraParse.equals(ayerInicio)) && (fecDateHoraParse.before(ayerFinal) || fecDateHoraParse.equals(ayerFinal))) {
-                fec = "AYER";
-            } else {
-                fec = fechaFormat.format(fecDateHoraParse);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return fec;
     }
 
 

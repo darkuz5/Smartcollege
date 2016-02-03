@@ -127,7 +127,7 @@ public class PremioDetalle extends AppCompatActivity {
                     ((TextView) findViewById(R.id.txtAsunto)).setText(c.getString("asunto"));
                     ((TextView) findViewById(R.id.txtTexto)).setText(c.getString("texto"));
                     ImageView fotogde = (ImageView) findViewById(R.id.imgFlag);
-                    Picasso.with(activity).load(R.drawable.premios).into(fotogde);
+                    Picasso.with(activity).load(R.drawable.copaverde).into(fotogde);
 
                 }
             }catch(JSONException e){
