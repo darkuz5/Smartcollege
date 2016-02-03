@@ -57,6 +57,14 @@ public class Database extends SQLiteOpenHelper {
                     "id_escuela VARCHAR, " +
                     "referencia_bancaria VARCHAR " +
                     ");";
+    private static final String sqlMaterias =
+            "CREATE TABLE IF NOT EXISTS materias (" +
+                    "id VARCHAR, " +
+                    "alumno VARCHAR, " +
+                    "clave VARCHAR, " +
+                    "nombre VARCHAR, " +
+                    "tipo VARCHAR " +
+                    ");";
 
     public Database(Context contexto) {
         super(contexto, DATABASE_NAME, null, DATABASE_VERSION);
@@ -69,6 +77,7 @@ public class Database extends SQLiteOpenHelper {
         db.execSQL(sqlColegio);
         db.execSQL(sqlDirectorio);
         db.execSQL(sqlHijos);
+        db.execSQL(sqlMaterias);
     }
 
     @Override
@@ -78,6 +87,7 @@ public class Database extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS colegio");
         db.execSQL("DROP TABLE IF EXISTS directorio");
         db.execSQL("DROP TABLE IF EXISTS hijos");
+        db.execSQL("DROP TABLE IF EXISTS materias");
         onCreate(db);
     }
 }

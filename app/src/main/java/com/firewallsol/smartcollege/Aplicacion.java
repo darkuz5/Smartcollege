@@ -36,7 +36,7 @@ public class Aplicacion extends Application implements Application.ActivityLifec
 
         Parse.initialize(this, "qeFFjE9KHEiZHsKzSfQDBZqTD3YcskrXtLRO58er", "qJYctl22fgfEECzJLWQjfm8R9CQwUmxNqEqL065O");
         ParseInstallation.getCurrentInstallation().saveInBackground();
-        ParsePush.subscribeInBackground("");
+        ParsePush.subscribeInBackground("");ParsePush.subscribeInBackground("");
 
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
                 .setDefaultFontPath("fonts/OpenSans-Regular.ttf")

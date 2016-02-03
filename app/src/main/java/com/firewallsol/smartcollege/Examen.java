@@ -25,10 +25,7 @@ import android.widget.TextView;
 import com.firewallsol.smartcollege.Adaptadores.Items.ItemsInicio;
 import com.firewallsol.smartcollege.ExamenModel.ExamenModel;
 import com.firewallsol.smartcollege.ExamenModel.RVAdapterE;
-import com.firewallsol.smartcollege.ExamenModel.TemarioModel;
 import com.firewallsol.smartcollege.Funciones.jSONFunciones;
-import com.firewallsol.smartcollege.TareaModel.RVAdapterT;
-import com.firewallsol.smartcollege.TareaModel.TareaModel;
 import com.squareup.picasso.Picasso;
 
 import org.apache.http.NameValuePair;
@@ -197,6 +194,7 @@ public class Examen extends AppCompatActivity  implements SwipeRefreshLayout.OnR
 
 
 
+
     public void onRefresh() {
         gotomove = true;
         adapter = null;
@@ -230,8 +228,7 @@ public class Examen extends AppCompatActivity  implements SwipeRefreshLayout.OnR
         protected String doInBackground(String... voids) {
             String jsonRead = "";
             try {
-
-//                Log.i("Pagina", MainActivity.banderaPage + "|Escuela:"+MainActivity.idEscuela+"|"+params.toString());
+                Log.e("datos",paramsSend.toString());
                 jSONFunciones json = new jSONFunciones();
                 jsonRead = json.jSONRead(url, jSONFunciones.POST, paramsSend);
 

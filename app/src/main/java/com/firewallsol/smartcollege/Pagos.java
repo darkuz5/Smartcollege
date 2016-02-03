@@ -89,7 +89,7 @@ public class Pagos extends Fragment {
 
 
 
-    class DescargaDocumentos extends AsyncTask<String, Void, String> {
+    class DescargaPagoos extends AsyncTask<String, Void, String> {
 
         String url;
 

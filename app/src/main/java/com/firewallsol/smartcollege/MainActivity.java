@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -34,10 +35,12 @@ import com.firewallsol.smartcollege.Documento.Documento;
 import com.firewallsol.smartcollege.Funciones.jSONFunciones;
 import com.firewallsol.smartcollege.Gaceta.Gaceta;
 import com.firewallsol.smartcollege.Servicio.Servicio;
+import com.parse.ParsePush;
 import com.squareup.picasso.Picasso;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -173,6 +176,12 @@ public class MainActivity extends AppCompatActivity
                 idGrupo = alumn.getString(3);
             }
             alumn.close();
+
+            Cursor matealumnos = db.rawQuery("select * from materias where alumno='"+alumno+"'",null);
+            if (matealumnos.getCount() < 1){
+                new DescargaMaterias().execute();
+            }
+            matealumnos.close();
         }
 
         if (color.length() < 6) {
@@ -415,10 +424,28 @@ public class MainActivity extends AppCompatActivity
                     public void onClick(DialogInterface dialog, int which) {
 
                         SQLiteDatabase db = db_sqlite.getWritableDatabase();
+                        ParsePush.unsubscribeInBackground("e" + MainActivity.idEscuela);
+                        Cursor hijos = db.rawQuery("select * from hijos", null);
+                        if (hijos.moveToFirst()) {
+                            do {
+                                ParsePush.unsubscribeInBackground("a" + hijos.getString(0));
+                                ParsePush.unsubscribeInBackground("ga" + hijos.getString(3));
+                                ParsePush.unsubscribeInBackground("gu" + hijos.getString(5));
+                            } while (hijos.moveToNext());
+                        }
+                        hijos.close();
+                        Cursor materias = db.rawQuery("select * from materias", null);
+                        if (materias.moveToFirst()) {
+                            do {
+                                ParsePush.unsubscribeInBackground("m" + materias.getString(0));
+                            } while (materias.moveToNext());
+                        }
+                        materias.close();
                         db.execSQL("delete from tutor");
                         db.execSQL("delete from colegio");
                         db.execSQL("delete from directorio");
                         db.execSQL("delete from hijos");
+                        db.execSQL("delete from materias");
                         db.close();
                         Intent it = new Intent(activity, SplashScreen.class);
                         startActivity(it);
@@ -497,6 +524,78 @@ public class MainActivity extends AppCompatActivity
             super.onPostExecute(aVoid);
             cargado = true;
             showFragmentView(0);
+        }
+    }
+
+    class DescargaMaterias extends AsyncTask<Void, Void, String> {
+
+        String url;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            url = activity.getString(R.string.getMateriasAlumno);
+        }
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            String jsonRead = "";
+            if (!isCancelled()) {
+                try {
+
+                    List<NameValuePair> paramsSend = new ArrayList<>();
+                    paramsSend.add(new BasicNameValuePair("id_alumno", alumno.trim()));
+                    jSONFunciones json = new jSONFunciones();
+                    jsonRead = json.jSONRead(url, jSONFunciones.POST, paramsSend);
+                    Log.e("json", jsonRead);
+
+                    Thread.sleep(1000);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            return jsonRead;
+        }
+
+
+        @Override
+        protected void onPostExecute(String aVoid) {
+
+
+            try {
+                JSONObject jsonObject = new JSONObject(aVoid);
+
+                if (jsonObject.has("materias")) {
+                    JSONArray array = jsonObject.getJSONArray("materias");
+                    SQLiteDatabase db = db_sqlite.getWritableDatabase();
+                    db.execSQL("delete from materias where alumno='"+alumno+"'");
+                    for (int i = 0; i < array.length(); i++) {
+                        JSONObject c = array.getJSONObject(i);
+                        ParsePush.subscribeInBackground("m"+c.getString("id"));
+                        String sql = "insert into materias (id, alumno, clave, nombre, tipo) " +
+                                "values (?, ?, ? ,? , ?)";
+                        SQLiteStatement insertStmt = db.compileStatement(sql);
+                        insertStmt.clearBindings();
+                        insertStmt.bindString(1, c.getString("id"));
+                        insertStmt.bindString(2, alumno);
+                        insertStmt.bindString(3, c.getString("nombre"));
+                        insertStmt.bindString(4, c.getString("nombre"));
+                        insertStmt.bindString(5, c.getString("tipo"));
+                        insertStmt.executeInsert();
+
+                    }
+                    db.close();
+
+
+                }
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
         }
     }
 
