@@ -8,6 +8,8 @@ import com.firewallsol.smartcollege.Aplicacion;
 import com.firewallsol.smartcollege.SplashScreen;
 import com.parse.ParsePushBroadcastReceiver;
 
+import org.json.JSONObject;
+
 /*import com.islaazul.android.Aplicacion;
 import com.islaazul.android.IslaChat;
 import com.islaazul.android.IslaChatConversaciones;
@@ -63,17 +65,14 @@ public class ParseNotificacion extends ParsePushBroadcastReceiver {
         try {
             String jsonParse = intent.getExtras().getString("com.parse.Data");
 
-           /* if (Aplicacion.isApplicationActivityVisible && Aplicacion.isConversacionActivityVisible) {
+            if (Aplicacion.isApplicationActivityVisible && Aplicacion.isConversacionActivityVisible) {
 
                 JSONObject json = new JSONObject(jsonParse);
-                String groupId = json.getString("groupId");
-                if(!groupId.equals(IslaChatConversaciones.groupId) && Aplicacion.dentroDistancia())
                     super.onReceive(context, intent);
 
             } else {
-                if(Aplicacion.dentroDistancia())
                     super.onReceive(context, intent);
-            }*/
+            }
 
             Log.e("Receive", jsonParse);
         } catch (Exception e) {
