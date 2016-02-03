@@ -171,7 +171,8 @@
         <activity
             android:name=".Servicios_Detalle"
             android:launchMode="singleTask" />
-        <activity android:name=".Documentos_Detalle"></activity>
+        <activity android:name=".Documentos_Detalle" />
+        <activity android:name=".Pagos_Info"></activity>
     </application>
 
 </manifest>

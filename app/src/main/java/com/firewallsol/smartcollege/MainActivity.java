@@ -169,6 +169,7 @@ public class MainActivity extends AppCompatActivity
         }
         if (it.hasExtra("alumno")) {
             alumno = it.getStringExtra("alumno");
+            Log.e("alumno",alumno);
 
             Cursor alumn = db.rawQuery("select * from hijos where id = '" + alumno + "'", null);
             if (alumn.moveToFirst()) {
@@ -387,6 +388,9 @@ public class MainActivity extends AppCompatActivity
                     break;
                 case 5:
                     f = Documentos.newInstance();
+                    break;
+                case 6:
+                    f = Pagos.newInstance();
                     break;
                 case 7:
                     f = Servicios.newInstance();
