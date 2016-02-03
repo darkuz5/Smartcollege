@@ -107,6 +107,15 @@ public class Pagos extends Fragment {
             }
         });
 
+        root.findViewById(R.id.btnEnviarComprobante).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it = new Intent(activity, Pagos_Enviar.class);
+                activity.startActivity(it);
+                activity.overridePendingTransition(R.anim.slide_left, android.R.anim.fade_out);
+            }
+        });
+
 
 
 
