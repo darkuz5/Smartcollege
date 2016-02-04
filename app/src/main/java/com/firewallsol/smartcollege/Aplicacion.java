@@ -34,7 +34,7 @@ public class Aplicacion extends Application implements Application.ActivityLifec
         registerActivityLifecycleCallbacks(this);
         activity = getApplicationContext();
 
-        Parse.initialize(this, "qeFFjE9KHEiZHsKzSfQDBZqTD3YcskrXtLRO58er", "qJYctl22fgfEECzJLWQjfm8R9CQwUmxNqEqL065O");
+        Parse.initialize(this, "kbotXAOgfrsv1bBOB8nE2Rtfrzxc7oseteikJZCo", "3yFwcx2M2Xc9Dbi3XiRuDmybpHHyxfWHhBaXpEZh");
         ParseInstallation.getCurrentInstallation().saveInBackground();
         ParsePush.subscribeInBackground("");ParsePush.subscribeInBackground("");
 

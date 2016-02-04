@@ -81,6 +81,9 @@ public class SeleccionAlumno extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         try {
+                            Alumno.examenes = null;
+                            Alumno.temario = null;
+                            Alumno.tareas = null;
                             MainActivity.activity.finish();
                         } catch (NullPointerException e){
                             e.printStackTrace();
