@@ -100,7 +100,12 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.GacetaViewHolder> 
         personViewHolder.txtNombre.setText(gacetas.get(i).tutor);
         personViewHolder.txtFecha.setText(calcularFechaFull(gacetas.get(i).fecha));
         personViewHolder.txtTitulo.setText(gacetas.get(i).titulo);
-        personViewHolder.txtResumen.setText(gacetas.get(i).texto);
+        String texto =  gacetas.get(i).texto;
+        if (texto.length()> 100){
+            texto = texto.substring(0,100)+"...";
+        }
+        personViewHolder.txtResumen.setText(texto);
+        if (gacetas.get(i).avatar_tutor.length() > 0)
         Picasso.with(context).load(gacetas.get(i).avatar_tutor).into(personViewHolder.fotoperfil);
         if (gacetas.get(i).url.length() > 2)
             personViewHolder.imgAlerta.setVisibility(View.VISIBLE);

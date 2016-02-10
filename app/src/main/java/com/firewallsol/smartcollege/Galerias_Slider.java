@@ -74,14 +74,15 @@ public class Galerias_Slider extends AppCompatActivity implements BaseSliderView
 
         String datos = Galerias_Fotos.datos;
 
-        HashMap<String, String> url_maps = new HashMap<String, String>();
+        final HashMap<String, String> url_maps = new HashMap<String, String>();
         try {
-
+            Log.e("Tiene",datos);
             JSONObject jsonObject = new JSONObject(datos);
             if (jsonObject.has("fotos")) {
                 JSONArray array = jsonObject.getJSONArray("fotos");
                 for (int i = 0; i < array.length(); i++) {
                     JSONObject c = array.getJSONObject(i);
+                    Log.e("fotos", c.getString("url"));
                     url_maps.put(c.getString("titulo"), c.getString("url"));
                     ids.add(c.getString("id"));
                     titulos.add(c.getString("titulo"));
@@ -98,19 +99,24 @@ public class Galerias_Slider extends AppCompatActivity implements BaseSliderView
         posicionFoto = 0;
 
 
-        for (String name : url_maps.keySet()) {
+        for (int i=0; i<ids.size(); i++) {
             TextSliderView textSliderView = new TextSliderView(this);
             // initialize a SliderLayout
             textSliderView
-                    .description(name)
-                    .image(url_maps.get(name))
+                    .description(titulos.get(i))
+                    .image(urls.get(i))
                     .setScaleType(BaseSliderView.ScaleType.CenterInside)
-                    .setOnSliderClickListener(this);
+                    .setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
+                        @Override
+                        public void onSliderClick(BaseSliderView slider) {
+                            Log.e("foto",slider.getUrl());
+                        }
+                    });
 
             //add your extra information
             textSliderView.bundle(new Bundle());
             textSliderView.getBundle()
-                    .putString("extra", name);
+                    .putString("extra", titulos.get(i));
 
             mDemoSlider.addSlider(textSliderView);
         }
@@ -139,7 +145,7 @@ public class Galerias_Slider extends AppCompatActivity implements BaseSliderView
 
     @Override
     public void onPageSelected(int position) {
-        posicionFoto = ids.size() - position - 1;
+        posicionFoto = position;
 
         Log.i("Posicion", position + "|" + posicionFoto + "|" + ids.get(posicionFoto));
 

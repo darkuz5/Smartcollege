@@ -73,11 +73,181 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <FrameLayout
-        android:layout_marginTop="?attr/actionBarSize"
-        android:id="@+id/content_frame"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_marginTop="?attr/actionBarSize"
+        android:layout_height="match_parent">
+
+
+
+        <FrameLayout
+            android:id="@+id/content_frame"
+            android:background="@color/colorBlanco"
+            android:layout_width="match_parent"
+            android:layout_height="50dip"
+            android:layout_above="@+id/linearLayout4"
+            android:layout_alignParentTop="true" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@drawable/topborder"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:id="@+id/linearLayout4">
+
+            <com.balysv.materialripple.MaterialRippleLayout
+                android:id="@+id/btn_mavisos"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:padding="3dip"
+                app:mrl_rippleDuration="200"
+                app:mrl_rippleOverlay="true">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/img_mavisos"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_action_avisos"
+                        android:layout_above="@+id/txt_mavisos"
+                        android:layout_alignParentTop="true" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="Avisos"
+                        android:id="@+id/txt_mavisos"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true" />
+                </RelativeLayout>
+
+
+                </com.balysv.materialripple.MaterialRippleLayout>
+
+
+            <com.balysv.materialripple.MaterialRippleLayout
+                android:id="@+id/btn_meventos"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:padding="3dip"
+                app:mrl_rippleDuration="200"
+                app:mrl_rippleOverlay="true">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/img_meventos"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_action_eventos"
+                        android:layout_above="@+id/txt_meventos"
+                        android:layout_alignParentTop="true" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="Eventos"
+                        android:id="@+id/txt_meventos"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true" />
+                </RelativeLayout>
+
+
+            </com.balysv.materialripple.MaterialRippleLayout>
+
+            <com.balysv.materialripple.MaterialRippleLayout
+                android:id="@+id/btn_malumnos"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:padding="3dip"
+                app:mrl_rippleDuration="200"
+                app:mrl_rippleOverlay="true">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/img_malumnos"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_action_alumnos"
+                        android:layout_above="@+id/txt_malumnos"
+                        android:layout_alignParentTop="true" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="Alumnos"
+                        android:id="@+id/txt_malumnos"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true" />
+                </RelativeLayout>
+
+
+            </com.balysv.materialripple.MaterialRippleLayout>
+
+            <com.balysv.materialripple.MaterialRippleLayout
+                android:id="@+id/btn_mgalerias"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:padding="3dip"
+                app:mrl_rippleDuration="200"
+                app:mrl_rippleOverlay="true">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/img_mgalerias"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_action_galeria"
+                        android:layout_above="@+id/txt_mgalerias"
+                        android:layout_alignParentTop="true" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="Galería"
+                        android:id="@+id/txt_mgalerias"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true" />
+                </RelativeLayout>
+
+
+            </com.balysv.materialripple.MaterialRippleLayout>
+
+        </LinearLayout>
+    </RelativeLayout>
 
 
 </android.support.design.widget.CoordinatorLayout>

@@ -149,6 +149,9 @@ public class Galerias extends Fragment {
                     final JSONObject c = array.getJSONObject(i);
                     View item = inflate.inflate(R.layout.adapter_item_galerias, null);
                     Picasso.with(activity).load(MainActivity.urlImgPrincipal).into((ImageView) item.findViewById(R.id.fotoGal));
+                    if (c.getString("url").length()>0 && c.getString("url").contains("fotos")) {
+                        Picasso.with(activity).load(c.getString("url")).into((ImageView) item.findViewById(R.id.fotoGal));
+                    }
                     final String data = c.toString();
                     ((TextView) item.findViewById(R.id.txtTitulo)).setText(c.getString("titulo"));
                     ((TextView) item.findViewById(R.id.txtFecha)).setText(calcularFechaFull(c.getString("fecha")));

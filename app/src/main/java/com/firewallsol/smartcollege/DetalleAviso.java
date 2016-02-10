@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -118,10 +119,12 @@ public class DetalleAviso extends AppCompatActivity {
                 titulo.setText(c.getString("titulo"));
                 resumen.setText(c.getString("texto"));
 
-                if (c.getString("foto").length() > 10) {
+                if (c.getString("foto").contains("fotos")) {
                     Picasso.with(activity).load(c.getString("foto")).into(foto);
                 } else {
                     foto.setVisibility(View.GONE);
+
+                    foto.setLayoutParams(new LinearLayout.LayoutParams(0, 0));
                 }
 
 

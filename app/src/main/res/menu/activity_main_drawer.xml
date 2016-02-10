@@ -5,47 +5,47 @@
         <item
             android:id="@+id/nav_avisos"
             android:icon="@drawable/avisos"
-            android:title="Avisos" />
+            android:title="AVISOS" />
         <item
             android:id="@+id/nav_eventos"
             android:icon="@drawable/eventos"
-            android:title="Eventos" />
+            android:title="EVENTOS" />
         <item
             android:id="@+id/nav_alumnos"
             android:icon="@drawable/alumnos"
-            android:title="Alumnos" />
+            android:title="ALUMNOS" />
         <item
             android:id="@+id/nav_galeria"
             android:icon="@drawable/galeria"
-            android:title="Galerías" />
+            android:title="GALERÍAS" />
         <item
             android:id="@+id/nav_gaceta"
             android:icon="@drawable/gaceta"
-            android:title="Gaceta" />
+            android:title="GACETA" />
         <item
             android:id="@+id/nav_documentos"
             android:icon="@drawable/documentos"
-            android:title="Documentos" />
+            android:title="DOCUMENTOS" />
         <item
             android:id="@+id/nav_pagos"
             android:icon="@drawable/pagos"
-            android:title="Pagos" />
+            android:title="PAGOS" />
         <item
             android:id="@+id/nav_servicios"
             android:icon="@drawable/servicios"
-            android:title="Servicios" />
+            android:title="SERVICIOS" />
         <item
             android:id="@+id/nav_contaco"
             android:icon="@drawable/contacto"
-            android:title="Contacto" />
+            android:title="CONTACTO" />
         <item
             android:id="@+id/nac_alumno"
             android:icon="@drawable/salir"
-            android:title="Cambio Alumno" />
+            android:title="CAMBIO ALUMNO" />
         <item
             android:id="@+id/nav_salir"
             android:icon="@drawable/salir"
-            android:title="Salir" />
+            android:title="SALIR" />
     </group>
 
 

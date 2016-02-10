@@ -29,7 +29,7 @@
                 android:orientation="vertical"
                 android:background="@color/color_negro"
                 android:layout_width="match_parent"
-                android:layout_height="250dip">
+                android:layout_height="200dip">
 
 
                 <com.daimajia.slider.library.SliderLayout

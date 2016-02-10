@@ -106,6 +106,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         Cursor config = db.rawQuery("select * from tutor", null);
         if (config.moveToFirst()) {
             Intent it = new Intent(getApplicationContext(), SeleccionAlumno.class);
+            it.putExtra("donde","login");
             startActivity(it);
             finish();
             activity.overridePendingTransition(R.anim.slide_left, android.R.anim.fade_out);
@@ -575,6 +576,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             if (success) {
                 Intent it = new Intent(getApplicationContext(), SeleccionAlumno.class);
+                it.putExtra("donde","login");
                 startActivity(it);
                 finish();
             } else {

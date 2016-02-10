@@ -49,6 +49,8 @@ public class Avisos extends Fragment implements BaseSliderView.OnSliderClickList
     LinearLayout otros;
     HashMap<String, String> url_maps;
     ArrayList<String> datax;
+    ArrayList<String> datay;
+    ArrayList<String> dataz;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -222,6 +224,8 @@ public class Avisos extends Fragment implements BaseSliderView.OnSliderClickList
         String jsonRead = MainActivity.contenido_avisos;
         url_maps = new HashMap<String, String>();
         datax = new ArrayList<String>();
+        datay = new ArrayList<String>();
+        dataz = new ArrayList<String>();
 
         Log.e("json", jsonRead+"");
         JSONObject jsonObject = null;
@@ -235,11 +239,19 @@ public class Avisos extends Fragment implements BaseSliderView.OnSliderClickList
                     final JSONObject c = array.getJSONObject(i);
                     if (i < 4) {
 
-                        url_maps.put(c.getString("titulo"), c.getString("foto"));
+                        String foto;
+                        if (c.getString("foto").contains("fotos")){
+                            foto = c.getString("foto");
+                        } else {
+                            foto = MainActivity.urlImgPrincipal;
+                        }
+                        url_maps.put(c.getString("titulo"), foto);
                         datax.add(c.toString());
+                        datay.add(c.getString("titulo"));
+                        dataz.add(foto);
 
 
-                    } else {
+                    }
 
                         View aviso2 = inflater.inflate(R.layout.adapter_item_avisos, null);
                         ((TextView) aviso2.findViewById(R.id.txtTitulo)).setText(c.getString("titulo"));
@@ -256,7 +268,7 @@ public class Avisos extends Fragment implements BaseSliderView.OnSliderClickList
                         });
                         String texto = c.getString("texto");
                         if (texto.length() > 100) {
-                            texto = texto.substring(100) + "...";
+                            texto = texto.substring(0,100) + "...";
                         }
                         ((TextView) aviso2.findViewById(R.id.txtResumen)).setText(texto);
                         ImageView fotogde = (ImageView) aviso2.findViewById(R.id.imgAlerta);
@@ -277,27 +289,28 @@ public class Avisos extends Fragment implements BaseSliderView.OnSliderClickList
 
 
                         otros.addView(aviso2);
-                    }
+
                 }
             }
 
 
-            Integer c = datax.size();
+            //Integer c = datay.size();
+            Integer c=0;
             for (String name : url_maps.keySet()) {
-                c--;
+               // c--;
                 TextSliderView textSliderView = new TextSliderView(getActivity().getApplicationContext());
                 // initialize a SliderLayout
                 final int xc = c;
                 textSliderView
-                        .description(name)
-                        .image(url_maps.get(name))
-                        .setScaleType(BaseSliderView.ScaleType.CenterCrop)
+                        .description(datay.get(c))
+                        .image(dataz.get(c))
+                        .setScaleType(BaseSliderView.ScaleType.CenterInside)
                         .setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
                             @Override
                             public void onSliderClick(BaseSliderView slider) {
 
                                 Intent it = new Intent(getContext(), DetalleAviso.class);
-                                it.putExtra("datos", datax.get(xc));
+                                it.putExtra("datos", datax.get(datay.indexOf(slider.getDescription())));
                                 startActivity(it);
                                 getActivity().overridePendingTransition(R.anim.slide_left, android.R.anim.fade_out);
                             }
@@ -306,9 +319,10 @@ public class Avisos extends Fragment implements BaseSliderView.OnSliderClickList
                 //add your extra information
                 textSliderView.bundle(new Bundle());
                 textSliderView.getBundle()
-                        .putString("extra", name);
+                        .putString("extra", datay.get(c));
 
                 mDemoSlider.addSlider(textSliderView);
+                c++;
             }
 
 

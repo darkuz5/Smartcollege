@@ -123,6 +123,11 @@ public class MainActivity extends AppCompatActivity
     /** Variable para Eventos **/
     public static String eventos=null;
 
+    /** Pinchi barra de menu de abajo **/
+    MaterialRippleLayout btn_mavisos, btn_meventos, btn_malumnos, btn_mgalerias;
+    ImageView img_mavisos, img_meventos, img_malumnos, img_mgalerias;
+    TextView txt_mavisos, txt_meventos, txt_malumnos, txt_mgalerias;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,6 +140,47 @@ public class MainActivity extends AppCompatActivity
         activity = this;
         db_sqlite = new Database(activity);
         SQLiteDatabase db = db_sqlite.getWritableDatabase();
+
+        btn_mavisos = (MaterialRippleLayout) findViewById(R.id.btn_mavisos);
+        btn_meventos = (MaterialRippleLayout) findViewById(R.id.btn_meventos);
+        btn_malumnos = (MaterialRippleLayout) findViewById(R.id.btn_malumnos);
+        btn_mgalerias = (MaterialRippleLayout) findViewById(R.id.btn_mgalerias);
+
+        btn_mavisos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                xmenu(R.id.nav_avisos);
+            }
+        });
+        btn_meventos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                xmenu(R.id.nav_eventos);
+            }
+        });
+        btn_malumnos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                xmenu(R.id.nav_alumnos);
+            }
+        });
+        btn_mgalerias.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                xmenu(R.id.nav_galeria);
+            }
+        });
+        img_mavisos = (ImageView) findViewById(R.id.img_mavisos);
+        img_meventos = (ImageView) findViewById(R.id.img_meventos);
+        img_malumnos = (ImageView) findViewById(R.id.img_malumnos);
+        img_mgalerias = (ImageView) findViewById(R.id.img_mgalerias);
+
+        txt_mavisos = (TextView) findViewById(R.id.txt_mavisos);
+        txt_meventos = (TextView) findViewById(R.id.txt_meventos);
+        txt_malumnos = (TextView) findViewById(R.id.txt_malumnos);
+        txt_mgalerias = (TextView) findViewById(R.id.txt_mgalerias);
+
+
 
 
         imagenPincipal = (ImageView) toolbar.findViewById(R.id.img_principal);
@@ -193,6 +239,7 @@ public class MainActivity extends AppCompatActivity
         SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.putString("color", color);
+        editor.putString("alumno", alumno);
         editor.commit();
 
         toolbar.setBackgroundColor(Color.parseColor(color));
@@ -240,6 +287,10 @@ public class MainActivity extends AppCompatActivity
         config.close();
         db.close();
 
+
+        barramenu(0);
+
+
     }
 
     public static void cambiardatosUser(String urlFoto){
@@ -282,6 +333,14 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+        xmenu(id);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    public void xmenu(int id){
         if (id == R.id.nav_avisos) {
             showFragmentView(0);
             imagenPincipal.setVisibility(View.VISIBLE);
@@ -368,10 +427,6 @@ public class MainActivity extends AppCompatActivity
             Log.i("cargar", "Salir");
 
         }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
     }
 
     public void showFragmentView(int fragmentId) {
@@ -380,30 +435,39 @@ public class MainActivity extends AppCompatActivity
             switch (fragmentId) {
                 case 0:
                     f = Avisos.newInstance("", "");
+                    barramenu(0);
                     break;
                 case 1:
                     f = Eventos.newInstance("", "");
+                    barramenu(1);
                     break;
                 case 2:
                     f = Alumno.newInstance();
+                    barramenu(2);
                     break;
                 case 3:
                     f = Galerias.newInstance();
+                    barramenu(3);
                     break;
                 case 4:
                     f = Gacetas.newInstance("", "");
+                    barramenu(4);
                     break;
                 case 5:
                     f = Documentos.newInstance();
+                    barramenu(5);
                     break;
                 case 6:
                     f = Pagos.newInstance();
+                    barramenu(6);
                     break;
                 case 7:
                     f = Servicios.newInstance();
+                    barramenu(7);
                     break;
                 case 8:
                     f = Contacto.newInstance();
+                    barramenu(8);
                     break;
                 case 9:
                     cambiarAlumno();
@@ -606,6 +670,75 @@ public class MainActivity extends AppCompatActivity
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+
+        }
+    }
+
+
+
+    /*** para la pinchi barra de menu ***/
+
+    public  void barramenu(int estado){
+
+        switch (estado){
+            case 0: //Avisos
+                img_mavisos.setColorFilter(Color.parseColor(color));
+                img_meventos.setColorFilter(Color.parseColor("#333333"));
+                img_malumnos.setColorFilter(Color.parseColor("#333333"));
+                img_mgalerias.setColorFilter(Color.parseColor("#333333"));
+
+                txt_mavisos.setTextColor(Color.parseColor(color));
+                txt_meventos.setTextColor(Color.parseColor("#333333"));
+                txt_malumnos.setTextColor(Color.parseColor("#333333"));;
+                txt_mgalerias.setTextColor(Color.parseColor("#333333"));;
+                break;
+            case 1: //Avisos
+                img_mavisos.setColorFilter(Color.parseColor("#333333"));
+                img_meventos.setColorFilter(Color.parseColor(color));
+                img_malumnos.setColorFilter(Color.parseColor("#333333"));
+                img_mgalerias.setColorFilter(Color.parseColor("#333333"));
+
+                txt_mavisos.setTextColor(Color.parseColor("#333333"));
+                txt_meventos.setTextColor(Color.parseColor(color));
+                txt_malumnos.setTextColor(Color.parseColor("#333333"));;
+                txt_mgalerias.setTextColor(Color.parseColor("#333333"));;
+                break;
+
+            case 2: //Avisos
+                img_mavisos.setColorFilter(Color.parseColor("#333333"));
+                img_meventos.setColorFilter(Color.parseColor("#333333"));
+                img_malumnos.setColorFilter(Color.parseColor(color));
+                img_mgalerias.setColorFilter(Color.parseColor("#333333"));
+
+                txt_mavisos.setTextColor(Color.parseColor("#333333"));
+                txt_meventos.setTextColor(Color.parseColor("#333333"));
+                txt_malumnos.setTextColor(Color.parseColor(color));;
+                txt_mgalerias.setTextColor(Color.parseColor("#333333"));;
+                break;
+
+            case 3: //Avisos
+                img_mavisos.setColorFilter(Color.parseColor("#333333"));
+                img_meventos.setColorFilter(Color.parseColor("#333333"));
+                img_malumnos.setColorFilter(Color.parseColor("#333333"));
+                img_mgalerias.setColorFilter(Color.parseColor(color));
+
+                txt_mavisos.setTextColor(Color.parseColor("#333333"));
+                txt_meventos.setTextColor(Color.parseColor("#333333"));
+                txt_malumnos.setTextColor(Color.parseColor("#333333"));;
+                txt_mgalerias.setTextColor(Color.parseColor(color));;
+                break;
+            default:
+                img_mavisos.setColorFilter(Color.parseColor("#333333"));
+                img_meventos.setColorFilter(Color.parseColor("#333333"));
+                img_malumnos.setColorFilter(Color.parseColor("#333333"));
+                img_mgalerias.setColorFilter(Color.parseColor("#333333"));
+
+                txt_mavisos.setTextColor(Color.parseColor("#333333"));
+                txt_meventos.setTextColor(Color.parseColor("#333333"));
+                txt_malumnos.setTextColor(Color.parseColor("#333333"));;
+                txt_mgalerias.setTextColor(Color.parseColor("#333333"));;
+                break;
 
 
         }

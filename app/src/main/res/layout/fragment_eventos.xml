@@ -20,7 +20,7 @@
 
             <RadioButton
                 android:id="@+id/proxEventos"
-                android:text="PROXIMOS EVENTOS"
+                android:text="PRÓXIMOS EVENTOS"
                 android:button="@null"
                 android:gravity="center"
                 android:padding="10dp"

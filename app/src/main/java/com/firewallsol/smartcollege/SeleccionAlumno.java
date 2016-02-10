@@ -3,6 +3,7 @@ package com.firewallsol.smartcollege;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -23,6 +24,8 @@ import android.widget.TextView;
 
 import com.firewallsol.smartcollege.Database.Database;
 
+import java.util.Map;
+
 public class SeleccionAlumno extends AppCompatActivity {
     public static Database db_sqlite;
     public static InputMethodManager inputManager;
@@ -34,6 +37,7 @@ public class SeleccionAlumno extends AppCompatActivity {
     public static ImageView imagenPrincipal;
     public static TextView textoPrincipal;
     public static TextView textoSecundario;
+    public static final String MyPREFERENCES = "MyPrefs" ;
     LinearLayout padre;
     private LayoutInflater inflater;
 
@@ -69,6 +73,34 @@ public class SeleccionAlumno extends AppCompatActivity {
         Log.i("Color", color);
 
         CustomActionBar();
+
+
+        Intent itx = getIntent();
+        if (itx.hasExtra("donde")){
+            SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+            Map<String, ?> editor = sharedpreferences.getAll();
+            if (editor.containsKey("alumno")) {
+                String alumno  =  editor.get("alumno").toString();
+                if (alumno.length()>0) {
+                    try {
+                        Alumno.examenes = null;
+                        Alumno.temario = null;
+                        Alumno.tareas = null;
+                        MainActivity.activity.finish();
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
+                    }
+
+                    Intent it = new Intent(getApplicationContext(), MainActivity.class);
+                    it.putExtra("color", color);
+                    it.putExtra("alumno", alumno);
+                    startActivity(it);
+                    finish();
+                }
+
+            }
+
+        }
 
         padre = (LinearLayout) findViewById(R.id.padre);
         Cursor hijos = db.rawQuery("select * from hijos order by id asc", null);
