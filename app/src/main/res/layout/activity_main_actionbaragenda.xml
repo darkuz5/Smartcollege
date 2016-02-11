@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/contenedor"
+    android:layout_width="match_parent"
+    android:layout_height="?android:attr/actionBarSize"
+    android:background="@color/colorPrimary">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <ImageView
+        android:id="@+id/imagenPrincipal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:layout_margin="5dip"
+        android:src="@drawable/logoheader" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="?android:attr/actionBarSize"
+        android:layout_marginRight="?android:attr/actionBarSize"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textoPrincipal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textColor="@color/colorBlanco"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/textoSecundario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textColor="@color/colorBlanco"
+            android:textSize="10sp"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+    <com.balysv.materialripple.MaterialRippleLayout
+        android:id="@+id/btn_right"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        app:mrl_rippleDuration="200"
+        app:mrl_rippleOverlay="true">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/iconoDerecho"
+            android:layout_width="50dip"
+            android:layout_height="50dip"
+            android:clickable="true"
+            android:focusable="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_action_eventos"
+            android:visibility="visible"
+            android:tint="@color/colorBlanco"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Agendar"
+            android:textSize="11sp"
+            android:id="@+id/textView11"
+            android:singleLine="true"
+            android:gravity="center_vertical"
+            android:layout_gravity="right"
+            android:textColor="@color/colorBlanco"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/iconoDerecho"
+            android:layout_toStartOf="@+id/iconoDerecho" />
+
+    </RelativeLayout>
+    </com.balysv.materialripple.MaterialRippleLayout>
+
+
+
+    <com.balysv.materialripple.MaterialRippleLayout
+        android:id="@+id/btn_aviso"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        app:mrl_rippleDuration="200"
+        app:mrl_rippleOverlay="true">
+
+        <ImageView
+            android:id="@+id/iconoIzquierdo"
+            android:layout_width="?android:attr/actionBarSize"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:focusable="true"
+            android:scaleType="center"
+            android:src="@drawable/ic_action_icon_left"
+            android:visibility="gone" />
+    </com.balysv.materialripple.MaterialRippleLayout>
+</RelativeLayout>

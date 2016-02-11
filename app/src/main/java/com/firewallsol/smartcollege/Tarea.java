@@ -3,12 +3,8 @@ package com.firewallsol.smartcollege;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,19 +17,13 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.firewallsol.smartcollege.Adaptadores.Items.ItemsInicio;
 import com.firewallsol.smartcollege.Funciones.jSONFunciones;
-
-
-import com.firewallsol.smartcollege.Gaceta.Gaceta;
-import com.firewallsol.smartcollege.Gaceta.RVAdapter;
 import com.firewallsol.smartcollege.TareaModel.RVAdapterT;
 import com.firewallsol.smartcollege.TareaModel.TareaModel;
 import com.squareup.picasso.Picasso;
@@ -43,14 +33,12 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.zip.Inflater;
 
 import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
 
@@ -134,6 +122,7 @@ public class Tarea extends AppCompatActivity  implements SwipeRefreshLayout.OnRe
             paramsSend = new ArrayList<>();
             paramsSend.add(new BasicNameValuePair("id_grupo", MainActivity.idGrupo));
             new DescargaGacetas().execute();
+            Log.e("datos", paramsSend.toString());
         }
 
         // swipeRefreshLayout.setOnRefreshListener((SwipeRefreshLayout.OnRefreshListener) this);
@@ -155,6 +144,7 @@ public class Tarea extends AppCompatActivity  implements SwipeRefreshLayout.OnRe
                         paramsSend = new ArrayList<>();
                         paramsSend.add(new BasicNameValuePair("id_grupo", MainActivity.idGrupo));
                         paramsSend.add(new BasicNameValuePair("indice", pagina + ""));
+                        Log.e("datos",paramsSend.toString());
                         new DescargaGacetas().execute();
                     }
                 }
@@ -216,6 +206,8 @@ public class Tarea extends AppCompatActivity  implements SwipeRefreshLayout.OnRe
 
         paramsSend = new ArrayList<>();
         paramsSend.add(new BasicNameValuePair("id_grupo", MainActivity.idGrupo));
+
+        Log.e("datos", paramsSend.toString());
         new DescargaGacetas().execute();
         Alumno.banderaPage = 1;
     }

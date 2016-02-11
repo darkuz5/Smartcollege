@@ -34,6 +34,7 @@ public class Contacto extends Fragment {
     private AutoScrollViewPager pager;
     private Activity activity;
     private View root;
+    String url;
     LinearLayout padre;
 
 
@@ -75,7 +76,10 @@ public class Contacto extends Fragment {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
-                    activity.startActivity(intent);
+                    Intent chooser = Intent.createChooser(intent, "Seleccione");
+                    if (intent.resolveActivity(activity.getPackageManager()) != null) {
+                        activity.startActivity(chooser);
+                    }
                     activity.overridePendingTransition(R.anim.slide_left, android.R.anim.fade_out);
                 }
             });
@@ -87,17 +91,29 @@ public class Contacto extends Fragment {
                     Intent intent = new Intent(Intent.ACTION_SENDTO);
                     intent.setData(Uri.parse("mailto:"+emaildir)); // only email apps should handle this
                     intent.putExtra(Intent.EXTRA_EMAIL, emaildir);
-                    activity.startActivity(intent);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    Intent chooser = Intent.createChooser(intent, "Seleccione");
+                    if (intent.resolveActivity(activity.getPackageManager()) != null) {
+                        activity.startActivity(chooser);
+                    }
                     activity.overridePendingTransition(R.anim.slide_left, android.R.anim.fade_out);
                 }
             });
             ((TextView) root.findViewById(R.id.txtLink)).setText(config.getString(8));
-            final String url = config.getString(8);
+            url = config.getString(8);
+            if (!url.contains("http"))
+                    url = "http://" + url;
+
             root.findViewById(R.id.txtLink).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                    activity.startActivity(browserIntent);
+
+                    browserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    Intent chooser = Intent.createChooser(browserIntent, "Seleccione");
+                    if (browserIntent.resolveActivity(activity.getPackageManager()) != null) {
+                        activity.startActivity(chooser);
+                    }
                     activity.overridePendingTransition(R.anim.slide_left, android.R.anim.fade_out);
                 }
             });

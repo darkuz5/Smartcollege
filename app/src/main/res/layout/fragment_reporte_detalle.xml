@@ -41,12 +41,11 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="7dip"
-                        android:layout_marginTop="15dip"
-                        android:layout_marginBottom="30dip"
                         android:text="alumno"
+                        android:textStyle="bold"
                         android:textColor="@color/colorTexto"
-                        android:textSize="15sp"
+                        android:layout_marginBottom="10dip"
+                        android:textSize="16sp"
                         android:id="@+id/txtAlumno"
                         android:layout_gravity="center_vertical" />
                 </LinearLayout>
@@ -98,6 +97,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="16sp"
+                        android:textStyle="bold"
                         android:text="Asunto"
                         android:textColor="@color/colorTexto"/>
                 </LinearLayout>

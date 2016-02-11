@@ -34,6 +34,8 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_weight="2"
+                        android:textColor="@color/color_gris"
+                        android:textSize="12sp"
                         android:layout_height="wrap_content"
                         android:text="New Text"
                         android:id="@+id/txtFecha" />
@@ -49,6 +51,8 @@
                             android:layout_height="wrap_content"
                             android:text="New Text"
                             android:gravity="right"
+                            android:textColor="@color/color_gris"
+                            android:textSize="12sp"
                             android:layout_marginRight="5dip"
                             android:id="@+id/txtHace"
                             android:layout_toLeftOf="@+id/imgAlerta"
@@ -72,6 +76,7 @@
                     android:layout_marginBottom="5dip"
                     android:textColor="@color/colorTexto"
                     android:textSize="16sp"
+                    android:textStyle="bold"
                     android:text="New Text"
                     android:id="@+id/txtTitulo" />
 
@@ -79,6 +84,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="New Text"
+                    android:textColor="@color/color_gris"
                     android:singleLine="true"
                     android:id="@+id/txtResumen" />
 

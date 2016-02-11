@@ -43,7 +43,7 @@
                         android:minWidth="40dip"
                         android:text="31"
                         android:textColor="@color/colorBlanco"
-                        android:textSize="26sp" />
+                        android:textSize="24sp" />
 
                     <TextView
                         android:id="@+id/txtMes"
@@ -67,6 +67,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:text="New Text"
+                        android:textStyle="bold"
                         android:textColor="@color/color_negro"
                         android:textSize="15sp" />
 
@@ -76,6 +77,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dip"
                         android:lines="2"
+                        android:singleLine="true"
                         android:text="New Text" />
                 </LinearLayout>
 

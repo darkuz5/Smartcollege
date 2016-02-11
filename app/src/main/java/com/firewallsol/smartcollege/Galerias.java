@@ -145,7 +145,7 @@ public class Galerias extends Fragment {
             if (jsonObject.has("galerias")) {
                 JSONArray array = jsonObject.getJSONArray("galerias");
 
-                for (int i = 1; i < array.length(); i++) {
+                for (int i = 0; i < array.length(); i++) {
                     final JSONObject c = array.getJSONObject(i);
                     View item = inflate.inflate(R.layout.adapter_item_galerias, null);
                     Picasso.with(activity).load(MainActivity.urlImgPrincipal).into((ImageView) item.findViewById(R.id.fotoGal));

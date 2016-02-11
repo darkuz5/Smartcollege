@@ -444,6 +444,7 @@ public class Pagos_Enviar extends AppCompatActivity {
             dialog.show();
         }
 
+        /* checar el id de pago que la segunda vez esta en 0*/
         @Override
         protected String doInBackground(Void... voids) {
             String jsonRead = "";
@@ -461,11 +462,12 @@ public class Pagos_Enviar extends AppCompatActivity {
                 Log.i("Foto", image_str);
                 paramsSend.add(new BasicNameValuePair("foto", image_str));
 
-
+                Log.e("datos", paramsSend.toString());
 
                 jSONFunciones json = new jSONFunciones();
                 jsonRead = json.jSONRead(url, jSONFunciones.POST, paramsSend);
 
+                Pagos.idPago = "0";
             } catch (Exception e) {
                 e.printStackTrace();
             }

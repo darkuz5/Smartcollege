@@ -25,6 +25,7 @@
                 android:layout_height="wrap_content"
                 android:text="New Text"
                 android:textSize="16sp"
+                android:textStyle="bold"
                 android:layout_marginBottom="10dip"
                 android:textColor="@color/color_negro"
                 android:id="@+id/titulo" />
@@ -36,8 +37,8 @@
                 android:layout_height="match_parent">
 
                 <ImageView
-                    android:layout_width="30dip"
-                    android:layout_height="30dip"
+                    android:layout_width="25dip"
+                    android:layout_height="25dip"
                     android:id="@+id/imageView7"
                     android:src="@drawable/calendarionegro" />
 
@@ -72,8 +73,8 @@
                 android:layout_height="match_parent">
 
                 <ImageView
-                    android:layout_width="30dip"
-                    android:layout_height="30dip"
+                    android:layout_width="25dip"
+                    android:layout_height="25dip"
                     android:src="@drawable/pinblack"
                     android:id="@+id/imageView8" />
 

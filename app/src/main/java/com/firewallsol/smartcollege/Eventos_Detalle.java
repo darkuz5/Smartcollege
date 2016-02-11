@@ -31,9 +31,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class Eventos_Detalle extends AppCompatActivity {
     private Activity activity;
@@ -48,7 +50,9 @@ public class Eventos_Detalle extends AppCompatActivity {
     public static InputMethodManager inputManager;
 
     private GoogleMap map;
-
+    Date date = null;
+    String titulox="";
+    String descripcionx ="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +80,25 @@ public class Eventos_Detalle extends AppCompatActivity {
                 ((TextView) findViewById(R.id.titulo)).setText(c.getString("nombre"));
                 ((TextView) findViewById(R.id.fecha)).setText(calcularFechaFull(c.getString("fecha")));
                 ((TextView) findViewById(R.id.texto)).setText(c.getString("descripcion"));
+
+                titulox = c.getString("nombre");
+                descripcionx=c.getString("descripcion");
+
+                String hora = c.getString("hora");
+                if (hora.length()<6){
+                    hora = c.getString("hora")+":00";
+                }
+                String input = c.getString("fecha")+" "+hora;
+
+                try {
+                    date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).parse(input);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                final long milliseconds = date.getTime();
+                //long millisecondsFromNow = milliseconds - (new Date()).getTime();
+
+
                 String coordenadas = c.getString("coordenadas");
                 if (TextUtils.isEmpty(coordenadas)){
                     findViewById(R.id.ubica).setVisibility(View.GONE);
@@ -114,7 +137,7 @@ public class Eventos_Detalle extends AppCompatActivity {
     private void CustomActionBar() {
         // TODO Auto-generated method stub
         final LayoutInflater inflater = (LayoutInflater) mActionBar.getThemedContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View customActionBarView = inflater.inflate(R.layout.activity_main_actionbar, null);
+        final View customActionBarView = inflater.inflate(R.layout.activity_main_actionbaragenda, null);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -151,8 +174,20 @@ public class Eventos_Detalle extends AppCompatActivity {
             }
         });
 
-        iconoDerecho.setVisibility(View.GONE);
-        iconoDerecho.setImageResource(R.drawable.comunidad);
+        customActionBarView.findViewById(R.id.btn_right).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                agregarEvento();
+            }
+        });
+
+        iconoDerecho.setVisibility(View.VISIBLE);
+        iconoDerecho.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                agregarEvento();
+            }
+        });
 
 
         mActionBar.setCustomView(customActionBarView);
@@ -162,6 +197,18 @@ public class Eventos_Detalle extends AppCompatActivity {
         Toolbar parent = (Toolbar) customActionBarView.getParent();
         parent.setContentInsetsAbsolute(0, 0);
 
+    }
+
+    public void agregarEvento(){
+        Calendar cal = Calendar.getInstance();
+        Intent intent = new Intent(Intent.ACTION_EDIT);
+        intent.setType("vnd.android.cursor.item/event");
+        intent.putExtra("beginTime", date.getTime());
+        intent.putExtra("allDay", true);
+        intent.putExtra("endTime", date.getTime()+60*60);
+        intent.putExtra("title", titulox);
+        intent.putExtra("description", descripcionx);
+        startActivity(intent);
     }
 
     private static String calcularFechaFull(String fecha) {

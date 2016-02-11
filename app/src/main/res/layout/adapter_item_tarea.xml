@@ -36,6 +36,7 @@
                         android:layout_weight="2"
                         android:layout_height="wrap_content"
                         android:text="New Text"
+                        android:textSize="12sp"
                         android:textColor="@color/color_azul"
                         android:id="@+id/txtMateria" />
 
@@ -61,6 +62,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="New Text"
+                            android:textSize="12sp"
                             android:gravity="right"
                             android:textColor="@color/color_gris"
                             android:id="@+id/txtFecha"
@@ -77,6 +79,7 @@
                     android:layout_marginBottom="5dip"
                     android:textColor="@color/colorTexto"
                     android:textSize="16sp"
+                    android:textStyle="bold"
                     android:text="New Text"
                     android:id="@+id/txtTitulo" />
 

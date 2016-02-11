@@ -484,7 +484,11 @@ public class MainActivity extends AppCompatActivity
             f = Loader.newInstance("", "");
         }
         if (f != null) {
-            supportFragment.beginTransaction().replace(R.id.content_frame, f).commit();
+            try {
+                supportFragment.beginTransaction().replace(R.id.content_frame, f).commit();
+            } catch (IllegalStateException e){
+                e.printStackTrace();
+            }
         }
     }
 
@@ -523,6 +527,15 @@ public class MainActivity extends AppCompatActivity
                         db.execSQL("delete from hijos");
                         db.execSQL("delete from materias");
                         db.close();
+
+                        SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedpreferences.edit();
+                        editor.putString("color", "");
+                        editor.putString("alumno", "");
+                        editor.clear();
+                        editor.commit();
+
+
                         Intent it = new Intent(activity, SplashScreen.class);
                         startActivity(it);
                         finish();

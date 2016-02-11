@@ -16,7 +16,7 @@
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
         android:layout_margin="5dip"
-        android:src="@drawable/logosecundario" />
+        android:src="@drawable/logoheader" />
 
     <LinearLayout
         android:layout_width="match_parent"

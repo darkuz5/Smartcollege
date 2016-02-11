@@ -87,7 +87,12 @@ public class Servicios_Detalle extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
-                        activity.startActivity(intent);
+
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        Intent chooser = Intent.createChooser(intent, "Seleccione");
+                        if (intent.resolveActivity(getPackageManager()) != null) {
+                            activity.startActivity(chooser);
+                        }
                         activity.overridePendingTransition(R.anim.slide_left, android.R.anim.fade_out);
                     }
                 });
@@ -100,7 +105,11 @@ public class Servicios_Detalle extends AppCompatActivity {
                         Intent intent = new Intent(Intent.ACTION_SENDTO);
                         intent.setData(Uri.parse("mailto:" + emaildir)); // only email apps should handle this
                         intent.putExtra(Intent.EXTRA_EMAIL, emaildir);
-                        activity.startActivity(intent);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        Intent chooser = Intent.createChooser(intent, "Seleccione");
+                        if (intent.resolveActivity(getPackageManager()) != null) {
+                            activity.startActivity(chooser);
+                        }
                         activity.overridePendingTransition(R.anim.slide_left, android.R.anim.fade_out);
                     }
                 });
@@ -110,8 +119,17 @@ public class Servicios_Detalle extends AppCompatActivity {
                 findViewById(R.id.txtLink).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                        activity.startActivity(browserIntent);
+
+                        String myurl = url;
+                        if (!myurl.contains("http"))
+                                myurl = "http://"+myurl;
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(myurl));
+
+                        browserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        Intent chooser = Intent.createChooser(browserIntent, "Seleccione");
+                        if (browserIntent.resolveActivity(getPackageManager()) != null) {
+                            activity.startActivity(chooser);
+                        }
                         activity.overridePendingTransition(R.anim.slide_left, android.R.anim.fade_out);
                     }
                 });

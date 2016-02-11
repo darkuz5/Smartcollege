@@ -45,6 +45,7 @@
                 android:layout_marginBottom="5dip"
                 android:textColor="@color/colorTexto"
                 android:textSize="16sp"
+                android:textStyle="bold"
                 android:text="New Text"
                 android:id="@+id/txtTitulo" />
 
@@ -60,6 +61,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/txtDescrip"
+                    android:singleLine="true"
                     android:textColor="@color/color_gris"
                     android:text="descripcion"
                     />

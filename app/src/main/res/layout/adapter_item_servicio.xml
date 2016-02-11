@@ -46,7 +46,8 @@
                         android:layout_marginBottom="5dip"
                         android:text="New Text"
                         android:textColor="@color/colorTexto"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
 
 
 

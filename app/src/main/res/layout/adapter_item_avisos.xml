@@ -36,6 +36,8 @@
             android:layout_weight="2"
             android:layout_height="wrap_content"
             android:text="New Text"
+            android:textSize="12sp"
+            android:textColor="@color/color_gris"
             android:id="@+id/txtFecha" />
 
         <RelativeLayout
@@ -45,8 +47,10 @@
             android:layout_height="match_parent">
 
             <TextView
+                android:textColor="@color/color_gris"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="12sp"
                 android:text="New Text"
                 android:gravity="right"
                 android:layout_marginRight="5dip"
@@ -71,6 +75,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dip"
         android:textColor="@color/colorTexto"
+        android:textStyle="bold"
         android:textSize="16sp"
         android:text="New Text"
         android:id="@+id/txtTitulo" />
@@ -78,6 +83,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:textColor="@color/color_gris"
         android:text="New Text"
         android:id="@+id/txtResumen" />
 

@@ -46,6 +46,8 @@
                     android:layout_gravity="center_vertical"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:textSize="12sp"
+                    android:textColor="@color/color_gris"
                     android:text="New Text" />
 
                 <RelativeLayout
@@ -61,6 +63,8 @@
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentStart="true"
                         android:layout_marginRight="5dip"
+                        android:textSize="12sp"
+                        android:textColor="@color/color_gris"
                         android:layout_centerInParent="true"
                         android:layout_gravity="center_vertical"
                         android:layout_toLeftOf="@+id/imgAlerta"
@@ -86,13 +90,16 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dip"
                 android:text="New Text"
+                android:textStyle="bold"
                 android:textColor="@color/colorTexto"
                 android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/txtResumen"
+                android:textColor="@color/color_gris"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:singleLine="true"
                 android:text="New Text" />
 
         </LinearLayout>

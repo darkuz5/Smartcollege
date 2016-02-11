@@ -13,8 +13,9 @@
         android:text="New Text"
         android:id="@+id/alumno"
         android:textColor="@color/color_negro"
-        android:textSize="15sp"
-        android:padding="10dip"
+        android:layout_marginTop="10dip"
+        android:layout_marginBottom="10dip"
+        android:textSize="16sp"
         android:gravity="center_horizontal" />
 
     <ScrollView
@@ -48,8 +49,8 @@
                         android:layout_height="match_parent">
 
                         <ImageView
-                            android:layout_width="50dip"
-                            android:layout_height="50dip"
+                            android:layout_width="30dip"
+                            android:layout_height="30dip"
                             android:src="@drawable/libros" />
 
                         <TextView
@@ -94,8 +95,8 @@
                         android:layout_height="match_parent">
 
                         <ImageView
-                            android:layout_width="50dip"
-                            android:layout_height="50dip"
+                            android:layout_width="30dip"
+                            android:layout_height="30dip"
                             android:src="@drawable/paloma" />
 
                         <TextView

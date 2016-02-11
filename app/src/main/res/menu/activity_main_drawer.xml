@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nac_alumno"
+            android:icon="@drawable/salir"
+            android:title="CAMBIO ALUMNO" />
         <item
             android:id="@+id/nav_avisos"
             android:icon="@drawable/avisos"
@@ -17,7 +22,7 @@
         <item
             android:id="@+id/nav_galeria"
             android:icon="@drawable/galeria"
-            android:title="GALERÍAS" />
+            android:title="GALERÍA" />
         <item
             android:id="@+id/nav_gaceta"
             android:icon="@drawable/gaceta"
@@ -38,10 +43,6 @@
             android:id="@+id/nav_contaco"
             android:icon="@drawable/contacto"
             android:title="CONTACTO" />
-        <item
-            android:id="@+id/nac_alumno"
-            android:icon="@drawable/salir"
-            android:title="CAMBIO ALUMNO" />
         <item
             android:id="@+id/nav_salir"
             android:icon="@drawable/salir"

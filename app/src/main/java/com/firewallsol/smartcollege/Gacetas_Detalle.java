@@ -132,7 +132,13 @@ public class Gacetas_Detalle extends AppCompatActivity {
 
                         Intent i = new Intent(Intent.ACTION_VIEW);
                         i.setData(Uri.parse(url));
-                        startActivity(i);
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        Intent chooser = Intent.createChooser(i, "Seleccione");
+
+// Verify the intent will resolve to at least one activity
+                        if (i.resolveActivity(getPackageManager()) != null) {
+                            startActivity(chooser);
+                        }
                         activity.overridePendingTransition(R.anim.slide_left, android.R.anim.fade_out);
                     }
                 });
