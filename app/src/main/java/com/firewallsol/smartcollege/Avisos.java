@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -192,7 +191,19 @@ public class Avisos extends Fragment implements BaseSliderView.OnSliderClickList
             if (horas < 24) {
                 fec = "Hace " + horas + " horas";
             } else {
-                fec = "Hace " + days + " días";
+                int meses  =  days / 30;
+
+                if (meses > 0) {
+                    if (meses ==1){
+                        fec = "Hace " + meses + " mes";
+                    } else if (meses < 12){
+                        fec = "Hace " + meses + " meses";
+                    } else {
+                        fec = "Hace mas de 1 año";
+                    }
+                } else {
+                    fec = "Hace " + days + " días";
+                }
             }
 
 
@@ -227,7 +238,7 @@ public class Avisos extends Fragment implements BaseSliderView.OnSliderClickList
         datay = new ArrayList<String>();
         dataz = new ArrayList<String>();
 
-        Log.e("json", jsonRead+"");
+        //Log.e("json", jsonRead+"");
         JSONObject jsonObject = null;
         try {
             jsonObject = new JSONObject(jsonRead);

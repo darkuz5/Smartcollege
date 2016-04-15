@@ -10,43 +10,29 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.balysv.materialripple.MaterialRippleLayout;
 import com.firewallsol.smartcollege.Adaptadores.Items.ItemsInicio;
 import com.firewallsol.smartcollege.Funciones.jSONFunciones;
 import com.squareup.picasso.Picasso;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-import org.joda.time.DateTime;
-import org.joda.time.Days;
-import org.joda.time.Hours;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.URISyntaxException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-
-import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
 
 
 public class Boleta extends AppCompatActivity {
@@ -135,7 +121,7 @@ public class Boleta extends AppCompatActivity {
                 paramsSend.add(new BasicNameValuePair("id_alumno", MainActivity.alumno.trim()));
                 jSONFunciones json = new jSONFunciones();
                 jsonRead = json.jSONRead(url, jSONFunciones.POST, paramsSend);
-                Log.e("json", jsonRead);
+                //Log.e("json", jsonRead);
                 JSONObject jsonObject = new JSONObject(jsonRead);
                 if (jsonObject.has("boletas")){
 

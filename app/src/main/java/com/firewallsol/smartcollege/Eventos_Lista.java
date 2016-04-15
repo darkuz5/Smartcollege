@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,6 +38,8 @@ public class Eventos_Lista extends Fragment {
 
     String eventos;
     LinearLayout padre;
+    SwipeRefreshLayout swp;
+
 
 
     public Eventos_Lista() {
@@ -69,6 +72,8 @@ public class Eventos_Lista extends Fragment {
         padre = (LinearLayout) root.findViewById(R.id.padre);
 
 
+        swp = (SwipeRefreshLayout) root.findViewById(R.id.refreshEvento);
+
         activity = getActivity();
         eventos = MainActivity.eventos;
         minflater = inflater;
@@ -81,6 +86,14 @@ public class Eventos_Lista extends Fragment {
         }
 
 
+
+        swp.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new DescargarEventos().execute();
+                swp.setRefreshing(false);
+            }
+        });
 
 
 

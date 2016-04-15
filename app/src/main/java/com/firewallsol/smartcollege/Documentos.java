@@ -15,9 +15,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.firewallsol.smartcollege.Adaptadores.Items.ItemsInicio;
-import com.firewallsol.smartcollege.Funciones.jSONFunciones;
-import com.firewallsol.smartcollege.Documento.RVAdapterDocumentos;
 import com.firewallsol.smartcollege.Documento.Documento;
+import com.firewallsol.smartcollege.Documento.RVAdapterDocumentos;
+import com.firewallsol.smartcollege.Funciones.jSONFunciones;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -218,7 +218,7 @@ public class Documentos extends Fragment  implements SwipeRefreshLayout.OnRefres
 
     public void llenado(String result) throws JSONException {
         swipeRefreshLayout.setRefreshing(false);
-        Log.i("Resulta", result);
+        //Log.i("Resulta", result);
 
         if (result.length() > 10) {
 

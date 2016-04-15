@@ -8,7 +8,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.media.Image;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,7 +20,6 @@ import com.balysv.materialripple.MaterialRippleLayout;
 import com.firewallsol.smartcollege.ExamenDetalle;
 import com.firewallsol.smartcollege.MainActivity;
 import com.firewallsol.smartcollege.R;
-import com.firewallsol.smartcollege.TareaDetalle;
 
 import java.util.List;
 

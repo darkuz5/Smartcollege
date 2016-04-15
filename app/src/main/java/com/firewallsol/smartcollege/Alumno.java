@@ -3,32 +3,21 @@ package com.firewallsol.smartcollege;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.balysv.materialripple.MaterialRippleLayout;
-import com.firewallsol.smartcollege.Adaptadores.Items.ItemsInicio;
 import com.firewallsol.smartcollege.Database.Database;
 import com.firewallsol.smartcollege.ExamenModel.ExamenModel;
 import com.firewallsol.smartcollege.ExamenModel.TemarioModel;
-import com.firewallsol.smartcollege.Funciones.jSONFunciones;
-import com.firewallsol.smartcollege.Gaceta.Gaceta;
 import com.firewallsol.smartcollege.TareaModel.TareaModel;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -127,7 +116,7 @@ public class Alumno extends Fragment {
             @Override
             public void onClick(View v) {
 
-                Intent it = new Intent(activity.getApplicationContext(), Premio.class);
+                Intent it = new Intent(activity.getApplicationContext(), Premios_Lista.class);
                 startActivity(it);
                 activity.overridePendingTransition(R.anim.slide_left, R.anim.anim_null);
 

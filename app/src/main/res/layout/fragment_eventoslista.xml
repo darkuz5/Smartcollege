@@ -3,7 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
-
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/refreshEvento"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -23,4 +26,5 @@
                 android:id="@+id/progressBar4" />
         </LinearLayout>
     </ScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

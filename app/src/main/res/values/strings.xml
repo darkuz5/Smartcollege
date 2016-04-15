@@ -32,6 +32,7 @@
     <string name="getAlumnosDeTutor">http://smartcollege.mx/servicios/getAlumnosDeTutor.php</string>
     <string name="getMateriasAlumno">http://smartcollege.mx/servicios/getMateriasAlumno.php</string>
     <string name="getBoletasAlumno">http://smartcollege.mx/servicios/getBoletasAlumno.php</string>
+    <string name="getBCuedroHonor">http://smartcollege.mx/servicios/getCuadroHonor.php</string>
     <string name="getDocumentos">http://smartcollege.mx/servicios/getDocumentos.php</string>
     <string name="getGaleria">http://smartcollege.mx/servicios/getGalerias.php</string>
     <string name="getFotosGal">http://smartcollege.mx/servicios/getFotosGal.php</string>

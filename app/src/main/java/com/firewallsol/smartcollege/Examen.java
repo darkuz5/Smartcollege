@@ -256,7 +256,7 @@ public class Examen extends AppCompatActivity  implements SwipeRefreshLayout.OnR
         String fec = "";
 
         SimpleDateFormat fechaFormat = new SimpleDateFormat("dd/MM/yy");
-        SimpleDateFormat parseFormat = new SimpleDateFormat("MM-dd");
+        SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat horaFormat = new SimpleDateFormat("HH:mm");
 
@@ -304,7 +304,7 @@ public class Examen extends AppCompatActivity  implements SwipeRefreshLayout.OnR
         String fec = "";
 
         SimpleDateFormat fechaFormat = new SimpleDateFormat("dd ' de ' MMMM");
-        SimpleDateFormat parseFormat = new SimpleDateFormat("MM-dd");
+        SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
         try {

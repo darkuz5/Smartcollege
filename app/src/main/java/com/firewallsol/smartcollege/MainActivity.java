@@ -72,19 +72,19 @@ public class MainActivity extends AppCompatActivity
     /**
      * Contenido
      **/
-    public static String contenido_avisos;
+    public static String contenido_avisos="";
     public static String contenido_galerias = "";
 
 
     /**
      * Variables
      **/
-    public static String urlImgPrincipal;
-    public static String alumno;
-    public static String nombreAlumno;
-    public static String idEscuela;
-    public static String idTutor;
-    public static String idGrupo;
+    public static String urlImgPrincipal="";
+    public static String alumno="";
+    public static String nombreAlumno="";
+    public static String idEscuela="";
+    public static String idTutor="";
+    public static String idGrupo="";
 
 
 
@@ -222,7 +222,8 @@ public class MainActivity extends AppCompatActivity
             Cursor alumn = db.rawQuery("select * from hijos where id = '" + alumno + "'", null);
             if (alumn.moveToFirst()) {
                 nombreAlumno = alumn.getString(1);
-                idGrupo = alumn.getString(3);
+                idGrupo = alumn.getString(5);
+                Log.e("Grupo",idGrupo);
             }
             alumn.close();
 
@@ -252,6 +253,7 @@ public class MainActivity extends AppCompatActivity
         Cursor config = db.rawQuery("select * from colegio", null);
         if (config.moveToFirst()) {
             idEscuela = config.getString(0);
+            Log.e("escuela",idEscuela);
             urlImgPrincipal = "http://smartcollege.mx/" + config.getString(9);
             Picasso.with(activity).load("http://smartcollege.mx/" + config.getString(9)).placeholder(R.drawable.logosc).into(imagenPincipal);
         } else {
@@ -520,6 +522,9 @@ public class MainActivity extends AppCompatActivity
                                 ParsePush.unsubscribeInBackground("m" + materias.getString(0));
                             } while (materias.moveToNext());
                         }
+                        contenido_avisos = null;
+                        contenido_galerias = null;
+                        eventos = null;
                         materias.close();
                         db.execSQL("delete from tutor");
                         db.execSQL("delete from colegio");

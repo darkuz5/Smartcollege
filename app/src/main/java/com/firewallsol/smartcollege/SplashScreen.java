@@ -3,7 +3,6 @@ package com.firewallsol.smartcollege;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
 import java.util.Timer;
 import java.util.TimerTask;

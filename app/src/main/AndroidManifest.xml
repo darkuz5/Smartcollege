@@ -153,6 +153,15 @@
         <activity
             android:name=".Eventos_Detalle"
             android:launchMode="singleTask" />
+        <activity
+            android:name=".Premios_Lista"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".Premios_Honor"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".Eventos_VerFoto"
+            android:launchMode="singleTask" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").

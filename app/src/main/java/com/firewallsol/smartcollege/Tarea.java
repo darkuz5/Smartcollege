@@ -304,7 +304,7 @@ public class Tarea extends AppCompatActivity  implements SwipeRefreshLayout.OnRe
         String fec = "";
 
         SimpleDateFormat fechaFormat = new SimpleDateFormat("dd ' de ' MMMM");
-        SimpleDateFormat parseFormat = new SimpleDateFormat("MM-dd");
+        SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
         try {

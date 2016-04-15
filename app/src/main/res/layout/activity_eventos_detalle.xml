@@ -92,7 +92,64 @@
                 class="com.google.android.gms.maps.MapFragment"
                 android:layout_width="match_parent"
                 android:layout_height="250dip" />
-</LinearLayout>
+
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_marginBottom="10dip"
+                android:layout_marginTop="10dip"
+                android:id="@+id/gal1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="25dip"
+                    android:layout_height="25dip"
+                    android:id="@+id/imageView9"
+                    android:src="@drawable/calendarionegro" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dip"
+                    android:textSize="12sp"
+                    android:layout_gravity="center_vertical"
+                    android:text="Galería"
+                    android:id="@+id/galeria" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_marginBottom="10dip"
+                android:id="@+id/gal2"
+                android:layout_width="match_parent"
+                android:background="@color/color_gris_claro"
+                android:layout_height="match_parent">
+
+                <HorizontalScrollView
+                    android:layout_width="wrap_content"
+                    android:padding="5dip"
+                    android:layout_height="100dip">
+
+                    <LinearLayout
+                        android:id="@+id/contenido_fotos"
+                        android:layout_width="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_height="match_parent">
+
+
+
+
+                    </LinearLayout>
+
+
+                </HorizontalScrollView>
+
+
+
+
+            </LinearLayout>
+
+        </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
