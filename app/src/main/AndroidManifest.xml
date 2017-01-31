@@ -169,11 +169,18 @@
              You need a different API key for each encryption key, including the release key that is used to
              sign the APK for publishing.
              You can define the keys for the debug and release targets in src/debug/ and src/release/. 
-        -->
+
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyD2CVTjW_Q029JVTamwzrpJTJ2dwVVInFQ" />
+            android:value="AIzaSyD2CVTjW_Q029JVTamwzrpJTJ2dwVVInFQ" />-->
+
+
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyCPWkykvTIOuciR1gCXSiorLB4uhwnW3Ps" />
+
+
 
         <!--<meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -196,33 +203,24 @@
 
 
         <!-- PARSE -->
-        <service android:name="com.parse.PushService" />
 
-        <receiver
-            android:name=".Funciones.ParseNotificacion"
-            android:exported="false">
+        <!-- Firebase Notifications -->
+        <service android:name=".service.MyFirebaseMessagingService">
             <intent-filter>
-                <action android:name="com.parse.push.intent.RECEIVE" />
-                <action android:name="com.parse.push.intent.DELETE" />
-                <action android:name="com.parse.push.intent.OPEN" />
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
-        </receiver>
+        </service>
 
-        <meta-data
-            android:name="com.parse.push.notification_icon"
-            android:resource="@mipmap/ic_launcher"
-            tools:ignore="ManifestResource" />
-
-        <receiver
-            android:name="com.parse.GcmBroadcastReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND">
+        <service android:name=".service.MyFirebaseInstanceIDService">
             <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-                <!--                   IMPORTANT: Change "com.utandem.android" to match your app's package name. -->
-                <category android:name="com.firewallsol.smartcollege" />
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
-        </receiver>
+        </service>
+        <!-- ./Firebase Notifications -->
+
+
+
+
     </application>
 
 </manifest>

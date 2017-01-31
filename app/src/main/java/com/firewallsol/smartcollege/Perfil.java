@@ -69,7 +69,11 @@ public class Perfil extends AppCompatActivity {
         if (tutor.moveToFirst()) {
             ((TextView) findViewById(R.id.nombre)).setText(tutor.getString(1));
             CircleImageView foto_tutor = (CircleImageView) findViewById(R.id.foto);
-            Picasso.with(activity).load(tutor.getString(6)).placeholder(R.drawable.logosc).into(foto_tutor);
+            try {
+                Picasso.with(activity).load(tutor.getString(6)).placeholder(R.drawable.logosc).into(foto_tutor);
+            } catch (Exception xc) {
+
+            }
 
             ((TextView) findViewById(R.id.correo)).setText(tutor.getString(2));
             ((TextView) findViewById(R.id.telefono)).setText(tutor.getString(5));

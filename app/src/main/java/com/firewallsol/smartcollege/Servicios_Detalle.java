@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -24,7 +25,10 @@ import android.widget.TextView;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -46,6 +50,10 @@ public class Servicios_Detalle extends AppCompatActivity {
     public static InputMethodManager inputManager;
 
     private GoogleMap map;
+    MapView mMapView;
+    private GoogleMap googleMap;
+    String titulox="";
+    String descripcionx ="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +73,19 @@ public class Servicios_Detalle extends AppCompatActivity {
         CustomActionBar();
 
 
+        mMapView = (MapView) findViewById(R.id.mapView);
+        mMapView.onCreate(savedInstanceState);
+
+        mMapView.onResume(); // needed to get the map to display immediately
+
+        try {
+            MapsInitializer.initialize(getApplicationContext());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+
 
 
         Intent it = getIntent();
@@ -81,6 +102,10 @@ public class Servicios_Detalle extends AppCompatActivity {
                 ((TextView) findViewById(R.id.txtTitulo)).setText(c.getString("nombre"));
                 ((TextView) findViewById(R.id.txtFecha)).setText(c.getString("descripcion"));
                 ((TextView) findViewById(R.id.textTel)).setText(c.getString("telefono"));
+
+
+                titulox = c.getString("nombre");
+                descripcionx=c.getString("descripcion");
 
                 final String phone =c.getString("telefono");
                 findViewById(R.id.textTel).setOnClickListener(new View.OnClickListener() {
@@ -141,17 +166,28 @@ public class Servicios_Detalle extends AppCompatActivity {
                 if (TextUtils.isEmpty(coordenadas)){
                     findViewById(R.id.ubica).setVisibility(View.GONE);
                 } else {
-                    String[] coordena = coordenadas.split(", ");
-                    final LatLng KIEL = new LatLng(Double.parseDouble(coordena[0] + "0"), Double.parseDouble(coordena[1] + "0"));
-                    map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
-                            .getMap();
-                    Marker kiel = map.addMarker(new MarkerOptions()
-                            .position(KIEL)
-                            .title(c.getString("nombre"))
-                            .snippet(c.getString("descripcion")));
+                    final String[] coordena = coordenadas.split(", ");
 
-                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(KIEL, 15));
-                    map.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
+                    mMapView.getMapAsync(new OnMapReadyCallback() {
+                        @Override
+                        public void onMapReady(GoogleMap mMap) {
+                            googleMap = mMap;
+                            try {
+                                // For showing a move to my location button
+                                googleMap.setMyLocationEnabled(true);
+                            } catch (Exception ex){
+
+                            }
+
+                            // For dropping a marker at a point on the Map
+                            LatLng sydney = new LatLng(Double.parseDouble(coordena[0] + "0"), Double.parseDouble(coordena[1] + "0"));
+                            googleMap.addMarker(new MarkerOptions().position(sydney).title(titulox).snippet(descripcionx));
+
+                            // For zooming automatically to the location of the marker
+                            CameraPosition cameraPosition = new CameraPosition.Builder().target(sydney).zoom(12).build();
+                            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                        }
+                    });
 
                 }
 
@@ -174,7 +210,11 @@ public class Servicios_Detalle extends AppCompatActivity {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            try {
             getWindow().setStatusBarColor(Color.parseColor(color));
+            } catch (Exception ex) {
+            Log.e("Error", ex.toString());
+            }
         }
         mActionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor(color)));
 
@@ -218,6 +258,30 @@ public class Servicios_Detalle extends AppCompatActivity {
         Toolbar parent = (Toolbar) customActionBarView.getParent();
         parent.setContentInsetsAbsolute(0, 0);
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mMapView.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mMapView.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mMapView.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mMapView.onLowMemory();
     }
 
 }

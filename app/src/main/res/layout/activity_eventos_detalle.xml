@@ -87,9 +87,13 @@
                     android:text="Ubicación"
                     android:id="@+id/textView7" />
             </LinearLayout>
-            <fragment
+            <!--<fragment
                 android:id="@+id/map"
                 class="com.google.android.gms.maps.MapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="250dip" /> -->
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/mapView"
                 android:layout_width="match_parent"
                 android:layout_height="250dip" />
 

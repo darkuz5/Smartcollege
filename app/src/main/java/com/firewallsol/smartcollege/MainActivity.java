@@ -1,9 +1,11 @@
 package com.firewallsol.smartcollege;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -15,12 +17,14 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +32,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.balysv.materialripple.MaterialRippleLayout;
 import com.firewallsol.smartcollege.Adaptadores.Items.ItemsInicio;
@@ -36,7 +41,8 @@ import com.firewallsol.smartcollege.Documento.Documento;
 import com.firewallsol.smartcollege.Funciones.jSONFunciones;
 import com.firewallsol.smartcollege.Gaceta.Gaceta;
 import com.firewallsol.smartcollege.Servicio.Servicio;
-import com.parse.ParsePush;
+//import com.parse.ParsePush;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.squareup.picasso.Picasso;
 
 import org.apache.http.NameValuePair;
@@ -48,6 +54,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import com.firewallsol.smartcollege.app.Config;
+import com.firewallsol.smartcollege.utils.NotificationUtils;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -129,6 +139,10 @@ public class MainActivity extends AppCompatActivity
     TextView txt_mavisos, txt_meventos, txt_malumnos, txt_mgalerias;
 
 
+    private static final String TAG = MainActivity.class.getSimpleName();
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
+    private TextView txtRegId, txtMessage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -140,6 +154,35 @@ public class MainActivity extends AppCompatActivity
         activity = this;
         db_sqlite = new Database(activity);
         SQLiteDatabase db = db_sqlite.getWritableDatabase();
+
+
+        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                // checking for type intent filter
+                if (intent.getAction().equals(Config.REGISTRATION_COMPLETE)) {
+                    // gcm successfully registered
+                    // now subscribe to `global` topic to receive app wide notifications
+                    FirebaseMessaging.getInstance().subscribeToTopic(Config.TOPIC_GLOBAL);
+
+                    displayFirebaseRegId();
+
+                } else if (intent.getAction().equals(Config.PUSH_NOTIFICATION)) {
+                    // new push notification is received
+
+                    String message = intent.getStringExtra("message");
+
+                    Toast.makeText(getApplicationContext(), "Push notification: " + message, Toast.LENGTH_LONG).show();
+
+                    //txtMessage.setText(message);
+                }
+            }
+        };
+
+
+        FirebaseMessaging.getInstance().subscribeToTopic("news");
+        FirebaseMessaging.getInstance().subscribeToTopic("global");
 
         btn_mavisos = (MaterialRippleLayout) findViewById(R.id.btn_mavisos);
         btn_meventos = (MaterialRippleLayout) findViewById(R.id.btn_meventos);
@@ -223,7 +266,6 @@ public class MainActivity extends AppCompatActivity
             if (alumn.moveToFirst()) {
                 nombreAlumno = alumn.getString(1);
                 idGrupo = alumn.getString(5);
-                Log.e("Grupo",idGrupo);
             }
             alumn.close();
 
@@ -253,7 +295,6 @@ public class MainActivity extends AppCompatActivity
         Cursor config = db.rawQuery("select * from colegio", null);
         if (config.moveToFirst()) {
             idEscuela = config.getString(0);
-            Log.e("escuela",idEscuela);
             urlImgPrincipal = "http://smartcollege.mx/" + config.getString(9);
             Picasso.with(activity).load("http://smartcollege.mx/" + config.getString(9)).placeholder(R.drawable.logosc).into(imagenPincipal);
         } else {
@@ -505,13 +546,20 @@ public class MainActivity extends AppCompatActivity
                     public void onClick(DialogInterface dialog, int which) {
 
                         SQLiteDatabase db = db_sqlite.getWritableDatabase();
-                        ParsePush.unsubscribeInBackground("e" + MainActivity.idEscuela);
+
+
+                        FirebaseMessaging.getInstance().unsubscribeFromTopic("e" + MainActivity.idEscuela);
+                        //ParsePush.unsubscribeInBackground("e" + MainActivity.idEscuela);
                         Cursor hijos = db.rawQuery("select * from hijos", null);
                         if (hijos.moveToFirst()) {
                             do {
-                                ParsePush.unsubscribeInBackground("a" + hijos.getString(0));
-                                ParsePush.unsubscribeInBackground("ga" + hijos.getString(3));
-                                ParsePush.unsubscribeInBackground("gu" + hijos.getString(5));
+
+                                FirebaseMessaging.getInstance().unsubscribeFromTopic("a" + hijos.getString(0));
+                                FirebaseMessaging.getInstance().unsubscribeFromTopic("ga" + hijos.getString(3));
+                                FirebaseMessaging.getInstance().unsubscribeFromTopic("gu" + hijos.getString(5));
+                                /*ParsePush.unsubscribeInBackground();
+                                ParsePush.unsubscribeInBackground();
+                                ParsePush.unsubscribeInBackground();*/
                             } while (hijos.moveToNext());
                         }
                         hijos.close();
@@ -519,12 +567,10 @@ public class MainActivity extends AppCompatActivity
                         if (materias.moveToFirst()) {
 
                             do {
-                                ParsePush.unsubscribeInBackground("m" + materias.getString(0));
+                                FirebaseMessaging.getInstance().unsubscribeFromTopic("m" + materias.getString(0));
+                                //ParsePush.unsubscribeInBackground();
                             } while (materias.moveToNext());
                         }
-                        contenido_avisos = null;
-                        contenido_galerias = null;
-                        eventos = null;
                         materias.close();
                         db.execSQL("delete from tutor");
                         db.execSQL("delete from colegio");
@@ -666,7 +712,8 @@ public class MainActivity extends AppCompatActivity
                     db.execSQL("delete from materias where alumno='"+alumno+"'");
                     for (int i = 0; i < array.length(); i++) {
                         JSONObject c = array.getJSONObject(i);
-                        ParsePush.subscribeInBackground("m"+c.getString("id"));
+                        FirebaseMessaging.getInstance().subscribeToTopic("m"+c.getString("id"));
+                        //ParsePush.subscribeInBackground();
                         String sql = "insert into materias (id, alumno, clave, nombre, tipo) " +
                                 "values (?, ?, ? ,? , ?)";
                         SQLiteStatement insertStmt = db.compileStatement(sql);
@@ -762,4 +809,35 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    private void displayFirebaseRegId() {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
+        String regId = pref.getString("regId", null);
+
+        Log.e(TAG, "Firebase reg id: " + regId);
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // register GCM registration complete receiver
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(Config.REGISTRATION_COMPLETE));
+
+        // register new push message receiver
+        // by doing this, the activity will be notified each time a new message arrives
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(Config.PUSH_NOTIFICATION));
+
+        // clear the notification area when the app is opened
+        NotificationUtils.clearNotifications(getApplicationContext());
+    }
+
+    @Override
+    protected void onPause() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
+        super.onPause();
+    }
 }

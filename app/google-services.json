@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "162521827694",
+    "firebase_url": "https://smartcollege-8cb0b.firebaseio.com",
+    "project_id": "smartcollege-8cb0b",
+    "storage_bucket": "smartcollege-8cb0b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:162521827694:android:e5cb8a5a36449f51",
+        "android_client_info": {
+          "package_name": "com.firewallsol.smartcollege"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "162521827694-tkss4pdq9d0hv3a113ti0m8mq1ji0406.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgfocIweRdhtwPLgKr3iSI3LiYxvvbc0k"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

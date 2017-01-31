@@ -34,7 +34,8 @@ import android.widget.TextView;
 
 import com.firewallsol.smartcollege.Database.Database;
 import com.firewallsol.smartcollege.Funciones.jSONFunciones;
-import com.parse.ParsePush;
+import com.google.firebase.messaging.FirebaseMessaging;
+
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -495,7 +496,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             db.execSQL("delete from colegio");
             for (int i = 0; i < array.length(); i++) {
                 JSONObject c = array.getJSONObject(i);
-                ParsePush.subscribeInBackground("e"+c.getString("id"));
+                FirebaseMessaging.getInstance().subscribeToTopic("e"+c.getString("id"));
+               // ParsePush.subscribeInBackground("e"+c.getString("id"));
                 String sqlQuery = "insert into colegio values ('" + c.getString("id") + "','" + c.getString("nombre") + "', '" + c.getString("contacto") + "', " +
                         "'" + c.getString("telefono") + "', '" + c.getString("descripcion") + "', " +
                         "'" + c.getString("color") + "', '" + c.getString("correo") + "', " +
@@ -592,9 +594,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             db.execSQL("delete from hijos");
             for (int i = 0; i < array.length(); i++) {
                 JSONObject c = array.getJSONObject(i);
-                ParsePush.subscribeInBackground("a"+c.getString("id"));
-                ParsePush.subscribeInBackground("ga"+c.getString("id_grado"));
-                ParsePush.subscribeInBackground("gu"+c.getString("id_grupo"));
+                FirebaseMessaging.getInstance().subscribeToTopic("a"+c.getString("id"));
+                FirebaseMessaging.getInstance().subscribeToTopic("ga"+c.getString("id_grado"));
+                FirebaseMessaging.getInstance().subscribeToTopic("gu"+c.getString("id_grupo"));
+
+                //ParsePush.subscribeInBackground("a"+c.getString("id"));
+                //ParsePush.subscribeInBackground("ga"+c.getString("id_grado"));
+                //ParsePush.subscribeInBackground("gu"+c.getString("id_grupo"));
                 db.execSQL("insert into hijos values ('" + c.getString("id") + "','" + c.getString("nombre") + "', '" + c.getString("clave") + "', " +
                         "'" + c.getString("id_grado") + "', '" + c.getString("grado") + "', " +
                         "'" + c.getString("id_grupo") + "', '" + c.getString("grupo") + "', " +
