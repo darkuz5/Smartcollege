@@ -1,6 +1,9 @@
 package com.firewallsol.smartcollege;
 
 import android.app.Activity;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -23,6 +26,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -42,6 +46,7 @@ import com.firewallsol.smartcollege.Funciones.jSONFunciones;
 import com.firewallsol.smartcollege.Gaceta.Gaceta;
 import com.firewallsol.smartcollege.Servicio.Servicio;
 //import com.parse.ParsePush;
+import com.firewallsol.smartcollege.service.MyFirebaseMessagingService;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.squareup.picasso.Picasso;
 
@@ -50,7 +55,9 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -172,10 +179,19 @@ public class MainActivity extends AppCompatActivity
                     // new push notification is received
 
                     String message = intent.getStringExtra("message");
+                    String timestamp = intent.getStringExtra("timestamp");
 
-                    Toast.makeText(getApplicationContext(), "Push notification: " + message, Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(), "Push notification: " + message, Toast.LENGTH_LONG).show();
 
-                    //txtMessage.setText(message);
+                   MyFirebaseMessagingService mf = new MyFirebaseMessagingService();
+                    Intent resultIntent = new Intent(getApplicationContext(), MainActivity.class);
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy-hh-mm-ss");
+                    String format = simpleDateFormat.format(new Date());
+
+                    mf.showNotificationMessage(getApplicationContext(), message, message, format, resultIntent);
+
+
+
                 }
             }
         };
@@ -755,8 +771,8 @@ public class MainActivity extends AppCompatActivity
 
                 txt_mavisos.setTextColor(Color.parseColor(color));
                 txt_meventos.setTextColor(Color.parseColor("#333333"));
-                txt_malumnos.setTextColor(Color.parseColor("#333333"));;
-                txt_mgalerias.setTextColor(Color.parseColor("#333333"));;
+                txt_malumnos.setTextColor(Color.parseColor("#333333"));
+                txt_mgalerias.setTextColor(Color.parseColor("#333333"));
                 break;
             case 1: //Avisos
                 img_mavisos.setColorFilter(Color.parseColor("#333333"));
@@ -766,8 +782,8 @@ public class MainActivity extends AppCompatActivity
 
                 txt_mavisos.setTextColor(Color.parseColor("#333333"));
                 txt_meventos.setTextColor(Color.parseColor(color));
-                txt_malumnos.setTextColor(Color.parseColor("#333333"));;
-                txt_mgalerias.setTextColor(Color.parseColor("#333333"));;
+                txt_malumnos.setTextColor(Color.parseColor("#333333"));
+                txt_mgalerias.setTextColor(Color.parseColor("#333333"));
                 break;
 
             case 2: //Avisos
@@ -778,8 +794,8 @@ public class MainActivity extends AppCompatActivity
 
                 txt_mavisos.setTextColor(Color.parseColor("#333333"));
                 txt_meventos.setTextColor(Color.parseColor("#333333"));
-                txt_malumnos.setTextColor(Color.parseColor(color));;
-                txt_mgalerias.setTextColor(Color.parseColor("#333333"));;
+                txt_malumnos.setTextColor(Color.parseColor(color));
+                txt_mgalerias.setTextColor(Color.parseColor("#333333"));
                 break;
 
             case 3: //Avisos
@@ -790,8 +806,8 @@ public class MainActivity extends AppCompatActivity
 
                 txt_mavisos.setTextColor(Color.parseColor("#333333"));
                 txt_meventos.setTextColor(Color.parseColor("#333333"));
-                txt_malumnos.setTextColor(Color.parseColor("#333333"));;
-                txt_mgalerias.setTextColor(Color.parseColor(color));;
+                txt_malumnos.setTextColor(Color.parseColor("#333333"));
+                txt_mgalerias.setTextColor(Color.parseColor(color));
                 break;
             default:
                 img_mavisos.setColorFilter(Color.parseColor("#333333"));
@@ -801,8 +817,8 @@ public class MainActivity extends AppCompatActivity
 
                 txt_mavisos.setTextColor(Color.parseColor("#333333"));
                 txt_meventos.setTextColor(Color.parseColor("#333333"));
-                txt_malumnos.setTextColor(Color.parseColor("#333333"));;
-                txt_mgalerias.setTextColor(Color.parseColor("#333333"));;
+                txt_malumnos.setTextColor(Color.parseColor("#333333"));
+                txt_mgalerias.setTextColor(Color.parseColor("#333333"));
                 break;
 
 
