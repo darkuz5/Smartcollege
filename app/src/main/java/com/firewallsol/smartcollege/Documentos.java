@@ -5,13 +5,16 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.firewallsol.smartcollege.Adaptadores.Items.ItemsInicio;
@@ -92,6 +95,9 @@ public class Documentos extends Fragment  implements SwipeRefreshLayout.OnRefres
         swipeRefreshLayout.setColorSchemeResources(R.color.background_actionbar_azul_claro);
         // MainActivity.baderau = "1";
 
+
+
+
         dialog = new ProgressDialog(activity);
         dialog.setMessage("Cargando...");
         dialog.setCancelable(false);
@@ -128,8 +134,8 @@ public class Documentos extends Fragment  implements SwipeRefreshLayout.OnRefres
                 if (totalItemCount > 1) {
                     if (lastVisibleItem >= totalItemCount - 2 && !MainActivity.DendLove) {
                         gotomove = true;
-                        MainActivity.SbanderaPage++;
-                        pagina = (MainActivity.SbanderaPage * 10) - 10;
+                        MainActivity.DbanderaPage++;
+                        pagina = (MainActivity.DbanderaPage * 10) - 10;
                         Log.i("Pagina", pagina + "");
                         paramsSend = new ArrayList<>();
                         paramsSend.add(new BasicNameValuePair("id_escuela", MainActivity.idEscuela));
@@ -161,6 +167,7 @@ public class Documentos extends Fragment  implements SwipeRefreshLayout.OnRefres
     public void onRefresh() {
         gotomove = true;
         adapter = null;
+        //primera = true;
 
         MainActivity.DbanderaPage = 1;
         MainActivity.DendLove = false;

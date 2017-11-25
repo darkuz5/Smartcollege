@@ -16,16 +16,16 @@ repositories {
 
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    compileSdkVersion 25
+    buildToolsVersion '26.0.2'
     useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
         applicationId "com.firewallsol.smartcollege"
         minSdkVersion 15
-        targetSdkVersion 23
-        versionCode 6
-        versionName "1.0.6"
+        targetSdkVersion 25
+        versionCode 9
+        versionName "1.0.9"
         multiDexEnabled true
     }
     buildTypes {
@@ -68,14 +68,14 @@ dependencies {
         exclude module: 'support-v4'
     }
     /*Lo del otro project*/
-    compile "com.android.support:support-v4:23.1.1"
+    compile "com.android.support:support-v4:25.4.0"
     compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
         transitive = true;
     }
 
-    compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.android.support:design:23.1.1'
-    compile 'com.android.support:support-v4:23.1.1'
+    compile 'com.android.support:appcompat-v7:25.4.0'
+    compile 'com.android.support:design:25.4.0'
+    compile 'com.android.support:support-v4:25.4.0'
     compile 'com.balysv:material-ripple:1.0.2'
     compile 'com.github.traex.rippleeffect:library:1.2.4'
     compile 'uk.co.chrisjenx:calligraphy:2.1.0'
@@ -86,16 +86,16 @@ dependencies {
     compile 'org.apache.commons:commons-lang3:3.4'
     compile 'joda-time:joda-time:2.8.2'
     compile 'com.github.sundeepk:compact-calendar-view:1.8.1'
-    compile 'com.android.support:recyclerview-v7:23.1.1'
-    compile 'com.android.support:cardview-v7:23.1.1'
-    compile 'com.android.support:palette-v7:23.1.1'
+    compile 'com.android.support:recyclerview-v7:25.4.0'
+    compile 'com.android.support:cardview-v7:25.4.0'
+    compile 'com.android.support:palette-v7:25.4.0'
     compile 'com.soundcloud.android:android-crop:1.0.1@aar'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.daimajia.slider:library:1.1.5@aar'
-    compile 'com.google.android.gms:play-services-maps:9.6.0'
-    compile 'com.google.android.gms:play-services-plus:9.6.0'
+    compile 'com.google.android.gms:play-services-maps:9.6.1'
+    compile 'com.google.android.gms:play-services-plus:9.6.1'
 
-    compile 'com.google.firebase:firebase-messaging:9.6.0'
+    compile 'com.google.firebase:firebase-messaging:9.6.1'
     compile 'com.google.apis:google-api-services-urlshortener:v1-rev43-1.21.0'
 }
 apply plugin: 'com.google.gms.google-services'

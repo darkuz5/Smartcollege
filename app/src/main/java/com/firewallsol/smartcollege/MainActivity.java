@@ -55,6 +55,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.Console;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -183,12 +184,14 @@ public class MainActivity extends AppCompatActivity
 
                     //Toast.makeText(getApplicationContext(), "Push notification: " + message, Toast.LENGTH_LONG).show();
 
-                   MyFirebaseMessagingService mf = new MyFirebaseMessagingService();
+                     MyFirebaseMessagingService mf = new MyFirebaseMessagingService();
                     Intent resultIntent = new Intent(getApplicationContext(), MainActivity.class);
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy-hh-mm-ss");
                     String format = simpleDateFormat.format(new Date());
 
                     mf.showNotificationMessage(getApplicationContext(), message, message, format, resultIntent);
+
+                    //addNotification();
 
 
 
@@ -349,6 +352,26 @@ public class MainActivity extends AppCompatActivity
 
         barramenu(0);
 
+
+    }
+
+    private void addNotification() {
+        NotificationCompat.Builder builder =
+                new NotificationCompat.Builder(this);
+        builder.setSmallIcon(R.drawable.ic_launcher);
+        builder.setContentTitle("Notifications Example");
+        builder.setContentText("This is a test notification");
+
+        Intent notificationIntent = new Intent(this, MainActivity.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        builder.setContentIntent(contentIntent);
+
+        // Add as notification
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.notify(0, builder.build());
+
+        Log.d("","Prueba");
 
     }
 

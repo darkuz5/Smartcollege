@@ -9,7 +9,7 @@
         android:layout_height="90dip"
         android:layout_margin="5dip"
         android:id="@+id/lafoto"
-        android:src="@drawable/abc_btn_rating_star_on_mtrl_alpha" />
+   />
 
 
 </LinearLayout>
