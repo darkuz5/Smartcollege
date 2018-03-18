@@ -70,6 +70,7 @@ public class SeleccionAlumno extends AppCompatActivity {
             color = "#A01027";
         }
 
+
         Log.i("Color", color);
 
         CustomActionBar();

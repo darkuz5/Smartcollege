@@ -4,25 +4,16 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.multidex.MultiDex;
-import android.widget.Toast;
+import android.support.multidex.MultiDexApplication;
 
-import com.crashlytics.android.Crashlytics;
-import com.firewallsol.smartcollege.Funciones.GPSClass;
-import com.firewallsol.smartcollege.app.Config;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.messaging.FirebaseMessaging;
-
-
-import io.fabric.sdk.android.Fabric;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 /**
  * Created on 07/10/15.
  */
-public class Aplicacion extends Application implements Application.ActivityLifecycleCallbacks {
+public class Aplicacion extends MultiDexApplication implements Application.ActivityLifecycleCallbacks {
 
     public static boolean isApplicationActivityVisible = false;
     public static boolean isConversacionActivityVisible = false;
@@ -30,11 +21,10 @@ public class Aplicacion extends Application implements Application.ActivityLifec
 
     public static Context activity;
 
-
     @Override
     public void onCreate() {
         super.onCreate();
-        Fabric.with(this, new Crashlytics());
+
         MultiDex.install(this);
         registerActivityLifecycleCallbacks(this);
         activity = getApplicationContext();

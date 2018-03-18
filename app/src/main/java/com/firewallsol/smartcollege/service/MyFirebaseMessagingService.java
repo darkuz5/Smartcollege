@@ -8,6 +8,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
@@ -25,6 +26,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
@@ -100,17 +102,43 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void handleNotification(String message) {
-        if (!NotificationUtils.isAppIsInBackground(getApplicationContext())) {
-            // app is in foreground, broadcast the push message
-            Intent pushNotification = new Intent(Config.PUSH_NOTIFICATION);
-            pushNotification.putExtra("message", message);
-            LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
+        Log.i("MENSAJE", message);
+        try {
 
-             //play notification sound
-             notificationUtils = new NotificationUtils(getApplicationContext());
-            notificationUtils.playNotificationSound();
-        }else{
-            // If the app is in background, firebase itself handles the notification
+
+            NotificationCompat.Builder builder =
+                    new NotificationCompat.Builder(this)
+                            .setSmallIcon(R.drawable.ic_launcher)
+                            .setLargeIcon(BitmapFactory.decodeResource(
+                                    getResources(),
+                                    R.drawable.ic_launcher
+                                    )
+                            )
+                            .setContentTitle("SmartCollege")
+                            .setContentText(message)
+                            .setColor(getResources().getColor(R.color.colorAccent));
+
+            Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            builder.setSound(alarmSound);
+            // Construir la notificación y emitirla
+            NotificationManager mNotificacionManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationID nd = new NotificationID();
+            mNotificacionManager.notify(nd.getID(), builder.build());
+
+            if (!NotificationUtils.isAppIsInBackground(getApplicationContext())) {
+                // app is in foreground, broadcast the push message
+                Intent pushNotification = new Intent(Config.PUSH_NOTIFICATION);
+                pushNotification.putExtra("message", message);
+                LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
+
+                //play notification sound
+                notificationUtils = new NotificationUtils(getApplicationContext());
+                notificationUtils.playNotificationSound();
+            } else {
+                // If the app is in background, firebase itself handles the notification
+            }
+        } catch (Exception e){
+            e.printStackTrace();
         }
     }
 
@@ -193,4 +221,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
 
+
+
+}
+
+class NotificationID {
+    private final static AtomicInteger c = new AtomicInteger(0);
+    public static int getID() {
+        return c.incrementAndGet();
+    }
 }
